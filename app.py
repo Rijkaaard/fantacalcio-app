@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON (CONTENITORI NATIVI STYLED)
+# 🎨 STILE CSS FANTA-LAB DARK NEON
 # ==============================================================================
 st.markdown(
     """
@@ -45,8 +45,9 @@ st.markdown(
         font-family: 'Poppins', sans-serif !important;
     }
 
+    /* Margine superiore aumentato per non sovrapporsi alla barra Streamlit */
     .stMainBlockContainer {
-        padding-top: 1.2rem !important;
+        padding-top: 3.5rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
