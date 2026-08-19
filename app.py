@@ -171,6 +171,7 @@ st.markdown(
         justify-content: space-between;
         padding: 0 5px;
         font-size: 10px;
+        transition: background-color 0.2s ease;
     }
     .player-cell:nth-child(even) {
         background: #130e26;
@@ -230,7 +231,7 @@ st.markdown(
 
     .delete-btn:hover {
         color: #dc2626 !important;
-        transform: scale(1.2);
+        transform: scale(1.3);
     }
 
     .player-cell:hover .delete-btn {
@@ -523,8 +524,6 @@ def render_board():
                     else:
                         colore_prezzo = "#fbbf24"
 
-                    # Giocatore con evento onclick JS personalizzato per animazione smooth
-                    nome_escaped = g["Giocatore"].replace("'", "\\'")
                     col_content.append(
                         f'<div class="player-cell">'
                         f'<div class="player-cell-left">'
@@ -533,7 +532,7 @@ def render_board():
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<a href="javascript:void(0)" onclick="smoothRemovePlayer(this, \'{nome_escaped}\')" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
+                        f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
                         f'</div>'
                         f'</div>'
                     )
@@ -545,6 +544,7 @@ def render_board():
 
     return f'<div class="board-grid">{"".join(cols_html)}</div>'
 
+
 st.markdown(render_board(), unsafe_allow_html=True)
 
 if st.session_state.acquisti:
@@ -555,26 +555,9 @@ if st.session_state.acquisti:
         st.rerun()
 
 # --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
-# --- JAVASCRIPT GESTIONE TASTIERA + RIMOZIONE FLUIDA ---
 components.html(
     """
 <script>
-// Gestione rimozione fluida del giocatore
-window.parent.smoothRemovePlayer = function(el, playerName) {
-    const cell = el.closest('.player-cell');
-    if (cell) {
-        cell.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
-        cell.style.opacity = '0';
-        cell.style.transform = 'scale(0.85)';
-    }
-    setTimeout(() => {
-        const url = new URL(window.parent.location.href);
-        url.searchParams.set('remove_player', playerName);
-        window.parent.location.href = url.toString();
-    }, 180);
-};
-
-// Auto-focus sulla barra di ricerca quando si digita
 if (!window.parent._fantalab_keydown_attached) {
     window.parent._fantalab_keydown_attached = true;
     const doc = window.parent.document;
