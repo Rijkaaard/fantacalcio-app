@@ -1,6 +1,7 @@
 import os
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
 
 # ==============================================================================
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
@@ -62,7 +63,9 @@ if "acquisti" not in st.session_state:
 
 # --- SIDEBAR (PANNELLO INSERIMENTO A SINISTRA) ---
 st.sidebar.title("🔨 Assegna Giocatore")
-st.sidebar.caption("💡 *Tip: Premi 'S' sulla tastiera per cercare al volo*")
+st.sidebar.caption(
+    "⚡ **Scorciatoia attiva:** Inizia semplicemente a digitare sulla tastiera per cercare!"
+)
 
 giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
@@ -81,12 +84,13 @@ if ruolo_selezionato != "TUTTI":
 else:
     df_filtrati = df_disponibili
 
-# Campo ricerca (Scorciatoia tastiera attiva)
+# Campo ricerca
 giocatore_selezionato = st.sidebar.selectbox(
     "1. Cerca Nome Calciatore:",
     options=sorted(df_filtrati["Giocatore"].tolist()),
     index=None,
-    placeholder="Inizia a scrivere...",
+    placeholder="Scrivi qui il nome...",
+    key="search_box",
 )
 
 squadra_dest = st.sidebar.selectbox(
@@ -215,3 +219,24 @@ for i in range(0, 10, 2):
     with col2:
         if i + 1 < 10:
             st.html(genera_html_tabella(FANTASQUADRE[i + 1]))
+
+# --- JAVASCRIPT PER SCORCIATOIA TASTIERA ---
+components.html(
+    """
+<script>
+const doc = window.parent.document;
+doc.addEventListener('keydown', function(e) {
+    // Se non si sta già digitando dentro un input
+    if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
+        if (e.key.length === 1 || e.key === 'Backspace') {
+            const inputField = doc.querySelector('input[aria-label="1. Cerca Nome Calciatore:"]');
+            if (inputField) {
+                inputField.focus();
+            }
+        }
+    }
+});
+</script>
+""",
+    height=0,
+)
