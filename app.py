@@ -23,7 +23,7 @@ SQUADRE_INFO = [
 
 FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
 SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
-TOTALE_SLOTS = sum(SLOTS.values())  # 25 giocatori
+TOTALE_SLOTS = sum(SLOTS.values())
 BUDGET_INIZIALE = 500
 
 MAPPA_CODICI_LOGHI = {
@@ -64,9 +64,65 @@ def save_acquisti():
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
-# --- TRIGGER RIMOZIONE SILENZIOSA (SENZA REFRESH BROWSER) ---
-st.markdown('<style>div[data-testid="stTextInput"]:has(input[aria-label="TriggerRimozione"]) { display: none; }</style>', unsafe_allow_html=True)
-st.text_input("TriggerRimozione", key="trigger_rimozione", label_visibility="collapsed")
+# --- PONTE JAVASCRIPT & INPUT DI CONTROLLO (CARICATI SUBITO) ---
+components.html(
+    """
+<script>
+window.parent.silentlyRemovePlayer = function(playerName) {
+    const doc = window.parent.document;
+    const inputs = doc.querySelectorAll('input');
+    let targetInput = null;
+    
+    inputs.forEach(input => {
+        if (input.getAttribute('aria-label') === 'TriggerRimozione' || input.placeholder === 'TriggerRimozione') {
+            targetInput = input;
+        }
+    });
+
+    if (targetInput) {
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(targetInput, playerName);
+        targetInput.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+};
+
+if (!window.parent._fantalab_keydown_attached) {
+    window.parent._fantalab_keydown_attached = true;
+    const doc = window.parent.document;
+    doc.addEventListener('keydown', function(e) {
+        if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
+            if (e.key.length === 1 || e.key === 'Backspace') {
+                const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
+                if (inputField) {
+                    inputField.focus();
+                }
+            }
+        }
+    });
+}
+</script>
+""",
+    height=0,
+)
+
+# Input nascosto con visibilità per React
+st.markdown(
+    """
+    <style>
+    div[data-testid="stTextInput"]:has(input[aria-label="TriggerRimozione"]) {
+        position: absolute !important;
+        opacity: 0 !important;
+        height: 0px !important;
+        width: 0px !important;
+        overflow: hidden !important;
+        pointer-events: none !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+st.text_input("TriggerRimozione", key="trigger_rimozione", placeholder="TriggerRimozione", label_visibility="collapsed")
 
 if st.session_state.get("trigger_rimozione"):
     giocatore_da_rimuovere = st.session_state.trigger_rimozione
@@ -232,7 +288,6 @@ st.markdown(
         text-overflow: ellipsis;
     }
 
-    /* --- STILI ANIMAZIONE RIMOZIONE HOVER --- */
     .player-cell-right {
         display: flex;
         align-items: center;
@@ -528,7 +583,6 @@ def render_board():
                     else:
                         colore_prezzo = "#fbbf24"
 
-                    delete_onclick = f"window.parent.silentlyRemovePlayer('{nome_escaped}')"
                     col_content.append(
                         f'<div class="player-cell">'
                         f'<div class="player-cell-left">'
@@ -537,7 +591,7 @@ def render_board():
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<a href="javascript:void(0)" onclick="{delete_onclick}" class="delete-btn" title="Rimuovi {nome_g}">✖</a>'
+                        f'<span onclick="window.parent.silentlyRemovePlayer(\'{nome_escaped}\')" class="delete-btn" title="Rimuovi {nome_g}">✖</span>'
                         f'</div>'
                         f'</div>'
                     )
@@ -558,36 +612,3 @@ if st.session_state.acquisti:
         st.session_state.acquisti.pop()
         save_acquisti()
         st.rerun()
-
-# --- JAVASCRIPT PONTE PER RIMOZIONE SILENZIOSA + AUTO-FOCUS ---
-components.html(
-    """
-<script>
-window.parent.silentlyRemovePlayer = function(playerName) {
-    const doc = window.parent.document;
-    const input = doc.querySelector('input[aria-label="TriggerRimozione"]');
-    if (input) {
-        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-        nativeInputValueSetter.call(input, playerName);
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-};
-
-if (!window.parent._fantalab_keydown_attached) {
-    window.parent._fantalab_keydown_attached = true;
-    const doc = window.parent.document;
-    doc.addEventListener('keydown', function(e) {
-        if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
-            if (e.key.length === 1 || e.key === 'Backspace') {
-                const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
-                if (inputField) {
-                    inputField.focus();
-                }
-            }
-        }
-    });
-}
-</script>
-""",
-    height=0,
-)
