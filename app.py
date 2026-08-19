@@ -78,7 +78,7 @@ if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON
+# 🎨 STILE CSS FANTA-LAB DARK NEON (CON MARGINI LATERALI AMPLIATI PER TV)
 # ==============================================================================
 st.markdown(
     """
@@ -92,9 +92,9 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 1rem !important;
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
+        padding-top: 1.5rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
         max-width: 100% !important;
     }
 
@@ -143,9 +143,10 @@ st.markdown(
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, minmax(130px, 1fr));
-        gap: 6px;
+        gap: 8px;
         width: 100%;
         overflow-x: auto;
+        padding-bottom: 10px;
     }
 
     .team-column {
