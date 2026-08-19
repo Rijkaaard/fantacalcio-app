@@ -78,7 +78,7 @@ if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON (CON MARGINI LATERALI AMPLIATI PER TV)
+# 🎨 STILE CSS FANTA-LAB DARK NEON (CON AMPI MARGINI PER LA TV)
 # ==============================================================================
 st.markdown(
     """
@@ -93,8 +93,8 @@ st.markdown(
 
     .stMainBlockContainer {
         padding-top: 1.5rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
         max-width: 100% !important;
     }
 
@@ -146,7 +146,9 @@ st.markdown(
         gap: 8px;
         width: 100%;
         overflow-x: auto;
-        padding-bottom: 10px;
+        padding-bottom: 15px;
+        padding-left: 5px;
+        padding-right: 5px;
     }
 
     .team-column {
@@ -493,7 +495,9 @@ def render_board_fragment():
 
         for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
+            # Filtra i giocatori del ruolo e li ordina per prezzo medio decrescente (dal più alto al più basso)
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
+            giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
             speso_ruolo = sum(g["Costo"] for g in giocatori_r)
             pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
