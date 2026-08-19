@@ -555,9 +555,26 @@ if st.session_state.acquisti:
         st.rerun()
 
 # --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
+# --- JAVASCRIPT GESTIONE TASTIERA + RIMOZIONE FLUIDA ---
 components.html(
     """
 <script>
+// Gestione rimozione fluida del giocatore
+window.parent.smoothRemovePlayer = function(el, playerName) {
+    const cell = el.closest('.player-cell');
+    if (cell) {
+        cell.style.transition = 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+        cell.style.opacity = '0';
+        cell.style.transform = 'scale(0.85)';
+    }
+    setTimeout(() => {
+        const url = new URL(window.parent.location.href);
+        url.searchParams.set('remove_player', playerName);
+        window.parent.location.href = url.toString();
+    }, 180);
+};
+
+// Auto-focus sulla barra di ricerca quando si digita
 if (!window.parent._fantalab_keydown_attached) {
     window.parent._fantalab_keydown_attached = true;
     const doc = window.parent.document;
