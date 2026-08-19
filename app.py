@@ -78,7 +78,7 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 2rem !important;
+        padding-top: 1.5rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
@@ -306,7 +306,6 @@ def get_squadra_stats(nome_squadra):
 
 
 def get_current_active_role():
-    """Determina il ruolo attivo in base alla sequenza P -> D -> C -> A."""
     roles_order = ["P", "D", "C", "A"]
     for r in roles_order:
         for sq in FANTASQUADRE:
@@ -314,146 +313,159 @@ def get_current_active_role():
             count_r = len([a for a in acquisti_sq if a["Ruolo"] == r])
             if count_r < SLOTS[r]:
                 return r
-    return None  # Tutti i ruoli sono completati
+    return None
 
+
+# Controlliamo se siamo in "Modalità TV" tramite parametro URL (?vista=tv)
+query_params = st.query_params
+is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE (SQUADRE E ASSEGNAZIONE SEQUENZIALE)
+# 1. PANNELLO SUPERIORE (VISIBILE SOLO SUL PC DEL MISTER/ORGANIZZATORE)
 # ==============================================================================
-c_left, c_right = st.columns([1.2, 3])
+if not is_tv_mode:
+    # Link rapido per aprire la TV in un'altra scheda
+    base_url = st.get_option("server.baseUrlPath") or ""
+    # Se vuoi testarlo in locale, puoi aprire manualmente l'indirizzo con ?vista=tv alla fine
+    st.markdown("📺 **Suggerimento per la TV:** Apri un'altra scheda del browser con lo stesso indirizzo aggiungendo `/?vista=tv` alla fine (es. `http://localhost:8501/?vista=tv`) e trascinala sullo schermo della TV!")
 
-with c_left:
-    with st.container(border=True):
-        st.markdown('<div class="card-title">SQUADRE & BUDGET</div>', unsafe_allow_html=True)
-        for sq in FANTASQUADRE:
-            rim, tot, _, _ = get_squadra_stats(sq)
-            nome_breve = sq.split(" - ")[0]
-            st.markdown(
-                f"""
-                <div class="team-mini-row">
-                    <span class="team-mini-name">{nome_breve}</span>
-                    <span class="team-mini-budget">🟡 {rim}</span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+    c_left, c_right = st.columns([1.2, 3])
 
-with c_right:
-    with st.container(border=True):
-        st.markdown('<div class="card-title">GESTIONE ASTA SEQUENZIALE</div>', unsafe_allow_html=True)
+    with c_left:
+        with st.container(border=True):
+            st.markdown('<div class="card-title">SQUADRE & BUDGET</div>', unsafe_allow_html=True)
+            for sq in FANTASQUADRE:
+                rim, tot, _, _ = get_squadra_stats(sq)
+                nome_breve = sq.split(" - ")[0]
+                st.markdown(
+                    f"""
+                    <div class="team-mini-row">
+                        <span class="team-mini-name">{nome_breve}</span>
+                        <span class="team-mini-budget">🟡 {rim}</span>
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
 
-        tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
+    with c_right:
+        with st.container(border=True):
+            st.markdown('<div class="card-title">GESTIONE ASTA SEQUENZIALE</div>', unsafe_allow_html=True)
 
-        ruolo_attivo = get_current_active_role()
-        giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
-        df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
+            tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
 
-        with tab_assegna:
-            if ruolo_attivo is None:
-                st.success("🎉 **Asta completata!** Tutti i roster di tutte le squadre sono al completo.")
-            else:
-                # Mostra il ruolo attualmente sbloccato
-                nomi_ruoli = {"P": "PORTIERI", "D": "DIFENSORI", "C": "CENTROCAMPISTI", "A": "ATTACCANTI"}
-                st.info(f"📍 **Ruolo attualmente in corso:** `{nomi_ruoli[ruolo_attivo]}` (Gli altri ruoli sono bloccati finché tutte le squadre non avranno completato questo).")
+            ruolo_attivo = get_current_active_role()
+            giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
+            df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-                df_filtrati = df_disponibili[df_disponibili["Ruolo"] == ruolo_attivo]
-
-                # Filtra solo le squadre che non hanno ancora completato gli slot per il ruolo attivo
-                squadre_disponibili = []
-                for sq in FANTASQUADRE:
-                    _, _, _, acquisti_sq = get_squadra_stats(sq)
-                    count_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_attivo])
-                    if count_ruolo < SLOTS[ruolo_attivo]:
-                        squadre_disponibili.append(sq)
-
-                if not squadre_disponibili:
-                    st.warning("⚠️ Tutte le squadre hanno completato questo ruolo, ma il sistema sta aggiornando lo stato.")
+            with tab_assegna:
+                if ruolo_attivo is None:
+                    st.success("🎉 **Asta completata!** Tutti i roster di tutte le squadre sono al completo.")
                 else:
-                    col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
+                    nomi_ruoli = {"P": "PORTIERI", "D": "DIFENSORI", "C": "CENTROCAMPISTI", "A": "ATTACCANTI"}
+                    st.info(f"📍 **Ruolo in corso:** `{nomi_ruoli[ruolo_attivo]}`")
 
-                    with col_g:
-                        giocatore_selezionato = st.selectbox(
-                            "Cerca Calciatore",
-                            options=sorted(df_filtrati["Giocatore"].tolist()),
-                            index=None,
-                            placeholder=f"🔍 Cerca {nomi_ruoli[ruolo_attivo].lower()}...",
-                            label_visibility="collapsed",
-                            key="search_box",
-                        )
+                    df_filtrati = df_disponibili[df_disponibili["Ruolo"] == ruolo_attivo]
 
-                    with col_sq:
-                        sq_dest = st.selectbox(
-                            "Aggiudicato a", 
-                            options=squadre_disponibili, 
-                            label_visibility="collapsed"
-                        )
+                    squadre_disponibili = []
+                    for sq in FANTASQUADRE:
+                        _, _, _, acquisti_sq = get_squadra_stats(sq)
+                        count_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_attivo])
+                        if count_ruolo < SLOTS[ruolo_attivo]:
+                            squadre_disponibili.append(sq)
 
-                    with col_costo:
-                        costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed")
+                    if not squadre_disponibili:
+                        st.warning("⚠️ Tutte le squadre hanno completato questo ruolo.")
+                    else:
+                        col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
-                    with col_btn:
-                        btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
-
-                    if giocatore_selezionato and btn_conferma:
-                        info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
-                        squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-
-                        rimasti, _, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
-                        giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_attivo])
-                        max_slot_ruolo = SLOTS[ruolo_attivo]
-
-                        if giocatori_ruolo >= max_slot_ruolo:
-                            st.error(f"❌ Questa squadra ha già completato i slot per il ruolo **{ruolo_attivo}**!")
-                        elif costo_asta > max_offerta:
-                            st.error(f"❌ Offerta troppo alta! Offerta Max consentita: **{max_offerta} FM**.")
-                        else:
-                            st.session_state.acquisti.append(
-                                {
-                                    "Giocatore": info_g["Giocatore"],
-                                    "Ruolo": info_g["Ruolo"],
-                                    "Costo": int(costo_asta),
-                                    "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
-                                    "Squadra_SerieA": squadra_sa,
-                                    "Squadra_Fanta": sq_dest,
-                                }
+                        with col_g:
+                            giocatore_selezionato = st.selectbox(
+                                "Cerca Calciatore",
+                                options=sorted(df_filtrati["Giocatore"].tolist()),
+                                index=None,
+                                placeholder=f"🔍 Cerca {nomi_ruoli[ruolo_attivo].lower()}...",
+                                label_visibility="collapsed",
+                                key="search_box",
                             )
+
+                        with col_sq:
+                            sq_dest = st.selectbox(
+                                "Aggiudicato a", 
+                                options=squadre_disponibili, 
+                                label_visibility="collapsed"
+                            )
+
+                        with col_costo:
+                            costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed")
+
+                        with col_btn:
+                            btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
+
+                        if giocatore_selezionato and btn_conferma:
+                            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
+                            squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
+
+                            rimasti, _, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
+                            giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_attivo])
+                            max_slot_ruolo = SLOTS[ruolo_attivo]
+
+                            if giocatori_ruolo >= max_slot_ruolo:
+                                st.error(f"❌ Questa squadra ha già completato i slot per il ruolo **{ruolo_attivo}**!")
+                            elif costo_asta > max_offerta:
+                                st.error(f"❌ Offerta troppo alta! Offerta Max consentita: **{max_offerta} FM**.")
+                            else:
+                                st.session_state.acquisti.append(
+                                    {
+                                        "Giocatore": info_g["Giocatore"],
+                                        "Ruolo": info_g["Ruolo"],
+                                        "Costo": int(costo_asta),
+                                        "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                                        "Squadra_SerieA": squadra_sa,
+                                        "Squadra_Fanta": sq_dest,
+                                    }
+                                )
+                                save_acquisti()
+                                st.rerun()
+
+                        if giocatore_selezionato:
+                            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
+                            squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
+                            logo_path = get_logo_path(squadra_serie_a)
+
+                            if logo_path:
+                                col_logo, col_info = st.columns([0.12, 0.88])
+                                with col_logo:
+                                    st.image(logo_path, width=42)
+                                with col_info:
+                                    st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
+                            else:
+                                st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
+
+            with tab_svincola:
+                if st.session_state.acquisti:
+                    col_del_g, col_del_btn = st.columns([3, 1])
+                    with col_del_g:
+                        lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
+                        g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed")
+                    with col_del_btn:
+                        if st.button("❌ RIMUOVI", type="primary", use_container_width=True):
+                            st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
                             save_acquisti()
                             st.rerun()
-
-                    if giocatore_selezionato:
-                        info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
-                        squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-                        logo_path = get_logo_path(squadra_serie_a)
-
-                        if logo_path:
-                            col_logo, col_info = st.columns([0.12, 0.88])
-                            with col_logo:
-                                st.image(logo_path, width=42)
-                            with col_info:
-                                st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
-                        else:
-                            st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
-
-        with tab_svincola:
-            if st.session_state.acquisti:
-                col_del_g, col_del_btn = st.columns([3, 1])
-                with col_del_g:
-                    lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
-                    g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed")
-                with col_del_btn:
-                    if st.button("❌ RIMUOVI", type="primary", use_container_width=True):
-                        st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
-                        save_acquisti()
-                        st.rerun()
-            else:
-                st.info("Nessun calciatore ancora assegnato.")
-
+                else:
+                    st.info("Nessun calciatore ancora assegnato.")
+else:
+    # Titolo minimale per la TV
+    st.markdown("<h2 style='text-align: center; color: #a78bfa; margin-bottom: 20px;'>⚽ FANTA-ASTA LIVE TABELLONE ⚽</h2>", unsafe_allow_html=True)
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO ISTANTANEO SENZA REFRESH DI PAGINA)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO ISTANTANEO IN ENTRAMBE LE SCHEDE)
 # ==============================================================================
 @st.fragment
 def render_board_fragment():
+    # Ricarica i dati dal file a ogni frammento così la TV si aggiorna se fai modifiche sul PC
+    st.session_state.acquisti = load_saved_acquisti()
+    
     cols_html = []
 
     for sq in FANTASQUADRE:
@@ -465,7 +477,7 @@ def render_board_fragment():
             f'<div class="team-column">'
             f'<div class="team-header">'
             f'<div class="team-header-name">{nome_team}</div>'
-            f'<div class="team-header-budget">🟡 {rim}</div>'
+            f'<div class="query-budget team-header-budget">🟡 {rim}</div>'
             f'<div class="team-header-sub">'
             f'<span>MAX: {max_val}</span>'
             f'<span>{tot}/25</span>'
@@ -478,7 +490,7 @@ def render_board_fragment():
 
             speso_ruolo = sum(g["Costo"] for g in giocatori_r)
             pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
-            pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer( ) else f"{pct_budget}%"
+            pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
             col_content.append(f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
 
