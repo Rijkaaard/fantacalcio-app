@@ -6,8 +6,6 @@ import streamlit as st
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
 # ==============================================================================
 FANTASQUADRE = [f"SQUADRA {i+1}" for i in range(10)]
-
-# Slot fissi per ruolo (Totale 25 righe per tabella)
 SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
 
 st.set_page_config(
@@ -18,7 +16,7 @@ st.set_page_config(
 )
 
 
-# Caricamento e preparazione del Listone
+# Caricamento Listone
 @st.cache_data
 def load_data(file_path):
     if not os.path.exists(file_path):
@@ -58,7 +56,7 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
-# Memoria dell'applicazione
+# Stato dell'applicazione
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = []
 
@@ -68,20 +66,21 @@ if "target_squadra" not in st.session_state:
 if "target_ruolo" not in st.session_state:
     st.session_state.target_ruolo = "TUTTI"
 
-
-def imposta_target(squadra, ruolo):
-    st.session_state.target_squadra = squadra
-    st.session_state.target_ruolo = ruolo
+# Gestione query params per rendere le celle della tabella cliccabili
+query_params = st.query_params
+if "sel_sq" in query_params and "sel_ruolo" in query_params:
+    st.session_state.target_squadra = query_params["sel_sq"]
+    st.session_state.target_ruolo = query_params["sel_ruolo"]
+    st.query_params.clear()
 
 
 # --- SIDEBAR (PANNELLO INSERIMENTO A SINISTRA) ---
 st.sidebar.title("🔨 Assegna Giocatore")
 
-# Calcola i giocatori già presi per escluderli
 giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-# Filtro automatico per il ruolo selezionato
+# Filtro Ruolo
 ruolo_selezionato = st.sidebar.radio(
     "Filtro Ruolo:",
     options=["TUTTI", "P", "D", "C", "A"],
@@ -96,12 +95,12 @@ if ruolo_selezionato != "TUTTI":
 else:
     df_filtrati = df_disponibili
 
-# Ricerca del giocatore
+# Campo ricerca
 giocatore_selezionato = st.sidebar.selectbox(
     "Cerca Nome Giocatore:",
     options=sorted(df_filtrati["Giocatore"].tolist()),
     index=None,
-    placeholder=f"Scrivi un nome ({ruolo_selezionato})...",
+    placeholder=f"Scrivi nome ({ruolo_selezionato})...",
 )
 
 squadra_dest = st.sidebar.selectbox(
@@ -136,7 +135,7 @@ if giocatore_selezionato:
 
     if presi_ruolo >= max_slot:
         st.sidebar.error(
-            f"❌ {squadra_dest} ha già coperto i {max_slot} slot per il ruolo {ruolo_g}!"
+            f"❌ {squadra_dest} ha già coperto tutti i {max_slot} slot per il ruolo {ruolo_g}!"
         )
     else:
         if st.sidebar.button("✅ Inserisci in Rosa", use_container_width=True):
@@ -158,132 +157,76 @@ if st.session_state.acquisti:
         st.rerun()
 
 
-# --- AREA PRINCIPALE (TABELLONI STILE EXCEL INTERATTIVI) ---
+# --- AREA PRINCIPALE: TABELLONI SQUADRE ---
 st.title("⚽ Tabellone Asta Fantacalcio")
 
-# Stile CSS per mantenere la tabella uguale al formato Excel precedente
-st.markdown(
-    """
-    <style>
-    div[data-testid="column"] button {
-        background: transparent !important;
-        border: none !important;
-        color: #888888 !important;
-        text-align: left !important;
-        padding: 0px 4px !important;
-        height: auto !important;
-        min-height: 24px !important;
-        font-size: 13px !important;
-        box-shadow: none !important;
-    }
-    div[data-testid="column"] button:hover {
-        color: #4da6ff !important;
-        background-color: #2b2b2b !important;
-    }
-    </style>
-""",
-    unsafe_allow_html=True,
-)
 
-
-def render_squadra_table(nome_squadra):
+def genera_html_tabella(nome_squadra):
     acquisti_sq = [
         a
         for a in st.session_state.acquisti
         if a["Squadra_Fanta"] == nome_squadra
     ]
 
-    # Header Tabella (Titolo Squadra)
-    st.markdown(
-        f"""
-        <div style="background-color: #2d2d2d; color: #ffffff; text-align: center; font-weight: bold; padding: 6px; border: 1px solid #444; border-bottom: 1px solid #444; text-transform: uppercase; font-size: 14px; letter-spacing: 1px;">
-            {nome_squadra}
-        </div>
-        <div style="display: flex; background-color: #222222; border: 1px solid #444; border-top: none; border-bottom: 1px solid #333; font-size: 12px; color: #bbb; font-weight: bold; padding: 4px 0;">
-            <div style="width: 15%; padding-left: 6px; border-right: 1px solid #333;">Ruolo</div>
-            <div style="width: 45%; padding-left: 6px; border-right: 1px solid #333;">Nome</div>
-            <div style="width: 20%; text-align: right; padding-right: 6px; border-right: 1px solid #333;">Costo</div>
-            <div style="width: 20%; text-align: right; padding-right: 6px;">Differenza</div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    # Righe della tabella
+    rows = []
     for ruolo, num_slots in SLOTS.items():
         giocatori_ruolo = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
 
         for i in range(num_slots):
-            c_r, c_n, c_c, c_d = st.columns([0.15, 0.45, 0.20, 0.20])
-
-            # Ruolo
-            c_r.markdown(
-                f"<div style='font-size:13px; font-weight:bold; padding:2px 0 0 6px;'>{ruolo}</div>",
-                unsafe_allow_html=True,
-            )
-
             if i < len(giocatori_ruolo):
                 g = giocatori_ruolo[i]
+                nome_cell = f"<td style='padding: 3px 6px; border-right: 1px solid #444; color: #ffffff;'>{g['Giocatore']}</td>"
+                costo_cell = f"<td style='padding: 3px 6px; text-align: right; border-right: 1px solid #444; color: #ffffff;'>{g['Costo']}</td>"
 
-                # Nome Giocatore
-                c_n.markdown(
-                    f"<div style='font-size:13px; padding:2px 0 0 6px;'>{g['Giocatore']}</div>",
-                    unsafe_allow_html=True,
-                )
-
-                # Costo
-                c_c.markdown(
-                    f"<div style='font-size:13px; text-align:right; padding:2px 6px 0 0;'>{g['Costo']}</div>",
-                    unsafe_allow_html=True,
-                )
-
-                # Differenza (+X rosso / -X verde / 0 grigio)
                 diff = g["Costo"] - g["Prezzo_Medio"]
                 if diff > 0:
-                    diff_html = f"<span style='color: #ff4d4d; font-weight: bold;'>+{diff}</span>"
+                    diff_cell = f"<td style='padding: 3px 6px; text-align: right; color: #ff4d4d; font-weight: bold;'>+{diff}</td>"
                 elif diff < 0:
-                    diff_html = f"<span style='color: #2eb82e; font-weight: bold;'>{diff}</span>"
+                    diff_cell = f"<td style='padding: 3px 6px; text-align: right; color: #2eb82e; font-weight: bold;'>{diff}</td>"
                 else:
-                    diff_html = "<span style='color: #aaa;'>0</span>"
-
-                c_d.markdown(
-                    f"<div style='font-size:13px; text-align:right; padding:2px 6px 0 0;'>{diff_html}</div>",
-                    unsafe_allow_html=True,
-                )
-
+                    diff_cell = "<td style='padding: 3px 6px; text-align: right; color: #aaa;'>0</td>"
             else:
-                # Slot Libero: Bottone trasparente che simula la riga vuota della tabella
-                c_n.button(
-                    "--- (Libero)",
-                    key=f"btn_{nome_squadra}_{ruolo}_{i}",
-                    on_click=imposta_target,
-                    args=(nome_squadra, ruolo),
-                )
-                c_c.markdown(
-                    "<div style='font-size:13px; text-align:right; color:#555; padding:2px 6px 0 0;'>-</div>",
-                    unsafe_allow_html=True,
-                )
-                c_d.markdown(
-                    "<div style='font-size:13px; text-align:right; color:#555; padding:2px 6px 0 0;'>-</div>",
-                    unsafe_allow_html=True,
-                )
+                # Cella vuota ma cliccabile tramite link invisibile
+                link_select = f"?sel_sq={nome_squadra}&sel_ruolo={ruolo}"
+                nome_cell = f"<td style='padding: 0; border-right: 1px solid #444;'><a href='{link_select}' target='_self' style='display:block; width:100%; height:22px; text-decoration:none;'></a></td>"
+                costo_cell = "<td style='padding: 3px 6px; text-align: right; border-right: 1px solid #444;'></td>"
+                diff_cell = "<td style='padding: 3px 6px; text-align: right;'></td>"
 
-            # Bordo separatore riga
-            st.markdown(
-                "<div style='border-bottom: 1px solid #2a2a2a; margin-bottom: 1px;'></div>",
-                unsafe_allow_html=True,
+            rows.append(
+                f"<tr style='border-bottom: 1px solid #333; height: 24px;'>"
+                f"<td style='padding: 3px 6px; font-weight: bold; width: 12%; border-right: 1px solid #444; color: #ffffff;'>{ruolo}</td>"
+                f"{nome_cell}"
+                f"{costo_cell}"
+                f"{diff_cell}"
+                f"</tr>"
             )
 
+    table_rows = "".join(rows)
 
-# Disposizione a due tabelle affiancate per riga
+    html = f"""<table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 13px; font-family: sans-serif; background-color: #1a1a1a; margin-bottom: 25px;">
+<thead>
+<tr style="background-color: #2d2d2d; border-bottom: 1px solid #555;">
+<th colspan="4" style="padding: 6px; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #ffffff;">{nome_squadra}</th>
+</tr>
+<tr style="background-color: #222222; border-bottom: 1px solid #555; font-size: 12px; color: #bbb;">
+<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #444; width: 12%;">Ruolo</th>
+<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #444; width: 48%;">Nome</th>
+<th style="padding: 4px 6px; text-align: right; border-right: 1px solid #444; width: 20%;">Costo</th>
+<th style="padding: 4px 6px; text-align: right; width: 20%;">Differenza</th>
+</tr>
+</thead>
+<tbody>{table_rows}</tbody>
+</table>"""
+    return html
+
+
+# Disposizione tabelle a due a due
 for i in range(0, 10, 2):
     col1, col2 = st.columns(2)
 
     with col1:
-        render_squadra_table(FANTASQUADRE[i])
-        st.write("")
+        st.html(genera_html_tabella(FANTASQUADRE[i]))
 
     with col2:
         if i + 1 < 10:
-            render_squadra_table(FANTASQUADRE[i + 1])
-            st.write("")
+            st.html(genera_html_tabella(FANTASQUADRE[i + 1]))
