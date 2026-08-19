@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON (PULITO ED ELEGANTE)
+# 🎨 STILE CSS FANTA-LAB DARK NEON (CONTENITORI NATIVI STYLED)
 # ==============================================================================
 st.markdown(
     """
@@ -52,19 +52,14 @@ st.markdown(
         max-width: 100% !important;
     }
 
-    /* Cards contenitori in alto */
-    .fantalab-card {
-        background: #120d24;
-        border: 1px solid #282045;
-        border-radius: 12px;
-        padding: 16px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-        margin-bottom: 16px;
-        transition: border-color 0.3s ease;
-    }
-    
-    .fantalab-card:hover {
-        border-color: #4c3b7a;
+    /* Styling del box/contenitore nativo Streamlit */
+    [data-testid="stVerticalBlockBorderWrapper"] {
+        background: #120d24 !important;
+        border: 1px solid #282045 !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+        margin-bottom: 10px !important;
     }
 
     .card-title {
@@ -72,11 +67,11 @@ st.markdown(
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         text-transform: uppercase;
     }
 
-    /* Left teams mini list */
+    /* Mini-lista squadre a sinistra */
     .team-mini-row {
         display: flex;
         justify-content: space-between;
@@ -101,7 +96,7 @@ st.markdown(
         font-weight: 700;
     }
 
-    /* Board 10 columns Grid */
+    /* Griglia 10 colonne tabellone */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, minmax(130px, 1fr));
@@ -145,7 +140,7 @@ st.markdown(
         padding: 0 4px;
     }
 
-    /* Role headers in board */
+    /* Barre dei ruoli */
     .role-bar {
         font-size: 10px;
         font-weight: 800;
@@ -154,12 +149,12 @@ st.markdown(
         display: flex;
         justify-content: space-between;
     }
-    .role-p { background-color: #d97706; } /* Portieri Arancio */
-    .role-d { background-color: #15803d; } /* Difensori Verde */
-    .role-c { background-color: #1d4ed8; } /* Centrocampisti Blu */
-    .role-a { background-color: #be123c; } /* Attaccanti Rosso */
+    .role-p { background-color: #d97706; }
+    .role-d { background-color: #15803d; }
+    .role-c { background-color: #1d4ed8; }
+    .role-a { background-color: #be123c; }
 
-    /* Player cell in board */
+    /* Celle giocatori */
     .player-cell {
         height: 22px;
         background: #16102b;
@@ -249,7 +244,6 @@ def get_squadra_stats(nome_squadra):
     tot_giocatori = len(acquisti)
     slot_mancanti = TOTALE_SLOTS - tot_giocatori
 
-    # Max spendibile per un singolo giocatore riservando 1 credito per ogni slot rimanente
     max_offerta = rimasti - (slot_mancanti - 1) if slot_mancanti > 0 else 0
     return rimasti, tot_giocatori, max_offerta, acquisti
 
@@ -261,127 +255,126 @@ c_left, c_right = st.columns([1.2, 3])
 
 # Mini-lista squadre a sinistra
 with c_left:
-    st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="card-title">SQUADRE & BUDGET</div>',
-        unsafe_allow_html=True,
-    )
-    for sq in FANTASQUADRE:
-        rim, tot, _, _ = get_squadra_stats(sq)
-        nome_breve = sq.split(" - ")[0]
+    with st.container(border=True):
         st.markdown(
-            f"""
-            <div class="team-mini-row">
-                <span class="team-mini-name">{nome_breve}</span>
-                <span class="team-mini-budget">🟡 {rim}</span>
-            </div>
-            """,
+            '<div class="card-title">SQUADRE & BUDGET</div>',
             unsafe_allow_html=True,
         )
-    st.markdown("</div>", unsafe_allow_html=True)
+        for sq in FANTASQUADRE:
+            rim, tot, _, _ = get_squadra_stats(sq)
+            nome_breve = sq.split(" - ")[0]
+            st.markdown(
+                f"""
+                <div class="team-mini-row">
+                    <span class="team-mini-name">{nome_breve}</span>
+                    <span class="team-mini-budget">🟡 {rim}</span>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
 # Form Inserimento/Assegnazione al centro
 with c_right:
-    st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
-    st.markdown(
-        '<div class="card-title">ASSEGNA GIOCATORE</div>',
-        unsafe_allow_html=True,
-    )
-
-    ruolo_selezionato = st.radio(
-        "Filtra Ruolo",
-        options=["TUTTI", "P", "D", "C", "A"],
-        horizontal=True,
-        label_visibility="collapsed",
-    )
-
-    if ruolo_selezionato != "TUTTI":
-        df_filtrati = df_disponibili[
-            df_disponibili["Ruolo"] == ruolo_selezionato
-        ]
-    else:
-        df_filtrati = df_disponibili
-
-    col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
-
-    with col_g:
-        giocatore_selezionato = st.selectbox(
-            "Cerca Calciatore",
-            options=sorted(df_filtrati["Giocatore"].tolist()),
-            index=None,
-            placeholder="🔍 Cerca calciatore...",
-            label_visibility="collapsed",
-            key="search_box",
+    with st.container(border=True):
+        st.markdown(
+            '<div class="card-title">ASSEGNA GIOCATORE</div>',
+            unsafe_allow_html=True,
         )
 
-    with col_sq:
-        sq_dest = st.selectbox(
-            "Aggiudicato a", options=FANTASQUADRE, label_visibility="collapsed"
-        )
-
-    with col_costo:
-        costo_asta = st.number_input(
-            "Costo",
-            min_value=1,
-            value=1,
-            step=1,
+        ruolo_selezionato = st.radio(
+            "Filtra Ruolo",
+            options=["TUTTI", "P", "D", "C", "A"],
+            horizontal=True,
             label_visibility="collapsed",
         )
 
-    with col_btn:
-        btn_conferma = st.button(
-            "✅ CONFERMA", use_container_width=True, type="primary"
-        )
-
-    # Validazione e Assegnazione
-    if giocatore_selezionato and btn_conferma:
-        info_g = df_filtrati[
-            df_filtrati["Giocatore"] == giocatore_selezionato
-        ].iloc[0]
-        ruolo_g = info_g["Ruolo"]
-
-        rimasti, tot_giocatori, max_offerta, acquisti_sq = get_squadra_stats(
-            sq_dest
-        )
-        giocatori_ruolo = len(
-            [a for a in acquisti_sq if a["Ruolo"] == ruolo_g]
-        )
-        max_slot_ruolo = SLOTS[ruolo_g]
-
-        # Controlli bloccanti
-        if giocatori_ruolo >= max_slot_ruolo:
-            st.error(
-                f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!"
-            )
-        elif costo_asta > max_offerta:
-            st.error(
-                f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM)."
-            )
+        if ruolo_selezionato != "TUTTI":
+            df_filtrati = df_disponibili[
+                df_disponibili["Ruolo"] == ruolo_selezionato
+            ]
         else:
-            st.session_state.acquisti.append(
-                {
-                    "Giocatore": info_g["Giocatore"],
-                    "Ruolo": info_g["Ruolo"],
-                    "Costo": int(costo_asta),
-                    "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
-                    "Squadra_Fanta": sq_dest,
-                }
-            )
-            st.success(
-                f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!"
-            )
-            st.rerun()
+            df_filtrati = df_disponibili
 
-    # Informazioni Calciatore Selezionato
-    if giocatore_selezionato:
-        info_g = df_filtrati[
-            df_filtrati["Giocatore"] == giocatore_selezionato
-        ].iloc[0]
-        st.info(
-            f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {info_g['Squadra']} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
-        )
+        col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
-    st.markdown("</div>", unsafe_allow_html=True)
+        with col_g:
+            giocatore_selezionato = st.selectbox(
+                "Cerca Calciatore",
+                options=sorted(df_filtrati["Giocatore"].tolist()),
+                index=None,
+                placeholder="🔍 Cerca calciatore...",
+                label_visibility="collapsed",
+                key="search_box",
+            )
+
+        with col_sq:
+            sq_dest = st.selectbox(
+                "Aggiudicato a",
+                options=FANTASQUADRE,
+                label_visibility="collapsed",
+            )
+
+        with col_costo:
+            costo_asta = st.number_input(
+                "Costo",
+                min_value=1,
+                value=1,
+                step=1,
+                label_visibility="collapsed",
+            )
+
+        with col_btn:
+            btn_conferma = st.button(
+                "✅ CONFERMA", use_container_width=True, type="primary"
+            )
+
+        # Validazione e Assegnazione
+        if giocatore_selezionato and btn_conferma:
+            info_g = df_filtrati[
+                df_filtrati["Giocatore"] == giocatore_selezionato
+            ].iloc[0]
+            ruolo_g = info_g["Ruolo"]
+
+            rimasti, tot_giocatori, max_offerta, acquisti_sq = (
+                get_squadra_stats(sq_dest)
+            )
+            giocatori_ruolo = len(
+                [a for a in acquisti_sq if a["Ruolo"] == ruolo_g]
+            )
+            max_slot_ruolo = SLOTS[ruolo_g]
+
+            # Controlli bloccanti
+            if giocatori_ruolo >= max_slot_ruolo:
+                st.error(
+                    f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!"
+                )
+            elif costo_asta > max_offerta:
+                st.error(
+                    f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM)."
+                )
+            else:
+                st.session_state.acquisti.append(
+                    {
+                        "Giocatore": info_g["Giocatore"],
+                        "Ruolo": info_g["Ruolo"],
+                        "Costo": int(costo_asta),
+                        "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                        "Squadra_Fanta": sq_dest,
+                    }
+                )
+                st.success(
+                    f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!"
+                )
+                st.rerun()
+
+        # Informazioni Calciatore Selezionato
+        if giocatore_selezionato:
+            info_g = df_filtrati[
+                df_filtrati["Giocatore"] == giocatore_selezionato
+            ].iloc[0]
+            st.info(
+                f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {info_g['Squadra']} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
+            )
 
 
 # ==============================================================================
