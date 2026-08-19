@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
@@ -200,6 +201,8 @@ def load_data(file_path):
         df = pd.read_csv(file_path, sep=";")
 
     df.columns = df.columns.str.strip()
+
+    # Rilevamento automatico colonna prezzo
     colonna_prezzo = None
     for col in df.columns:
         if col.lower().replace(" ", "").replace("_", "") in [
@@ -209,9 +212,22 @@ def load_data(file_path):
         ]:
             colonna_prezzo = col
             break
-
     if colonna_prezzo:
         df = df.rename(columns={colonna_prezzo: "Prezzo Medio"})
+
+    # Rilevamento automatico colonna squadra Serie A
+    colonna_squadra = None
+    for col in df.columns:
+        if col.lower().replace(" ", "").replace("_", "") in [
+            "squadra",
+            "team",
+            "club",
+            "squadraseriea",
+        ]:
+            colonna_squadra = col
+            break
+    if colonna_squadra:
+        df = df.rename(columns={colonna_squadra: "Squadra_SerieA"})
 
     df["Prezzo_Numerico"] = pd.to_numeric(
         df["Prezzo Medio"], errors="coerce"
@@ -220,14 +236,29 @@ def load_data(file_path):
 
 
 def get_logo_path(squadra):
-    """Cerca il file del logo per la squadra di Serie A nella cartella 'loghi'"""
+    """Trova il logo confrontando in modo flessibile i nomi dei file nella cartella 'loghi'"""
     if not squadra or pd.isna(squadra):
         return None
-    sq_clean = str(squadra).strip().lower()
-    for ext in ["png", "jpg", "jpeg", "webp"]:
-        path = os.path.join("loghi", f"{sq_clean}.{ext}")
-        if os.path.exists(path):
-            return path
+
+    # Cartella dei loghi
+    logo_dir = "loghi"
+    if not os.path.exists(logo_dir):
+        return None
+
+    # Pulizia del nome della squadra (es: 'Hellas Verona' -> 'hellasverona')
+    sq_clean = re.sub(r"[^a-zA-Z0-9]", "", str(squadra)).lower()
+
+    for filename in os.listdir(logo_dir):
+        name_without_ext = os.path.splitext(filename)[0]
+        file_clean = re.sub(r"[^a-zA-Z0-9]", "", name_without_ext).lower()
+
+        if (
+            sq_clean == file_clean
+            or sq_clean in file_clean
+            or file_clean in sq_clean
+        ):
+            return os.path.join(logo_dir, filename)
+
     return None
 
 
@@ -384,13 +415,13 @@ with c_right:
             info_g = df_filtrati[
                 df_filtrati["Giocatore"] == giocatore_selezionato
             ].iloc[0]
-            squadra_serie_a = info_g.get("Squadra", "")
+            squadra_serie_a = info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))
             logo_path = get_logo_path(squadra_serie_a)
 
             if logo_path:
-                col_logo, col_info = st.columns([0.4, 4.6])
+                col_logo, col_info = st.columns([0.15, 0.85])
                 with col_logo:
-                    st.image(logo_path, width=42)
+                    st.image(logo_path, width=45)
                 with col_info:
                     st.info(
                         f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
@@ -398,6 +429,10 @@ with c_right:
             else:
                 st.info(
                     f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
+                )
+                # Avviso di debug per identificare il nome mancante
+                st.caption(
+                    f"💡 *Nessun logo trovato in `loghi/` per la squadra: **'{squadra_serie_a}'***"
                 )
 
 
