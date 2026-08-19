@@ -3,7 +3,6 @@ import json
 import os
 import pandas as pd
 import streamlit as st
-import streamlit.components.v1 as components
 
 # ==============================================================================
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
@@ -64,73 +63,6 @@ def save_acquisti():
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
-# --- PONTE JAVASCRIPT & INPUT DI CONTROLLO (CARICATI SUBITO) ---
-components.html(
-    """
-<script>
-window.parent.silentlyRemovePlayer = function(playerName) {
-    const doc = window.parent.document;
-    const inputs = doc.querySelectorAll('input');
-    let targetInput = null;
-    
-    inputs.forEach(input => {
-        if (input.getAttribute('aria-label') === 'TriggerRimozione' || input.placeholder === 'TriggerRimozione') {
-            targetInput = input;
-        }
-    });
-
-    if (targetInput) {
-        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
-        nativeInputValueSetter.call(targetInput, playerName);
-        targetInput.dispatchEvent(new Event('input', { bubbles: true }));
-    }
-};
-
-if (!window.parent._fantalab_keydown_attached) {
-    window.parent._fantalab_keydown_attached = true;
-    const doc = window.parent.document;
-    doc.addEventListener('keydown', function(e) {
-        if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
-            if (e.key.length === 1 || e.key === 'Backspace') {
-                const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
-                if (inputField) {
-                    inputField.focus();
-                }
-            }
-        }
-    });
-}
-</script>
-""",
-    height=0,
-)
-
-# Input nascosto con visibilità per React
-st.markdown(
-    """
-    <style>
-    div[data-testid="stTextInput"]:has(input[aria-label="TriggerRimozione"]) {
-        position: absolute !important;
-        opacity: 0 !important;
-        height: 0px !important;
-        width: 0px !important;
-        overflow: hidden !important;
-        pointer-events: none !important;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-
-st.text_input("TriggerRimozione", key="trigger_rimozione", placeholder="TriggerRimozione", label_visibility="collapsed")
-
-if st.session_state.get("trigger_rimozione"):
-    giocatore_da_rimuovere = st.session_state.trigger_rimozione
-    st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != giocatore_da_rimuovere]
-    save_acquisti()
-    st.session_state.trigger_rimozione = ""
-    st.rerun()
-
 # ==============================================================================
 # 🎨 STILE CSS FANTA-LAB DARK NEON
 # ==============================================================================
@@ -146,7 +78,7 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 3.5rem !important;
+        padding-top: 2rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
@@ -259,7 +191,6 @@ st.markdown(
         justify-content: space-between;
         padding: 0 5px;
         font-size: 10px;
-        transition: background-color 0.2s ease;
     }
     .player-cell:nth-child(even) {
         background: #130e26;
@@ -276,7 +207,6 @@ st.markdown(
     .player-team-logo {
         width: 14px;
         height: 14px;
-        border-radius: 0px !important;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -296,44 +226,16 @@ st.markdown(
 
     .player-cell-cost {
         font-weight: 700;
-        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        display: inline-block;
     }
 
-    .delete-btn {
-        opacity: 0;
-        max-width: 0;
-        margin-left: 0;
+    /* Stile compatto per bottoni svincolo */
+    div[data-testid="stPopover"] button {
+        background-color: #2a1f4d !important;
         color: #ef4444 !important;
-        text-decoration: none !important;
-        font-weight: 800;
-        font-size: 11px;
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        overflow: hidden;
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
-
-    .delete-btn:hover {
-        color: #dc2626 !important;
-        transform: scale(1.3);
-    }
-
-    .player-cell:hover .delete-btn {
-        opacity: 1;
-        max-width: 20px;
-        margin-left: 6px;
-    }
-
-    .player-cell:hover .player-cell-cost {
-        transform: translateX(-2px);
-    }
-
-    stImage > img {
-        border-radius: 0px !important;
+        border: 1px solid #ef4444 !important;
+        padding: 2px 8px !important;
+        font-size: 11px !important;
+        border-radius: 6px !important;
     }
     </style>
 """,
@@ -405,9 +307,6 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
-giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
-df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
-
 
 def get_squadra_stats(nome_squadra):
     acquisti = [a for a in st.session_state.acquisti if a["Squadra_Fanta"] == nome_squadra]
@@ -421,7 +320,7 @@ def get_squadra_stats(nome_squadra):
 
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE (SQUADRE ED ASSEGNAZIONE)
+# 1. PANNELLO SUPERIORE (SQUADRE E ASSEGNAZIONE)
 # ==============================================================================
 c_left, c_right = st.columns([1.2, 3])
 
@@ -443,98 +342,91 @@ with c_left:
 
 with c_right:
     with st.container(border=True):
-        st.markdown('<div class="card-title">ASSEGNA GIOCATORE</div>', unsafe_allow_html=True)
+        st.markdown('<div class="card-title">ASSEGNA O SVINCOLA GIOCATORE</div>', unsafe_allow_html=True)
 
-        ruolo_selezionato = st.radio(
-            "Filtra Ruolo",
-            options=["TUTTI", "P", "D", "C", "A"],
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+        tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
 
-        if ruolo_selezionato != "TUTTI":
-            df_filtrati = df_disponibili[df_disponibili["Ruolo"] == ruolo_selezionato]
-        else:
-            df_filtrati = df_disponibili
+        giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
+        df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-        col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
-
-        with col_g:
-            giocatore_selezionato = st.selectbox(
-                "Cerca Calciatore",
-                options=sorted(df_filtrati["Giocatore"].tolist()),
-                index=None,
-                placeholder="🔍 Cerca calciatore...",
-                label_visibility="collapsed",
-                key="search_box",
-            )
-
-        with col_sq:
-            sq_dest = st.selectbox(
-                "Aggiudicato a",
-                options=FANTASQUADRE,
+        with tab_assegna:
+            ruolo_selezionato = st.radio(
+                "Filtra Ruolo",
+                options=["TUTTI", "P", "D", "C", "A"],
+                horizontal=True,
                 label_visibility="collapsed",
             )
 
-        with col_costo:
-            costo_asta = st.number_input(
-                "Costo",
-                min_value=1,
-                value=1,
-                step=1,
-                label_visibility="collapsed",
-            )
+            df_filtrati = df_disponibili[df_disponibili["Ruolo"] == ruolo_selezionato] if ruolo_selezionato != "TUTTI" else df_disponibili
 
-        with col_btn:
-            btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
+            col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
-        if giocatore_selezionato and btn_conferma:
-            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
-            ruolo_g = info_g["Ruolo"]
-            squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-
-            rimasti, tot_giocatori, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
-            giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_g])
-            max_slot_ruolo = SLOTS[ruolo_g]
-
-            if giocatori_ruolo >= max_slot_ruolo:
-                st.error(f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!")
-            elif costo_asta > max_offerta:
-                st.error(f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM).")
-            else:
-                st.session_state.acquisti.append(
-                    {
-                        "Giocatore": info_g["Giocatore"],
-                        "Ruolo": info_g["Ruolo"],
-                        "Costo": int(costo_asta),
-                        "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
-                        "Squadra_SerieA": squadra_sa,
-                        "Squadra_Fanta": sq_dest,
-                    }
+            with col_g:
+                giocatore_selezionato = st.selectbox(
+                    "Cerca Calciatore",
+                    options=sorted(df_filtrati["Giocatore"].tolist()),
+                    index=None,
+                    placeholder="🔍 Cerca calciatore...",
+                    label_visibility="collapsed",
+                    key="search_box",
                 )
-                save_acquisti()
-                st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!")
-                st.rerun()
 
-        if giocatore_selezionato:
-            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
-            squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-            logo_path = get_logo_path(squadra_serie_a)
+            with col_sq:
+                sq_dest = st.selectbox("Aggiudicato a", options=FANTASQUADRE, label_visibility="collapsed")
 
-            if logo_path:
-                col_logo, col_info = st.columns([0.12, 0.88])
-                with col_logo:
-                    st.image(logo_path, width=42)
-                with col_info:
-                    st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
+            with col_costo:
+                costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed")
+
+            with col_btn:
+                btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
+
+            if giocatore_selezionato and btn_conferma:
+                info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
+                ruolo_g = info_g["Ruolo"]
+                squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
+
+                rimasti, tot_giocatori, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
+                giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_g])
+                max_slot_ruolo = SLOTS[ruolo_g]
+
+                if giocatori_ruolo >= max_slot_ruolo:
+                    st.error(f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per **{ruolo_g}**!")
+                elif costo_asta > max_offerta:
+                    st.error(f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max: **{max_offerta} FM**.")
+                else:
+                    st.session_state.acquisti.append(
+                        {
+                            "Giocatore": info_g["Giocatore"],
+                            "Ruolo": info_g["Ruolo"],
+                            "Costo": int(costo_asta),
+                            "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                            "Squadra_SerieA": squadra_sa,
+                            "Squadra_Fanta": sq_dest,
+                        }
+                    )
+                    save_acquisti()
+                    st.rerun()
+
+        with tab_svincola:
+            if st.session_state.acquisti:
+                col_del_g, col_del_btn = st.columns([3, 1])
+                with col_del_g:
+                    lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
+                    g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed")
+                with col_del_btn:
+                    if st.button("❌ RIMUOVI", type="primary", use_container_width=True):
+                        st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
+                        save_acquisti()
+                        st.rerun()
             else:
-                st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
+                st.info("Nessun calciatore ancora assegnato.")
 
 
 # ==============================================================================
-# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO ISTANTANEO SENZA REFRESH DI PAGINA)
 # ==============================================================================
-def render_board():
+@st.fragment
+def render_board_fragment():
     cols_html = []
 
     for sq in FANTASQUADRE:
@@ -567,7 +459,6 @@ def render_board():
                 if i < len(giocatori_r):
                     g = giocatori_r[i]
                     nome_g = g["Giocatore"]
-                    nome_escaped = nome_g.replace("'", "\\'")
                     sq_sa = g.get("Squadra_SerieA", "")
                     logo_p = get_logo_path(sq_sa)
                     logo_b64 = get_logo_base64(logo_p) if logo_p else ""
@@ -591,7 +482,6 @@ def render_board():
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<span onclick="window.parent.silentlyRemovePlayer(\'{nome_escaped}\')" class="delete-btn" title="Rimuovi {nome_g}">✖</span>'
                         f'</div>'
                         f'</div>'
                     )
@@ -601,14 +491,7 @@ def render_board():
         col_content.append("</div>")
         cols_html.append("".join(col_content))
 
-    return f'<div class="board-grid">{"".join(cols_html)}</div>'
+    st.markdown(f'<div class="board-grid">{"".join(cols_html)}</div>', unsafe_allow_html=True)
 
 
-st.markdown(render_board(), unsafe_allow_html=True)
-
-if st.session_state.acquisti:
-    st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("↩️ Annulla Ultimo Acquisto", use_container_width=True):
-        st.session_state.acquisti.pop()
-        save_acquisti()
-        st.rerun()
+render_board_fragment()
