@@ -56,35 +56,21 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
-# Stato dell'applicazione
+# Memoria dell'asta
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = []
 
-if "target_squadra" not in st.session_state:
-    st.session_state.target_squadra = FANTASQUADRE[0]
-
-if "target_ruolo" not in st.session_state:
-    st.session_state.target_ruolo = "TUTTI"
-
-# Gestione query params per rendere le celle della tabella cliccabili
-query_params = st.query_params
-if "sel_sq" in query_params and "sel_ruolo" in query_params:
-    st.session_state.target_squadra = query_params["sel_sq"]
-    st.session_state.target_ruolo = query_params["sel_ruolo"]
-    st.query_params.clear()
-
-
 # --- SIDEBAR (PANNELLO INSERIMENTO A SINISTRA) ---
 st.sidebar.title("🔨 Assegna Giocatore")
+st.sidebar.caption("💡 *Tip: Premi 'S' sulla tastiera per cercare al volo*")
 
 giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-# Filtro Ruolo
+# Filtro Ruolo Rapido
 ruolo_selezionato = st.sidebar.radio(
-    "Filtro Ruolo:",
+    "Filtra Ruolo:",
     options=["TUTTI", "P", "D", "C", "A"],
-    index=["TUTTI", "P", "D", "C", "A"].index(st.session_state.target_ruolo),
     horizontal=True,
 )
 
@@ -95,18 +81,17 @@ if ruolo_selezionato != "TUTTI":
 else:
     df_filtrati = df_disponibili
 
-# Campo ricerca
+# Campo ricerca (Scorciatoia tastiera attiva)
 giocatore_selezionato = st.sidebar.selectbox(
-    "Cerca Nome Giocatore:",
+    "1. Cerca Nome Calciatore:",
     options=sorted(df_filtrati["Giocatore"].tolist()),
     index=None,
-    placeholder=f"Scrivi nome ({ruolo_selezionato})...",
+    placeholder="Inizia a scrivere...",
 )
 
 squadra_dest = st.sidebar.selectbox(
-    "Fantasquadra:",
+    "2. Assegna a Fantasquadra:",
     options=FANTASQUADRE,
-    index=FANTASQUADRE.index(st.session_state.target_squadra),
 )
 
 if giocatore_selezionato:
@@ -120,7 +105,7 @@ if giocatore_selezionato:
     )
 
     costo_asta = st.sidebar.number_input(
-        "Costo d'acquisto:", min_value=1, value=1, step=1
+        "3. Costo d'acquisto:", min_value=1, value=1, step=1
     )
 
     ruolo_g = info_g["Ruolo"]
@@ -138,7 +123,7 @@ if giocatore_selezionato:
             f"❌ {squadra_dest} ha già coperto tutti i {max_slot} slot per il ruolo {ruolo_g}!"
         )
     else:
-        if st.sidebar.button("✅ Inserisci in Rosa", use_container_width=True):
+        if st.sidebar.button("✅ Conferma Inserimento", use_container_width=True):
             st.session_state.acquisti.append(
                 {
                     "Giocatore": info_g["Giocatore"],
@@ -152,12 +137,12 @@ if giocatore_selezionato:
 
 st.sidebar.divider()
 if st.session_state.acquisti:
-    if st.sidebar.button("↩️ Annulla Ultimo Inserimento"):
+    if st.sidebar.button("↩️ Annulla Ultimo Acquisto"):
         st.session_state.acquisti.pop()
         st.rerun()
 
 
-# --- AREA PRINCIPALE: TABELLONI SQUADRE ---
+# --- AREA PRINCIPALE: TABELLONI STILE EXCEL ---
 st.title("⚽ Tabellone Asta Fantacalcio")
 
 
@@ -175,44 +160,44 @@ def genera_html_tabella(nome_squadra):
         for i in range(num_slots):
             if i < len(giocatori_ruolo):
                 g = giocatori_ruolo[i]
-                nome_cell = f"<td style='padding: 3px 6px; border-right: 1px solid #444; color: #ffffff;'>{g['Giocatore']}</td>"
-                costo_cell = f"<td style='padding: 3px 6px; text-align: right; border-right: 1px solid #444; color: #ffffff;'>{g['Costo']}</td>"
+                nome = g["Giocatore"]
+                costo = g["Costo"]
+                diff = costo - g["Prezzo_Medio"]
 
-                diff = g["Costo"] - g["Prezzo_Medio"]
                 if diff > 0:
-                    diff_cell = f"<td style='padding: 3px 6px; text-align: right; color: #ff4d4d; font-weight: bold;'>+{diff}</td>"
+                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #ff4d4d; font-weight: bold;">+{diff}</td>'
                 elif diff < 0:
-                    diff_cell = f"<td style='padding: 3px 6px; text-align: right; color: #2eb82e; font-weight: bold;'>{diff}</td>"
+                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #2eb82e; font-weight: bold;">{diff}</td>'
                 else:
-                    diff_cell = "<td style='padding: 3px 6px; text-align: right; color: #aaa;'>0</td>"
+                    diff_td = '<td style="padding: 2px 6px; text-align: right; color: #aaa;">0</td>'
+
+                costo_txt = str(costo)
             else:
-                # Cella vuota ma cliccabile tramite link invisibile
-                link_select = f"?sel_sq={nome_squadra}&sel_ruolo={ruolo}"
-                nome_cell = f"<td style='padding: 0; border-right: 1px solid #444;'><a href='{link_select}' target='_self' style='display:block; width:100%; height:22px; text-decoration:none;'></a></td>"
-                costo_cell = "<td style='padding: 3px 6px; text-align: right; border-right: 1px solid #444;'></td>"
-                diff_cell = "<td style='padding: 3px 6px; text-align: right;'></td>"
+                nome = ""
+                costo_txt = ""
+                diff_td = '<td style="padding: 2px 6px;"></td>'
 
             rows.append(
-                f"<tr style='border-bottom: 1px solid #333; height: 24px;'>"
-                f"<td style='padding: 3px 6px; font-weight: bold; width: 12%; border-right: 1px solid #444; color: #ffffff;'>{ruolo}</td>"
-                f"{nome_cell}"
-                f"{costo_cell}"
-                f"{diff_cell}"
+                f'<tr style="border-bottom: 1px solid #333; height: 22px;">'
+                f'<td style="padding: 2px 6px; font-weight: bold; width: 12%; border-right: 1px solid #444; color: #ffffff;">{ruolo}</td>'
+                f'<td style="padding: 2px 6px; width: 48%; border-right: 1px solid #444; color: #ffffff;">{nome}</td>'
+                f'<td style="padding: 2px 6px; text-align: right; width: 20%; border-right: 1px solid #444; color: #ffffff;">{costo_txt}</td>'
+                f"{diff_td}"
                 f"</tr>"
             )
 
     table_rows = "".join(rows)
 
-    html = f"""<table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 13px; font-family: sans-serif; background-color: #1a1a1a; margin-bottom: 25px;">
+    html = f"""<table style="width:100%; border-collapse: collapse; border: 1px solid #555; font-size: 13px; font-family: sans-serif; background-color: #1a1a1a; margin-bottom: 20px;">
 <thead>
 <tr style="background-color: #2d2d2d; border-bottom: 1px solid #555;">
-<th colspan="4" style="padding: 6px; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #ffffff;">{nome_squadra}</th>
+<th colspan="4" style="padding: 5px; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #ffffff;">{nome_squadra}</th>
 </tr>
 <tr style="background-color: #222222; border-bottom: 1px solid #555; font-size: 12px; color: #bbb;">
-<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #444; width: 12%;">Ruolo</th>
-<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #444; width: 48%;">Nome</th>
-<th style="padding: 4px 6px; text-align: right; border-right: 1px solid #444; width: 20%;">Costo</th>
-<th style="padding: 4px 6px; text-align: right; width: 20%;">Differenza</th>
+<th style="padding: 3px 6px; text-align: left; border-right: 1px solid #444; width: 12%;">Ruolo</th>
+<th style="padding: 3px 6px; text-align: left; border-right: 1px solid #444; width: 48%;">Nome</th>
+<th style="padding: 3px 6px; text-align: right; border-right: 1px solid #444; width: 20%;">Costo</th>
+<th style="padding: 3px 6px; text-align: right; width: 20%;">Differenza</th>
 </tr>
 </thead>
 <tbody>{table_rows}</tbody>
