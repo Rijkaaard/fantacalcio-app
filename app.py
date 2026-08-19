@@ -43,7 +43,28 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
-# --- TRIGGER RIMOZIONE SILENZIOSA ---
+# ==============================================================================
+# 💾 GESTIONE SALVATAGGIO PERSISTENTE
+# ==============================================================================
+DATA_FILE = "fanta_asta_data.json"
+
+def load_saved_acquisti():
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
+def save_acquisti():
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(st.session_state.acquisti, f, ensure_ascii=False, indent=2)
+
+if "acquisti" not in st.session_state:
+    st.session_state.acquisti = load_saved_acquisti()
+
+# --- TRIGGER RIMOZIONE SILENZIOSA (SENZA REFRESH BROWSER) ---
 st.markdown('<style>div[data-testid="stTextInput"]:has(input[aria-label="TriggerRimozione"]) { display: none; }</style>', unsafe_allow_html=True)
 st.text_input("TriggerRimozione", key="trigger_rimozione", label_visibility="collapsed")
 
@@ -51,10 +72,8 @@ if st.session_state.get("trigger_rimozione"):
     giocatore_da_rimuovere = st.session_state.trigger_rimozione
     st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != giocatore_da_rimuovere]
     save_acquisti()
-    st.session_state.trigger_rimozione = ""  # Resetta il trigger
+    st.session_state.trigger_rimozione = ""
     st.rerun()
-
-# Rimuovi il vecchio blocco 'if "remove_player" in st.query_params:' che causava il refresh
 
 # ==============================================================================
 # 🎨 STILE CSS FANTA-LAB DARK NEON
@@ -240,6 +259,7 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
     }
 
     .delete-btn:hover {
@@ -329,29 +349,6 @@ df_listone = load_data("fantalab_listone.csv")
 if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
-
-# ==============================================================================
-# 💾 GESTIONE SALVATAGGIO PERSISTENTE
-# ==============================================================================
-DATA_FILE = "fanta_asta_data.json"
-
-def load_saved_acquisti():
-    if os.path.exists(DATA_FILE):
-        try:
-            with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            return []
-    return []
-
-def save_acquisti():
-    with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(st.session_state.acquisti, f, ensure_ascii=False, indent=2)
-
-if "acquisti" not in st.session_state:
-    st.session_state.acquisti = load_saved_acquisti()
-
-# --- GESTIONE RIMOZIONE GIOCATORE VIA HOVER ---
 
 giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
@@ -514,6 +511,8 @@ def render_board():
             for i in range(num_slots):
                 if i < len(giocatori_r):
                     g = giocatori_r[i]
+                    nome_g = g["Giocatore"]
+                    nome_escaped = nome_g.replace("'", "\\'")
                     sq_sa = g.get("Squadra_SerieA", "")
                     logo_p = get_logo_path(sq_sa)
                     logo_b64 = get_logo_base64(logo_p) if logo_p else ""
@@ -529,31 +528,16 @@ def render_board():
                     else:
                         colore_prezzo = "#fbbf24"
 
+                    delete_onclick = f"window.parent.silentlyRemovePlayer('{nome_escaped}')"
                     col_content.append(
                         f'<div class="player-cell">'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
-                        f'<span class="player-cell-name">{g["Giocatore"]}</span>'
+                        f'<span class="player-cell-name">{nome_g}</span>'
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        # Sostituisci QUESTA RIGA:
-                    # f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" ...>✖</a>'
-                    
-                    # CON QUESTA:
-                    nome_escaped = g["Giocatore"].replace("'", "\\'")
-                    col_content.append(
-                        f'<div class="player-cell">'
-                        f'<div class="player-cell-left">'
-                        f'{logo_html}'
-                        f'<span class="player-cell-name">{g["Giocatore"]}</span>'
-                        f'</div>'
-                        f'<div class="player-cell-right">'
-                        f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<a href="javascript:void(0)" onclick="window.parent.silentlyRemovePlayer(\'{nome_escaped}\')" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
-                        f'</div>'
-                        f'</div>'
-                    )
+                        f'<a href="javascript:void(0)" onclick="{delete_onclick}" class="delete-btn" title="Rimuovi {nome_g}">✖</a>'
                         f'</div>'
                         f'</div>'
                     )
@@ -575,27 +559,20 @@ if st.session_state.acquisti:
         save_acquisti()
         st.rerun()
 
-# --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
-# --- JAVASCRIPT: PONTE JS -> STREAMLIT ---
+# --- JAVASCRIPT PONTE PER RIMOZIONE SILENZIOSA + AUTO-FOCUS ---
 components.html(
     """
 <script>
-// Funzione per inviare il nome del giocatore a Streamlit senza ricaricare la pagina
 window.parent.silentlyRemovePlayer = function(playerName) {
     const doc = window.parent.document;
     const input = doc.querySelector('input[aria-label="TriggerRimozione"]');
-    
     if (input) {
-        // Usa il setter nativo di React per forzare l'aggiornamento del valore
         let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
         nativeInputValueSetter.call(input, playerName);
-        
-        // Simula la digitazione per innescare st.rerun() in background
         input.dispatchEvent(new Event('input', { bubbles: true }));
     }
 };
 
-// Auto-focus barra di ricerca
 if (!window.parent._fantalab_keydown_attached) {
     window.parent._fantalab_keydown_attached = true;
     const doc = window.parent.document;
