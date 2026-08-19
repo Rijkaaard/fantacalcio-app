@@ -24,6 +24,34 @@ SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
 TOTALE_SLOTS = sum(SLOTS.values())  # 25 giocatori
 BUDGET_INIZIALE = 500
 
+# Mappatura dei nomi squadra di Serie A nei codici a 3 lettere per i file dei loghi
+MAPPA_CODICI_LOGHI = {
+    "ATALANTA": "ATA",
+    "BOLOGNA": "BOL",
+    "CAGLIARI": "CAG",
+    "COMO": "COM",
+    "EMPOLI": "EMP",
+    "FIORENTINA": "FIO",
+    "GENOA": "GEN",
+    "INTER": "INT",
+    "JUVENTUS": "JUV",
+    "LAZIO": "LAZ",
+    "LECCE": "LEC",
+    "MILAN": "MIL",
+    "MONZA": "MON",
+    "NAPOLI": "NAP",
+    "PARMA": "PAR",
+    "ROMA": "ROM",
+    "SALERNITANA": "SAL",
+    "SAMPDORIA": "SAM",
+    "SASSUOLO": "SAS",
+    "SPEZIA": "SPE",
+    "TORINO": "TOR",
+    "UDINESE": "UDI",
+    "VENEZIA": "VEN",
+    "VERONA": "VER",
+}
+
 st.set_page_config(
     page_title="FantaLab - Tabellone Asta",
     page_icon="⚽",
@@ -235,33 +263,29 @@ def load_data(file_path):
 
 
 def get_logo_path(squadra):
-    """Cerca il file del logo direttamente nella cartella principale dell'app"""
+    """Cerca il file del logo nella cartella 'loghi/' usando il nome a 3 lettere maiuscole"""
     if not squadra or pd.isna(squadra):
         return None
 
-    sq_str = str(squadra).strip()
+    sq_str = str(squadra).strip().upper()
+
+    # Se il valore è un nome esteso (es. INTER), usa la mappa per ottenere il codice a 3 lettere (es. INT)
+    # Se il valore nel CSV è già un codice a 3 lettere (es. INT), usa direttamente quello
+    codice_squadra = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
+
     estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
 
-    # Controlla nella radice del progetto
+    # Cerca nella cartella 'loghi'
     for ext in estensioni:
-        # Nome esatto (es. INT.png)
-        path = f"{sq_str}.{ext}"
+        # Prova con il codice maiuscolo (es. loghi/INT.png)
+        path = os.path.join("loghi", f"{codice_squadra}.{ext}")
         if os.path.exists(path):
             return path
 
-        # Nome minuscolo (es. int.png)
-        path_lower = f"{sq_str.lower()}.{ext}"
+        # Prova con il codice minuscolo per sicurezza (es. loghi/int.png)
+        path_lower = os.path.join("loghi", f"{codice_squadra.lower()}.{ext}")
         if os.path.exists(path_lower):
             return path_lower
-
-    # Scansione di ripiego nella cartella corrente
-    try:
-        for filename in os.listdir("."):
-            name_without_ext, _ = os.path.splitext(filename)
-            if name_without_ext.strip().lower() == sq_str.lower():
-                return filename
-    except Exception:
-        pass
 
     return None
 
@@ -433,11 +457,14 @@ with c_right:
                         f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
                     )
             else:
+                codice_atteso = MAPPA_CODICI_LOGHI.get(
+                    squadra_serie_a.upper(), squadra_serie_a.upper()
+                )
                 st.info(
                     f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
                 )
                 st.warning(
-                    f"⚠️ **Logo non trovato!** Serve un file chiamato **`{squadra_serie_a.lower()}.png`** (oppure `.jpg`) nella stessa cartella di `app.py`."
+                    f"⚠️ **Logo non trovato!** Verifica che dentro la cartella `loghi/` ci sia il file **`{codice_atteso}.png`** (es. `loghi/{codice_atteso}.png`)."
                 )
 
 
