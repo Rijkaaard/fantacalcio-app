@@ -17,17 +17,43 @@ def load_data(file_path):
     if not os.path.exists(file_path):
         return None
 
-    # Carica il file CSV
-    df = pd.read_csv(file_path)
+    # Tenta prima con la virgola, poi con il punto e virgola se fallisce
+    try:
+        df = pd.read_csv(file_path)
+        if len(df.columns) == 1 and ";" in df.columns[0]:
+            df = pd.read_csv(file_path, sep=";")
+    except Exception:
+        df = pd.read_csv(file_path, sep=";")
 
-    # Pulizia colonna Prezzo Medio
-    # Convertiamo i valori '-' o errati in 0 per poter ordinare e filtrare numericamente
+    # Rimuove spazi vuoti invisibili prima e dopo i nomi delle colonne
+    df.columns = df.columns.str.strip()
+
+    # Cerca la colonna del prezzo medio (gestisce differenze di maiuscole/spazi)
+    colonna_prezzo = None
+    for col in df.columns:
+        if col.lower().replace(" ", "").replace("_", "") in [
+            "prezzomedio",
+            "prezzo",
+            "quotazione",
+        ]:
+            colonna_prezzo = col
+            break
+
+    if colonna_prezzo is None:
+        st.error(
+            f"❌ Impossibile trovare la colonna del prezzo! Le colonne trovate nel tuo file CSV sono: `{list(df.columns)}`"
+        )
+        st.stop()
+
+    # Rinomina la colonna trovata per uniformarla
+    df = df.rename(columns={colonna_prezzo: "Prezzo Medio"})
+
+    # Convertiamo i valori in numeri
     df["Prezzo_Numerico"] = pd.to_numeric(
         df["Prezzo Medio"], errors="coerce"
     ).fillna(0)
 
     return df
-
 
 # Nome del file CSV nella stessa cartella
 CSV_FILENAME = "fantalab_listone.csv"
