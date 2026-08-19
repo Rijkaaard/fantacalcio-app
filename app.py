@@ -45,7 +45,6 @@ st.markdown(
         font-family: 'Poppins', sans-serif !important;
     }
 
-    /* Margine superiore aumentato per non sovrapporsi alla barra Streamlit */
     .stMainBlockContainer {
         padding-top: 3.5rem !important;
         padding-left: 1rem !important;
@@ -220,6 +219,18 @@ def load_data(file_path):
     return df
 
 
+def get_logo_path(squadra):
+    """Cerca il file del logo per la squadra di Serie A nella cartella 'loghi'"""
+    if not squadra or pd.isna(squadra):
+        return None
+    sq_clean = str(squadra).strip().lower()
+    for ext in ["png", "jpg", "jpeg", "webp"]:
+        path = os.path.join("loghi", f"{sq_clean}.{ext}")
+        if os.path.exists(path):
+            return path
+    return None
+
+
 df_listone = load_data("fantalab_listone.csv")
 
 if df_listone is None:
@@ -368,14 +379,26 @@ with c_right:
                 )
                 st.rerun()
 
-        # Informazioni Calciatore Selezionato
+        # Informazioni Calciatore Selezionato (con Logo)
         if giocatore_selezionato:
             info_g = df_filtrati[
                 df_filtrati["Giocatore"] == giocatore_selezionato
             ].iloc[0]
-            st.info(
-                f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {info_g['Squadra']} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
-            )
+            squadra_serie_a = info_g.get("Squadra", "")
+            logo_path = get_logo_path(squadra_serie_a)
+
+            if logo_path:
+                col_logo, col_info = st.columns([0.4, 4.6])
+                with col_logo:
+                    st.image(logo_path, width=42)
+                with col_info:
+                    st.info(
+                        f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
+                    )
+            else:
+                st.info(
+                    f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
+                )
 
 
 # ==============================================================================
