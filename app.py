@@ -6,7 +6,20 @@ import streamlit.components.v1 as components
 # ==============================================================================
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
 # ==============================================================================
-FANTASQUADRE = [f"SQUADRA {i+1}" for i in range(10)]
+FANTASQUADRE = [
+    "INPSWICH DOWN - LOLLO",
+    "CAZZATHE - SIMO",
+    "JOGA BENITO - TAVE",
+    "LAMINCHIADURA - FEDE",
+    "LEI3SWEET DREAMS - SAMU",
+    "MINORENNI FC - VERRA",
+    "REBECCA LAZIALE - LUCIO",
+    "SALISBURRO - STACCHIO",
+    "TEL-AVIV FC - JACO",
+    "VILLASBURREAL - NICO",
+]
+
+# Slot fissi per ruolo (Totale 25 righe per tabella)
 SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
 
 st.set_page_config(
@@ -226,7 +239,6 @@ components.html(
 <script>
 const doc = window.parent.document;
 doc.addEventListener('keydown', function(e) {
-    // Se non si sta già digitando dentro un input
     if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
         if (e.key.length === 1 || e.key === 'Backspace') {
             const inputField = doc.querySelector('input[aria-label="1. Cerca Nome Calciatore:"]');
