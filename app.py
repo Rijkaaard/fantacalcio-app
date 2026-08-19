@@ -8,16 +8,16 @@ import streamlit as st
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
 # ==============================================================================
 SQUADRE_INFO = [
-    {"nome": "INPSWICH DOWN", "mister": "LOLLO"},
-    {"nome": "CAZZATHE", "mister": "SIMO"},
-    {"nome": "JOGA BENITO", "mister": "TAVE"},
-    {"nome": "LAMINCHIADURA", "mister": "FEDE"},
-    {"nome": "LEI3SWEET DREAMS", "mister": "SAMU"},
-    {"nome": "MINORENNI FC", "mister": "VERRA"},
-    {"nome": "REBECCA LAZIALE", "mister": "LUCIO"},
-    {"nome": "SALISBURRO", "mister": "STACCHIO"},
-    {"nome": "TEL-AVIV FC", "mister": "JACO"},
-    {"nome": "VILLASBURREAL", "mister": "NICO"},
+    {"nome": "INPSWICH DOWN", "mister": "LOLLO", "codice": "INP"},
+    {"nome": "CAZZATHE", "mister": "SIMO", "codice": "CAZ"},
+    {"nome": "JOGA BENITO", "mister": "TAVE", "codice": "JOG"},
+    {"nome": "LAMINCHIADURA", "mister": "FEDE", "codice": "LAM"},
+    {"nome": "LEI3SWEET DREAMS", "mister": "SAMU", "codice": "LEI"},
+    {"nome": "MINORENNI FC", "mister": "VERRA", "codice": "MIN"},
+    {"nome": "REBECCA LAZIALE", "mister": "LUCIO", "codice": "REB"},
+    {"nome": "SALISBURRO", "mister": "STACCHIO", "codice": "SAL"},
+    {"nome": "TEL-AVIV FC", "mister": "JACO", "codice": "TEL"},
+    {"nome": "VILLASBURREAL", "mister": "NICO", "codice": "VIL"},
 ]
 
 FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
@@ -78,7 +78,7 @@ if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON (CON MARGINI TV)
+# 🎨 STILE CSS COMPATTO (SCALATO IN BASSO PER TV)
 # ==============================================================================
 st.markdown(
     """
@@ -92,7 +92,7 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
+        padding-top: 1rem !important;
         padding-left: 3rem !important;
         padding-right: 3rem !important;
         max-width: 100% !important;
@@ -102,17 +102,17 @@ st.markdown(
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 12px !important;
+        padding: 10px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        margin-bottom: 10px !important;
+        margin-bottom: 8px !important;
     }
 
     .card-title {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         text-transform: uppercase;
     }
 
@@ -120,11 +120,11 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 4px 10px;
-        margin-bottom: 3px;
+        padding: 3px 8px;
+        margin-bottom: 2px;
         background: #1b1533;
         border-radius: 6px;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 600;
         border: 1px solid #2a224a;
     }
@@ -142,30 +142,45 @@ st.markdown(
 
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(130px, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(10, minmax(125px, 1fr));
+        gap: 6px;
         width: 100%;
         overflow-x: auto;
         padding-bottom: 15px;
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 2px;
+        padding-right: 2px;
     }
 
     .team-column {
         background: #110d21;
         border: 1px solid #231b3e;
-        border-radius: 10px;
+        border-radius: 8px;
         overflow: hidden;
     }
 
     .team-header {
         background: #191233;
-        padding: 8px 6px;
+        padding: 6px 4px;
         text-align: center;
         border-bottom: 1px solid #2d2252;
     }
+    
+    .team-logo-container {
+        width: 26px;
+        height: 26px;
+        margin: 0 auto 3px auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .fanta-team-logo {
+        max-width: 26px;
+        max-height: 26px;
+        object-fit: contain;
+    }
+
     .team-header-name {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -173,23 +188,23 @@ st.markdown(
         text-overflow: ellipsis;
     }
     .team-header-budget {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 800;
         color: #fbbf24;
-        margin: 2px 0;
+        margin: 1px 0;
     }
     .team-header-sub {
         display: flex;
         justify-content: space-between;
-        font-size: 8px;
+        font-size: 7px;
         color: #9ca3af;
-        padding: 0 4px;
+        padding: 0 2px;
     }
 
     .role-bar {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 800;
-        padding: 3px 6px;
+        padding: 2px 5px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
@@ -200,14 +215,14 @@ st.markdown(
     .role-a { background-color: #be123c; }
 
     .player-cell {
-        height: 24px;
+        height: 22px;
         background: #16102b;
         border-bottom: 1px solid #21183c;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 5px;
-        font-size: 10px;
+        padding: 0 4px;
+        font-size: 9.5px;
     }
     .player-cell:nth-child(even) {
         background: #130e26;
@@ -216,14 +231,14 @@ st.markdown(
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
-        max-width: 95px;
+        max-width: 90px;
     }
 
     .player-team-logo {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -294,6 +309,21 @@ def get_logo_path(squadra):
 
 
 @st.cache_data
+def get_fanta_logo_path(codice):
+    if not codice:
+        return None
+    estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
+    for ext in estensioni:
+        path = os.path.join("loghi", f"{codice}.{ext}")
+        if os.path.exists(path):
+            return path
+        path_lower = os.path.join("loghi", f"{codice.lower()}.{ext}")
+        if os.path.exists(path_lower):
+            return path_lower
+    return None
+
+
+@st.cache_data
 def get_logo_base64(path):
     if not path or not os.path.exists(path):
         return ""
@@ -322,7 +352,6 @@ def get_squadra_stats(nome_squadra):
     return rimasti, tot_giocatori, max_offerta, acquisti
 
 
-# Controlliamo se siamo in "Modalità TV" tramite parametro URL (?vista=tv)
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
@@ -358,7 +387,6 @@ if not is_tv_mode:
             df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
             with tab_assegna:
-                # Filtri liberi per ruolo e squadra serie A
                 f_col1, f_col2 = st.columns([1, 1])
                 with f_col1:
                     filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0)
@@ -461,14 +489,24 @@ def render_board_fragment():
     
     cols_html = []
 
-    for sq in FANTASQUADRE:
+    for s_info in SQUADRE_INFO:
+        sq = f"{s_info['nome']} - {s_info['mister']}"
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-        nome_team = sq.split(" - ")[0]
+        nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
+        
+        # Gestione logo fanta squadra
+        fanta_logo_p = get_fanta_logo_path(s_info['codice'])
+        fanta_logo_b64 = get_logo_base64(fanta_logo_p) if fanta_logo_p else ""
+        if fanta_logo_b64:
+            logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
+        else:
+            logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio vuoto riservato se manca l'immagine
         
         col_content = [
             f'<div class="team-column">'
             f'<div class="team-header">'
+            f'{logo_fanta_html}'
             f'<div class="team-header-name">{nome_team}</div>'
             f'<div class="team-header-budget">🟡 {rim}</div>'
             f'<div class="team-header-sub">'
