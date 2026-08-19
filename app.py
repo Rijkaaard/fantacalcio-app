@@ -1,3 +1,4 @@
+import base64
 import os
 import pandas as pd
 import streamlit as st
@@ -184,7 +185,7 @@ st.markdown(
 
     /* Celle giocatori */
     .player-cell {
-        height: 22px;
+        height: 24px;
         background: #16102b;
         border-bottom: 1px solid #21183c;
         display: flex;
@@ -196,16 +197,39 @@ st.markdown(
     .player-cell:nth-child(even) {
         background: #130e26;
     }
+
+    /* Riquadro del nome + logo nel tabellone */
+    .player-cell-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        overflow: hidden;
+        max-width: 95px;
+    }
+
+    /* Riquadro Squadrato per il logo */
+    .player-team-logo {
+        width: 14px;
+        height: 14px;
+        border-radius: 0px !important; /* Riquadro rigorosamente quadrato */
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
     .player-cell-name {
         color: #e2e8f0;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 80px;
     }
     .player-cell-cost {
         color: #fbbf24;
         font-weight: 700;
+    }
+
+    /* Stile per le immagini di Streamlit per forzare il riquadro quadrato */
+    stImage > img {
+        border-radius: 0px !important;
     }
     </style>
 """,
@@ -268,26 +292,30 @@ def get_logo_path(squadra):
         return None
 
     sq_str = str(squadra).strip().upper()
-
-    # Se il valore è un nome esteso (es. INTER), usa la mappa per ottenere il codice a 3 lettere (es. INT)
-    # Se il valore nel CSV è già un codice a 3 lettere (es. INT), usa direttamente quello
     codice_squadra = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
-
     estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
 
-    # Cerca nella cartella 'loghi'
     for ext in estensioni:
-        # Prova con il codice maiuscolo (es. loghi/INT.png)
         path = os.path.join("loghi", f"{codice_squadra}.{ext}")
         if os.path.exists(path):
             return path
 
-        # Prova con il codice minuscolo per sicurezza (es. loghi/int.png)
         path_lower = os.path.join("loghi", f"{codice_squadra.lower()}.{ext}")
         if os.path.exists(path_lower):
             return path_lower
 
     return None
+
+
+def get_logo_base64(path):
+    """Converte l'immagine del logo in formato Data URI Base64 per l'HTML del tabellone"""
+    if not path or not os.path.exists(path):
+        return ""
+    ext = path.split(".")[-1].lower()
+    mime_type = "image/png" if ext == "png" else f"image/{ext}"
+    with open(path, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+    return f"data:{mime_type};base64,{encoded_string}"
 
 
 df_listone = load_data("fantalab_listone.csv")
@@ -405,6 +433,9 @@ with c_right:
                 df_filtrati["Giocatore"] == giocatore_selezionato
             ].iloc[0]
             ruolo_g = info_g["Ruolo"]
+            squadra_sa = str(
+                info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))
+            ).strip()
 
             rimasti, tot_giocatori, max_offerta, acquisti_sq = (
                 get_squadra_stats(sq_dest)
@@ -430,6 +461,7 @@ with c_right:
                         "Ruolo": info_g["Ruolo"],
                         "Costo": int(costo_asta),
                         "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                        "Squadra_SerieA": squadra_sa,
                         "Squadra_Fanta": sq_dest,
                     }
                 )
@@ -438,7 +470,7 @@ with c_right:
                 )
                 st.rerun()
 
-        # Informazioni Calciatore Selezionato (con Logo)
+        # Informazioni Calciatore Selezionato (con Logo Quadrato)
         if giocatore_selezionato:
             info_g = df_filtrati[
                 df_filtrati["Giocatore"] == giocatore_selezionato
@@ -514,10 +546,24 @@ def render_board():
             for i in range(num_slots):
                 if i < len(giocatori_r):
                     g = giocatori_r[i]
+                    sq_sa = g.get("Squadra_SerieA", "")
+                    logo_p = get_logo_path(sq_sa)
+                    logo_b64 = get_logo_base64(logo_p) if logo_p else ""
+
+                    # Elemento HTML per l'immagine del logo (se presente)
+                    logo_html = (
+                        f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">'
+                        if logo_b64
+                        else ""
+                    )
+
                     col_content.append(
                         f"""
                         <div class="player-cell">
-                            <span class="player-cell-name">{g['Giocatore']}</span>
+                            <div class="player-cell-left">
+                                {logo_html}
+                                <span class="player-cell-name">{g['Giocatore']}</span>
+                            </div>
                             <span class="player-cell-cost">{g['Costo']}</span>
                         </div>
                         """
