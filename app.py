@@ -1,4 +1,5 @@
 import base64
+import json
 import os
 import pandas as pd
 import streamlit as st
@@ -315,8 +316,26 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
+# ==============================================================================
+# 💾 GESTIONE SALVATAGGIO PERSISTENTE
+# ==============================================================================
+DATA_FILE = "fanta_asta_data.json"
+
+def load_saved_acquisti():
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
+def save_acquisti():
+    with open(DATA_FILE, "w", encoding="utf-8") as f:
+        json.dump(st.session_state.acquisti, f, ensure_ascii=False, indent=2)
+
 if "acquisti" not in st.session_state:
-    st.session_state.acquisti = []
+    st.session_state.acquisti = load_saved_acquisti()
 
 # --- GESTIONE RIMOZIONE GIOCATORE VIA HOVER ---
 if "remove_player" in st.query_params:
@@ -324,6 +343,7 @@ if "remove_player" in st.query_params:
     st.session_state.acquisti = [
         a for a in st.session_state.acquisti if a["Giocatore"] != player_to_remove
     ]
+    save_acquisti()
     st.query_params.clear()
     st.rerun()
 
@@ -434,6 +454,7 @@ with c_right:
                         "Squadra_Fanta": sq_dest,
                     }
                 )
+                save_acquisti()
                 st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!")
                 st.rerun()
 
@@ -530,6 +551,7 @@ if st.session_state.acquisti:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("↩️ Annulla Ultimo Acquisto", use_container_width=True):
         st.session_state.acquisti.pop()
+        save_acquisti()
         st.rerun()
 
 # --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
