@@ -409,13 +409,15 @@ with c_right:
 # ==============================================================================
 # 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
 # ==============================================================================
+# ==============================================================================
+# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
+# ==============================================================================
 def render_board():
     cols_html = []
 
     for sq in FANTASQUADRE:
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
         nome_team = sq.split(" - ")[0]
-
         max_val = max_off if max_off > 0 else 0
         
         col_content = [
@@ -445,8 +447,18 @@ def render_board():
                     sq_sa = g.get("Squadra_SerieA", "")
                     logo_p = get_logo_path(sq_sa)
                     logo_b64 = get_logo_base64(logo_p) if logo_p else ""
-
                     logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
+
+                    # --- LOGICA COLORE PREZZO ---
+                    costo = g["Costo"]
+                    prezzo_medio = g.get("Prezzo_Medio", 0)
+
+                    if costo < prezzo_medio:
+                        colore_prezzo = "#22c55e"  # Verde neon (affare)
+                    elif costo > prezzo_medio:
+                        colore_prezzo = "#ef4444"  # Rosso neon (sopra media)
+                    else:
+                        colore_prezzo = "#fbbf24"  # Giallo standard (in media)
 
                     col_content.append(
                         f'<div class="player-cell">'
@@ -454,7 +466,7 @@ def render_board():
                         f'{logo_html}'
                         f'<span class="player-cell-name">{g["Giocatore"]}</span>'
                         f'</div>'
-                        f'<span class="player-cell-cost">{g["Costo"]}</span>'
+                        f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
                         f'</div>'
                     )
                 else:
@@ -464,7 +476,6 @@ def render_board():
         cols_html.append("".join(col_content))
 
     return f'<div class="board-grid">{"".join(cols_html)}</div>'
-
 st.markdown(render_board(), unsafe_allow_html=True)
 
 if st.session_state.acquisti:
