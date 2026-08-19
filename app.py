@@ -78,7 +78,7 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
+        padding-top: 1rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
@@ -320,15 +320,14 @@ def get_current_active_role():
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
+# Se siamo in modalità TV, inseriamo un meta refresh per aggiornare la pagina automaticamente ogni 3 secondi
+if is_tv_mode:
+    st.markdown('<meta http-equiv="refresh" content="3">', unsafe_allow_html=True)
+
 # ==============================================================================
 # 1. PANNELLO SUPERIORE (VISIBILE SOLO SUL PC DEL MISTER/ORGANIZZATORE)
 # ==============================================================================
 if not is_tv_mode:
-    # Link rapido per aprire la TV in un'altra scheda
-    base_url = st.get_option("server.baseUrlPath") or ""
-    # Se vuoi testarlo in locale, puoi aprire manualmente l'indirizzo con ?vista=tv alla fine
-    st.markdown("📺 **Suggerimento per la TV:** Apri un'altra scheda del browser con lo stesso indirizzo aggiungendo `/?vista=tv` alla fine (es. `http://localhost:8501/?vista=tv`) e trascinala sullo schermo della TV!")
-
     c_left, c_right = st.columns([1.2, 3])
 
     with c_left:
@@ -454,16 +453,13 @@ if not is_tv_mode:
                             st.rerun()
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
-else:
-    # Titolo minimale per la TV
-    st.markdown("<h2 style='text-align: center; color: #a78bfa; margin-bottom: 20px;'>⚽ FANTA-ASTA LIVE TABELLONE ⚽</h2>", unsafe_allow_html=True)
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO ISTANTANEO IN ENTRAMBE LE SCHEDE)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO IN TEMPO REALE)
 # ==============================================================================
 @st.fragment
 def render_board_fragment():
-    # Ricarica i dati dal file a ogni frammento così la TV si aggiorna se fai modifiche sul PC
+    # Ricarica sempre dal file per riflettere le modifiche salvate dal PC
     st.session_state.acquisti = load_saved_acquisti()
     
     cols_html = []
@@ -477,7 +473,7 @@ def render_board_fragment():
             f'<div class="team-column">'
             f'<div class="team-header">'
             f'<div class="team-header-name">{nome_team}</div>'
-            f'<div class="query-budget team-header-budget">🟡 {rim}</div>'
+            f'<div class="team-header-budget">🟡 {rim}</div>'
             f'<div class="team-header-sub">'
             f'<span>MAX: {max_val}</span>'
             f'<span>{tot}/25</span>'
