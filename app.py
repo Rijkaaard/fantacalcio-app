@@ -320,10 +320,6 @@ def get_current_active_role():
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
-# Se siamo in modalità TV, inseriamo un meta refresh per aggiornare la pagina automaticamente ogni 3 secondi
-if is_tv_mode:
-    st.markdown('<meta http-equiv="refresh" content="3">', unsafe_allow_html=True)
-
 # ==============================================================================
 # 1. PANNELLO SUPERIORE (VISIBILE SOLO SUL PC DEL MISTER/ORGANIZZATORE)
 # ==============================================================================
@@ -455,11 +451,11 @@ if not is_tv_mode:
                     st.info("Nessun calciatore ancora assegnato.")
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO IN TEMPO REALE)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO SILENZIOSO AUTOMATICO OGNI 3 SECONDI)
 # ==============================================================================
-@st.fragment
+@st.fragment(run_every=3)
 def render_board_fragment():
-    # Ricarica sempre dal file per riflettere le modifiche salvate dal PC
+    # Ricarica in automatico i dati salvati senza ricaricare la pagina web intera
     st.session_state.acquisti = load_saved_acquisti()
     
     cols_html = []
