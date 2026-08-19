@@ -21,17 +21,18 @@ SQUADRE_INFO = [
 
 FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
 SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
+TOTALE_SLOTS = sum(SLOTS.values())  # 25 giocatori
 BUDGET_INIZIALE = 500
 
 st.set_page_config(
-    page_title="FantaLab - Asta Fantacalcio",
+    page_title="FantaLab - Tabellone Asta",
     page_icon="⚽",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK / NEON
+# 🎨 STILE CSS FANTA-LAB DARK NEON
 # ==============================================================================
 st.markdown(
     """
@@ -44,7 +45,6 @@ st.markdown(
         font-family: 'Poppins', sans-serif !important;
     }
 
-    /* Hide standard sidebar header padding */
     .stMainBlockContainer {
         padding-top: 1.5rem !important;
         padding-left: 1rem !important;
@@ -59,7 +59,7 @@ st.markdown(
         border-radius: 16px;
         padding: 16px;
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        height: 100%;
+        margin-bottom: 20px;
     }
 
     /* Left teams mini list */
@@ -67,8 +67,8 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 5px 10px;
-        margin-bottom: 4px;
+        padding: 4px 10px;
+        margin-bottom: 3px;
         background: #1b1533;
         border-radius: 8px;
         font-size: 11px;
@@ -80,107 +80,11 @@ st.markdown(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 110px;
+        max-width: 120px;
     }
     .team-mini-budget {
         color: #fbbf24;
         font-weight: 700;
-        display: flex;
-        align-items: center;
-        gap: 3px;
-    }
-
-    /* Center player area */
-    .player-avatar-box {
-        width: 90px;
-        height: 90px;
-        background: radial-gradient(circle, #3b2d6b 0%, #171031 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 10px auto;
-        border: 2px solid #8b5cf6;
-        box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-    }
-
-    .role-badge-btn {
-        background: #251a4a;
-        color: #a78bfa;
-        border: 1px solid #4c1d95;
-        border-radius: 20px;
-        padding: 4px 12px;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-    }
-
-    /* Call Box */
-    .call-box {
-        background: linear-gradient(135deg, #2e2111 0%, #1c1524 100%);
-        border: 1px solid #f59e0b;
-        border-radius: 12px;
-        padding: 12px;
-        text-align: center;
-        margin-top: 10px;
-    }
-    .call-title {
-        color: #fef3c7;
-        font-weight: 700;
-        font-size: 14px;
-        margin-bottom: 8px;
-    }
-
-    /* Right stat card */
-    .stat-card-box {
-        background: linear-gradient(135deg, #1b113d 0%, #0d1b3e 100%);
-        border: 1px solid #3b82f6;
-        border-radius: 16px;
-        padding: 24px;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.15);
-    }
-    .stat-text {
-        font-size: 16px;
-        font-weight: 600;
-        color: #e0e7ff;
-        line-height: 1.5;
-    }
-    .stat-highlight {
-        color: #fbbf24;
-        font-weight: 800;
-    }
-
-    /* Navigation Bar */
-    .fantalab-navbar {
-        display: flex;
-        justify-content: center;
-        gap: 8px;
-        background: #130f24;
-        padding: 8px;
-        border-radius: 30px;
-        border: 1px solid #261d47;
-        margin: 15px 0;
-        overflow-x: auto;
-    }
-    .nav-item {
-        padding: 6px 14px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        color: #9ca3af;
-        background: transparent;
-        border: none;
-        white-space: nowrap;
-    }
-    .nav-item.active {
-        background: #7c3aed;
-        color: #ffffff;
-        box-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
     }
 
     /* Board 10 columns Grid */
@@ -223,7 +127,7 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         font-size: 8px;
-        color: #6b7280;
+        color: #9ca3af;
         padding: 0 4px;
     }
 
@@ -273,7 +177,7 @@ st.markdown(
 
 
 # ==============================================================================
-# DATA LOAD & STATE
+# CARICAMENTO DATI E MEMORIA SESSIONE
 # ==============================================================================
 @st.cache_data
 def load_data(file_path):
@@ -319,7 +223,7 @@ giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
 
-# Calcolo Budget per Squadra
+# Funzione Calcolo Statistiche Squadra
 def get_squadra_stats(nome_squadra):
     acquisti = [
         a
@@ -329,19 +233,27 @@ def get_squadra_stats(nome_squadra):
     spesi = sum(a["Costo"] for a in acquisti)
     rimasti = BUDGET_INIZIALE - spesi
     tot_giocatori = len(acquisti)
-    return rimasti, tot_giocatori, acquisti
+    slot_mancanti = TOTALE_SLOTS - tot_giocatori
+
+    # Max spendibile per un singolo giocatore riservando 1 credito per ogni slot rimanente
+    max_offerta = rimasti - (slot_mancanti - 1) if slot_mancanti > 0 else 0
+    return rimasti, tot_giocatori, max_offerta, acquisti
 
 
 # ==============================================================================
-# 1. TOP DASHBOARD (3 COLONNE COME NELLO SCREENSHOT)
+# 1. PANNELLO SUPERIORE (PANNELLO SQUADRE E ASSEGNAZIONE)
 # ==============================================================================
-c_left, c_center, c_right = st.columns([1.2, 2, 1.8])
+c_left, c_right = st.columns([1.2, 3])
 
-# --- SQUADRE MINI LIST (LEFT) ---
+# Mini-lista squadre a sinistra
 with c_left:
     st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
+    st.markdown(
+        "<div style='font-size:12px; font-weight:800; color:#a78bfa; margin-bottom:8px;'>SQUADRE & BUDGET</div>",
+        unsafe_allow_html=True,
+    )
     for sq in FANTASQUADRE:
-        rim, tot, _ = get_squadra_stats(sq)
+        rim, tot, _, _ = get_squadra_stats(sq)
         nome_breve = sq.split(" - ")[0]
         st.markdown(
             f"""
@@ -354,147 +266,118 @@ with c_left:
         )
     st.markdown("</div>", unsafe_allow_html=True)
 
-# --- PANNELLO ASTA / RICERCA (CENTER) ---
-with c_center:
+# Form Inserimento/Assegnazione al centro
+with c_right:
     st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
+    st.markdown(
+        "<div style='font-size:14px; font-weight:800; color:#a78bfa; margin-bottom:10px;'>🔨 ASSEGNA GIOCATORE</div>",
+        unsafe_allow_html=True,
+    )
 
-    # Avatar Silhouette + Filtri
-    col_av, col_filt = st.columns([1, 2.5])
-    with col_av:
-        st.markdown(
-            """
-            <div class="player-avatar-box">
-                <svg width="50" height="50" viewBox="0 0 24 24" fill="#6b7280">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                </svg>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    ruolo_selezionato = st.radio(
+        "Filtra Ruolo",
+        options=["TUTTI", "P", "D", "C", "A"],
+        horizontal=True,
+        label_visibility="collapsed",
+    )
 
-    with col_filt:
-        ruolo_selezionato = st.radio(
-            "Ruolo",
-            options=["TUTTI", "P", "D", "C", "A"],
-            horizontal=True,
-            label_visibility="collapsed",
-        )
+    if ruolo_selezionato != "TUTTI":
+        df_filtrati = df_disponibili[
+            df_disponibili["Ruolo"] == ruolo_selezionato
+        ]
+    else:
+        df_filtrati = df_disponibili
 
-        if ruolo_selezionato != "TUTTI":
-            df_filtrati = df_disponibili[
-                df_disponibili["Ruolo"] == ruolo_selezionato
-            ]
-        else:
-            df_filtrati = df_disponibili
+    col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
+    with col_g:
         giocatore_selezionato = st.selectbox(
-            "Cerca Giocatore",
+            "Cerca Calciatore",
             options=sorted(df_filtrati["Giocatore"].tolist()),
             index=None,
-            placeholder="🔍 CERCA GIOCATORE...",
+            placeholder="🔍 Cerca calciatore...",
             label_visibility="collapsed",
             key="search_box",
         )
 
-    # Box chiamata o assegnazione
+    with col_sq:
+        sq_dest = st.selectbox(
+            "Aggiudicato a", options=FANTASQUADRE, label_visibility="collapsed"
+        )
+
+    with col_costo:
+        costo_asta = st.number_input(
+            "Costo",
+            min_value=1,
+            value=1,
+            step=1,
+            label_visibility="collapsed",
+        )
+
+    with col_btn:
+        btn_conferma = st.button(
+            "✅ CONFERMA", use_container_width=True, type="primary"
+        )
+
+    # Validazione e Assegnazione
+    if giocatore_selezionato and btn_conferma:
+        info_g = df_filtrati[
+            df_filtrati["Giocatore"] == giocatore_selezionato
+        ].iloc[0]
+        ruolo_g = info_g["Ruolo"]
+
+        rimasti, tot_giocatori, max_offerta, acquisti_sq = get_squadra_stats(
+            sq_dest
+        )
+        giocatori_ruolo = len(
+            [a for a in acquisti_sq if a["Ruolo"] == ruolo_g]
+        )
+        max_slot_ruolo = SLOTS[ruolo_g]
+
+        # Controlli bloccanti
+        if giocatori_ruolo >= max_slot_ruolo:
+            st.error(
+                f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!"
+            )
+        elif costo_asta > max_offerta:
+            st.error(
+                f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM)."
+            )
+        else:
+            st.session_state.acquisti.append(
+                {
+                    "Giocatore": info_g["Giocatore"],
+                    "Ruolo": info_g["Ruolo"],
+                    "Costo": int(costo_asta),
+                    "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                    "Squadra_Fanta": sq_dest,
+                }
+            )
+            st.success(
+                f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!"
+            )
+            st.rerun()
+
+    # Informazioni Calciatore Selezionato
     if giocatore_selezionato:
         info_g = df_filtrati[
             df_filtrati["Giocatore"] == giocatore_selezionato
         ].iloc[0]
-
-        st.markdown(
-            f"""
-            <div class="call-box" style="border-color:#8b5cf6; background:linear-gradient(135deg, #1e1b4b 0%, #110d21 100%);">
-                <div style="font-size:16px; font-weight:800; color:#a78bfa;">{info_g['Giocatore']}</div>
-                <div style="font-size:12px; color:#9ca3af;">{info_g['Ruolo']} | {info_g['Squadra']} | Prezzo Medio: {int(info_g['Prezzo_Numerico'])} FM</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
-        ca1, ca2, ca3 = st.columns([1.5, 1, 1])
-        with ca1:
-            sq_dest = st.selectbox(
-                "A", options=FANTASQUADRE, label_visibility="collapsed"
-            )
-        with ca2:
-            costo = st.number_input(
-                "Costo",
-                min_value=1,
-                value=1,
-                step=1,
-                label_visibility="collapsed",
-            )
-        with ca3:
-            if st.button("ASSEGNA", use_container_width=True):
-                st.session_state.acquisti.append(
-                    {
-                        "Giocatore": info_g["Giocatore"],
-                        "Ruolo": info_g["Ruolo"],
-                        "Costo": int(costo),
-                        "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
-                        "Squadra_Fanta": sq_dest,
-                    }
-                )
-                st.rerun()
-    else:
-        st.markdown(
-            """
-            <div class="call-box">
-                <div class="call-title">È il tuo turno di chiamata!</div>
-                <div style="display:flex; gap:10px; justify-content:center;">
-                    <span style="background:#374151; color:#9ca3af; padding:6px 16px; border-radius:8px; font-size:12px; font-weight:700;">ASSEGNA</span>
-                    <span style="background:#374151; color:#9ca3af; padding:6px 16px; border-radius:8px; font-size:12px; font-weight:700;">CHIAMA</span>
-                </div>
-            </div>
-            """,
-            unsafe_allow_html=True,
+        st.info(
+            f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {info_g['Squadra']} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
         )
 
     st.markdown("</div>", unsafe_allow_html=True)
 
-# --- STAT WIDGET (RIGHT) ---
-with c_right:
-    st.markdown(
-        """
-        <div class="stat-card-box">
-            <div class="stat-text">
-                <span class="stat-highlight">Ravaglia F.</span> è il <span class="stat-highlight">10°</span> portiere di Serie A per percentuale di partite con voto ≥ 6 (<span class="stat-highlight">88%</span>)
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
 
 # ==============================================================================
-# 2. BARRA NAVIGAZIONE CENTRALE
-# ==============================================================================
-st.markdown(
-    """
-    <div class="fantalab-navbar">
-        <button class="nav-item active">👕 Rosa Squadre</button>
-        <button class="nav-item">📊 Fasce Giocatori</button>
-        <button class="nav-item">📑 Recap Asta</button>
-        <button class="nav-item">💡 Guida all'Asta</button>
-        <button class="nav-item">⚽ Partite</button>
-        <button class="nav-item">⚔️ Avversari</button>
-        <button class="nav-item">🧮 Stima Rosa/Budget</button>
-        <button class="nav-item">📈 Analisi Asta</button>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-# ==============================================================================
-# 3. TABELLONE 10 COLONNE ORIZZONTALI (STILE FANTALAB)
+# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
 # ==============================================================================
 def render_board():
     cols_html = []
 
     for sq in FANTASQUADRE:
-        rim, tot, acquisti_sq = get_squadra_stats(sq)
+        rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
         nome_team = sq.split(" - ")[0]
 
         col_content = [
@@ -504,7 +387,7 @@ def render_board():
                 <div class="team-header-name">{nome_team}</div>
                 <div class="team-header-budget">🟡 {rim}</div>
                 <div class="team-header-sub">
-                    <span>MAX: {rim - (25 - tot) + 1 if (25-tot)>0 else rim}</span>
+                    <span>MAX: {max_off if max_off > 0 else 0}</span>
                     <span>{tot}/25</span>
                 </div>
             </div>
@@ -561,7 +444,7 @@ const doc = window.parent.document;
 doc.addEventListener('keydown', function(e) {
     if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
         if (e.key.length === 1 || e.key === 'Backspace') {
-            const inputField = doc.querySelector('input[placeholder="🔍 CERCA GIOCATORE..."]');
+            const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
             if (inputField) {
                 inputField.focus();
             }
