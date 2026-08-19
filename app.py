@@ -406,6 +406,9 @@ with c_right:
 # ==============================================================================
 # 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
 # ==============================================================================
+# ==============================================================================
+# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
+# ==============================================================================
 def render_board():
     cols_html = []
 
@@ -413,18 +416,17 @@ def render_board():
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
         nome_team = sq.split(" - ")[0]
 
+        max_val = max_off if max_off > 0 else 0
+        
         col_content = [
-            f"""
-        <div class="team-column">
-            <div class="team-header">
-                <div class="team-header-name">{nome_team}</div>
-                <div class="team-header-budget">🟡 {rim}</div>
-                <div class="team-header-sub">
-                    <span>MAX: {max_off if max_off > 0 else 0}</span>
-                    <span>{tot}/25</span>
-                </div>
-            </div>
-        """
+            f'<div class="team-column">'
+            f'<div class="team-header">'
+            f'<div class="team-header-name">{nome_team}</div>'
+            f'<div class="team-header-budget">🟡 {rim}</div>'
+            f'<div class="team-header-sub">'
+            f'<span>MAX: {max_val}</span>'
+            f'<span>{tot}/25</span>'
+            f'</div></div>'
         ]
 
         for ruolo, num_slots in SLOTS.items():
@@ -447,15 +449,13 @@ def render_board():
                     logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
 
                     col_content.append(
-                        f"""
-                        <div class="player-cell">
-                            <div class="player-cell-left">
-                                {logo_html}
-                                <span class="player-cell-name">{g['Giocatore']}</span>
-                            </div>
-                            <span class="player-cell-cost">{g['Costo']}</span>
-                        </div>
-                        """
+                        f'<div class="player-cell">'
+                        f'<div class="player-cell-left">'
+                        f'{logo_html}'
+                        f'<span class="player-cell-name">{g["Giocatore"]}</span>'
+                        f'</div>'
+                        f'<span class="player-cell-cost">{g["Costo"]}</span>'
+                        f'</div>'
                     )
                 else:
                     col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#374151;">-</span></div>')
@@ -464,7 +464,6 @@ def render_board():
         cols_html.append("".join(col_content))
 
     return f'<div class="board-grid">{"".join(cols_html)}</div>'
-
 
 st.markdown(render_board(), unsafe_allow_html=True)
 
