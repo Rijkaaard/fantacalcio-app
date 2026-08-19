@@ -25,31 +25,13 @@ SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
 TOTALE_SLOTS = sum(SLOTS.values())  # 25 giocatori
 BUDGET_INIZIALE = 500
 
-# Mappatura dei nomi squadra di Serie A nei codici a 3 lettere per i file dei loghi
 MAPPA_CODICI_LOGHI = {
-    "ATALANTA": "ATA",
-    "BOLOGNA": "BOL",
-    "CAGLIARI": "CAG",
-    "COMO": "COM",
-    "EMPOLI": "EMP",
-    "FIORENTINA": "FIO",
-    "GENOA": "GEN",
-    "INTER": "INT",
-    "JUVENTUS": "JUV",
-    "LAZIO": "LAZ",
-    "LECCE": "LEC",
-    "MILAN": "MIL",
-    "MONZA": "MON",
-    "NAPOLI": "NAP",
-    "PARMA": "PAR",
-    "ROMA": "ROM",
-    "SALERNITANA": "SAL",
-    "SAMPDORIA": "SAM",
-    "SASSUOLO": "SAS",
-    "SPEZIA": "SPE",
-    "TORINO": "TOR",
-    "UDINESE": "UDI",
-    "VENEZIA": "VEN",
+    "ATALANTA": "ATA", "BOLOGNA": "BOL", "CAGLIARI": "CAG", "COMO": "COM",
+    "EMPOLI": "EMP", "FIORENTINA": "FIO", "GENOA": "GEN", "INTER": "INT",
+    "JUVENTUS": "JUV", "LAZIO": "LAZ", "LECCE": "LEC", "MILAN": "MIL",
+    "MONZA": "MON", "NAPOLI": "NAP", "PARMA": "PAR", "ROMA": "ROM",
+    "SALERNITANA": "SAL", "SAMPDORIA": "SAM", "SASSUOLO": "SAS",
+    "SPEZIA": "SPE", "TORINO": "TOR", "UDINESE": "UDI", "VENEZIA": "VEN",
     "VERONA": "VER",
 }
 
@@ -81,7 +63,6 @@ st.markdown(
         max-width: 100% !important;
     }
 
-    /* Styling del box/contenitore nativo Streamlit */
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #120d24 !important;
         border: 1px solid #282045 !important;
@@ -100,7 +81,6 @@ st.markdown(
         text-transform: uppercase;
     }
 
-    /* Mini-lista squadre a sinistra */
     .team-mini-row {
         display: flex;
         justify-content: space-between;
@@ -125,7 +105,6 @@ st.markdown(
         font-weight: 700;
     }
 
-    /* Griglia 10 colonne tabellone */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, minmax(130px, 1fr));
@@ -169,7 +148,6 @@ st.markdown(
         padding: 0 4px;
     }
 
-    /* Barre dei ruoli */
     .role-bar {
         font-size: 10px;
         font-weight: 800;
@@ -183,7 +161,6 @@ st.markdown(
     .role-c { background-color: #1d4ed8; }
     .role-a { background-color: #be123c; }
 
-    /* Celle giocatori */
     .player-cell {
         height: 24px;
         background: #16102b;
@@ -198,7 +175,6 @@ st.markdown(
         background: #130e26;
     }
 
-    /* Riquadro del nome + logo nel tabellone */
     .player-cell-left {
         display: flex;
         align-items: center;
@@ -207,11 +183,10 @@ st.markdown(
         max-width: 95px;
     }
 
-    /* Riquadro Squadrato per il logo */
     .player-team-logo {
         width: 14px;
         height: 14px;
-        border-radius: 0px !important; /* Riquadro rigorosamente quadrato */
+        border-radius: 0px !important;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -227,7 +202,6 @@ st.markdown(
         font-weight: 700;
     }
 
-    /* Stile per le immagini di Streamlit per forzare il riquadro quadrato */
     stImage > img {
         border-radius: 0px !important;
     }
@@ -236,9 +210,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # ==============================================================================
-# CARICAMENTO DATI E MEMORIA SESSIONE
+# CARICAMENTO DATI E CACHING
 # ==============================================================================
 @st.cache_data
 def load_data(file_path):
@@ -253,41 +226,20 @@ def load_data(file_path):
 
     df.columns = df.columns.str.strip()
 
-    # Identificazione della colonna Prezzo
-    colonna_prezzo = None
-    for col in df.columns:
-        if col.lower().replace(" ", "").replace("_", "") in [
-            "prezzomedio",
-            "prezzo",
-            "quotazione",
-        ]:
-            colonna_prezzo = col
-            break
+    colonna_prezzo = next((c for c in df.columns if c.lower().replace(" ", "").replace("_", "") in ["prezzomedio", "prezzo", "quotazione"]), None)
     if colonna_prezzo:
         df = df.rename(columns={colonna_prezzo: "Prezzo Medio"})
 
-    # Identificazione della colonna Squadra
-    colonna_squadra = None
-    for col in df.columns:
-        if col.lower().replace(" ", "").replace("_", "") in [
-            "squadra",
-            "team",
-            "club",
-            "squadraseriea",
-        ]:
-            colonna_squadra = col
-            break
+    colonna_squadra = next((c for c in df.columns if c.lower().replace(" ", "").replace("_", "") in ["squadra", "team", "club", "squadraseriea"]), None)
     if colonna_squadra:
         df = df.rename(columns={colonna_squadra: "Squadra_SerieA"})
 
-    df["Prezzo_Numerico"] = pd.to_numeric(
-        df["Prezzo Medio"], errors="coerce"
-    ).fillna(0)
+    df["Prezzo_Numerico"] = pd.to_numeric(df["Prezzo Medio"], errors="coerce").fillna(0)
     return df
 
 
+@st.cache_data
 def get_logo_path(squadra):
-    """Cerca il file del logo nella cartella 'loghi/' usando il nome a 3 lettere maiuscole"""
     if not squadra or pd.isna(squadra):
         return None
 
@@ -299,7 +251,6 @@ def get_logo_path(squadra):
         path = os.path.join("loghi", f"{codice_squadra}.{ext}")
         if os.path.exists(path):
             return path
-
         path_lower = os.path.join("loghi", f"{codice_squadra.lower()}.{ext}")
         if os.path.exists(path_lower):
             return path_lower
@@ -307,8 +258,8 @@ def get_logo_path(squadra):
     return None
 
 
+@st.cache_data
 def get_logo_base64(path):
-    """Converte l'immagine del logo in formato Data URI Base64 per l'HTML del tabellone"""
     if not path or not os.path.exists(path):
         return ""
     ext = path.split(".")[-1].lower()
@@ -327,17 +278,12 @@ if df_listone is None:
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = []
 
-giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
+giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
 
-# Funzione Calcolo Statistiche Squadra
 def get_squadra_stats(nome_squadra):
-    acquisti = [
-        a
-        for a in st.session_state.acquisti
-        if a["Squadra_Fanta"] == nome_squadra
-    ]
+    acquisti = [a for a in st.session_state.acquisti if a["Squadra_Fanta"] == nome_squadra]
     spesi = sum(a["Costo"] for a in acquisti)
     rimasti = BUDGET_INIZIALE - spesi
     tot_giocatori = len(acquisti)
@@ -348,17 +294,13 @@ def get_squadra_stats(nome_squadra):
 
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE (PANNELLO SQUADRE E ASSEGNAZIONE)
+# 1. PANNELLO SUPERIORE (SQUADRE ED ASSEGNAZIONE)
 # ==============================================================================
 c_left, c_right = st.columns([1.2, 3])
 
-# Mini-lista squadre a sinistra
 with c_left:
     with st.container(border=True):
-        st.markdown(
-            '<div class="card-title">SQUADRE & BUDGET</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="card-title">SQUADRE & BUDGET</div>', unsafe_allow_html=True)
         for sq in FANTASQUADRE:
             rim, tot, _, _ = get_squadra_stats(sq)
             nome_breve = sq.split(" - ")[0]
@@ -372,13 +314,9 @@ with c_left:
                 unsafe_allow_html=True,
             )
 
-# Form Inserimento/Assegnazione al centro
 with c_right:
     with st.container(border=True):
-        st.markdown(
-            '<div class="card-title">ASSEGNA GIOCATORE</div>',
-            unsafe_allow_html=True,
-        )
+        st.markdown('<div class="card-title">ASSEGNA GIOCATORE</div>', unsafe_allow_html=True)
 
         ruolo_selezionato = st.radio(
             "Filtra Ruolo",
@@ -388,9 +326,7 @@ with c_right:
         )
 
         if ruolo_selezionato != "TUTTI":
-            df_filtrati = df_disponibili[
-                df_disponibili["Ruolo"] == ruolo_selezionato
-            ]
+            df_filtrati = df_disponibili[df_disponibili["Ruolo"] == ruolo_selezionato]
         else:
             df_filtrati = df_disponibili
 
@@ -423,37 +359,21 @@ with c_right:
             )
 
         with col_btn:
-            btn_conferma = st.button(
-                "✅ CONFERMA", use_container_width=True, type="primary"
-            )
+            btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
 
-        # Validazione e Assegnazione
         if giocatore_selezionato and btn_conferma:
-            info_g = df_filtrati[
-                df_filtrati["Giocatore"] == giocatore_selezionato
-            ].iloc[0]
+            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
             ruolo_g = info_g["Ruolo"]
-            squadra_sa = str(
-                info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))
-            ).strip()
+            squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
 
-            rimasti, tot_giocatori, max_offerta, acquisti_sq = (
-                get_squadra_stats(sq_dest)
-            )
-            giocatori_ruolo = len(
-                [a for a in acquisti_sq if a["Ruolo"] == ruolo_g]
-            )
+            rimasti, tot_giocatori, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
+            giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_g])
             max_slot_ruolo = SLOTS[ruolo_g]
 
-            # Controlli bloccanti
             if giocatori_ruolo >= max_slot_ruolo:
-                st.error(
-                    f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!"
-                )
+                st.error(f"❌ **{sq_dest.split(' - ')[0]}** ha già completato lo slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!")
             elif costo_asta > max_offerta:
-                st.error(
-                    f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM)."
-                )
+                st.error(f"❌ Offerta troppo alta per **{sq_dest.split(' - ')[0]}**! Offerta Max consentita: **{max_offerta} FM** (Budget rimasto: {rimasti} FM).")
             else:
                 st.session_state.acquisti.append(
                     {
@@ -465,19 +385,12 @@ with c_right:
                         "Squadra_Fanta": sq_dest,
                     }
                 )
-                st.success(
-                    f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!"
-                )
+                st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per **{costo_asta} FM**!")
                 st.rerun()
 
-        # Informazioni Calciatore Selezionato (con Logo Quadrato)
         if giocatore_selezionato:
-            info_g = df_filtrati[
-                df_filtrati["Giocatore"] == giocatore_selezionato
-            ].iloc[0]
-            squadra_serie_a = str(
-                info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))
-            ).strip()
+            info_g = df_filtrati[df_filtrati["Giocatore"] == giocatore_selezionato].iloc[0]
+            squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
             logo_path = get_logo_path(squadra_serie_a)
 
             if logo_path:
@@ -485,19 +398,9 @@ with c_right:
                 with col_logo:
                     st.image(logo_path, width=42)
                 with col_info:
-                    st.info(
-                        f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
-                    )
+                    st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
             else:
-                codice_atteso = MAPPA_CODICI_LOGHI.get(
-                    squadra_serie_a.upper(), squadra_serie_a.upper()
-                )
-                st.info(
-                    f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
-                )
-                st.warning(
-                    f"⚠️ **Logo non trovato!** Verifica che dentro la cartella `loghi/` ci sia il file **`{codice_atteso}.png`** (es. `loghi/{codice_atteso}.png`)."
-                )
+                st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}")
 
 
 # ==============================================================================
@@ -524,24 +427,15 @@ def render_board():
         """
         ]
 
-        # Genera sezioni per Ruoli (P, D, C, A)
         for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
 
-            # Calcolo percentuale del budget iniziale (500) speso per questo reparto
             speso_ruolo = sum(g["Costo"] for g in giocatori_r)
             pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
+            pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
-            pct_str = (
-                f"{int(pct_budget)}%"
-                if pct_budget.is_integer()
-                else f"{pct_budget}%"
-            )
-
-            col_content.append(
-                f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct_str}</span></div>'
-            )
+            col_content.append(f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
 
             for i in range(num_slots):
                 if i < len(giocatori_r):
@@ -550,12 +444,7 @@ def render_board():
                     logo_p = get_logo_path(sq_sa)
                     logo_b64 = get_logo_base64(logo_p) if logo_p else ""
 
-                    # Elemento HTML per l'immagine del logo (se presente)
-                    logo_html = (
-                        f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">'
-                        if logo_b64
-                        else ""
-                    )
+                    logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
 
                     col_content.append(
                         f"""
@@ -569,41 +458,40 @@ def render_board():
                         """
                     )
                 else:
-                    col_content.append(
-                        '<div class="player-cell"><span class="player-cell-name" style="color:#374151;">-</span></div>'
-                    )
+                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#374151;">-</span></div>')
 
         col_content.append("</div>")
         cols_html.append("".join(col_content))
 
-    grid_wrapper = f'<div class="board-grid">{"".join(cols_html)}</div>'
-    return grid_wrapper
+    return f'<div class="board-grid">{"".join(cols_html)}</div>'
 
 
 st.markdown(render_board(), unsafe_allow_html=True)
 
-# Tasto Annulla in basso
 if st.session_state.acquisti:
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("↩️ Annulla Ultimo Acquisto", use_container_width=True):
         st.session_state.acquisti.pop()
         st.rerun()
 
-# --- JAVASCRIPT SCORCIATOIA TASTIERA ---
+# --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
 components.html(
     """
 <script>
-const doc = window.parent.document;
-doc.addEventListener('keydown', function(e) {
-    if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
-        if (e.key.length === 1 || e.key === 'Backspace') {
-            const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
-            if (inputField) {
-                inputField.focus();
+if (!window.parent._fantalab_keydown_attached) {
+    window.parent._fantalab_keydown_attached = true;
+    const doc = window.parent.document;
+    doc.addEventListener('keydown', function(e) {
+        if (doc.activeElement.tagName !== 'INPUT' && doc.activeElement.tagName !== 'TEXTAREA') {
+            if (e.key.length === 1 || e.key === 'Backspace') {
+                const inputField = doc.querySelector('input[placeholder="🔍 Cerca calciatore..."]');
+                if (inputField) {
+                    inputField.focus();
+                }
             }
         }
-    }
-});
+    });
+}
 </script>
 """,
     height=0,
