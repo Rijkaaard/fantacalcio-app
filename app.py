@@ -513,17 +513,18 @@ def render_board():
                     logo_b64 = get_logo_base64(logo_p) if logo_p else ""
                     logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
 
-                    # --- LOGICA COLORE PREZZO ---
                     costo = g["Costo"]
                     prezzo_medio = g.get("Prezzo_Medio", 0)
 
                     if costo < prezzo_medio:
-                        colore_prezzo = "#22c55e"  # Verde (affare)
+                        colore_prezzo = "#22c55e"
                     elif costo > prezzo_medio:
-                        colore_prezzo = "#ef4444"  # Rosso (sopra media)
+                        colore_prezzo = "#ef4444"
                     else:
-                        colore_prezzo = "#fbbf24"  # Giallo (in media)
+                        colore_prezzo = "#fbbf24"
 
+                    # Giocatore con evento onclick JS personalizzato per animazione smooth
+                    nome_escaped = g["Giocatore"].replace("'", "\\'")
                     col_content.append(
                         f'<div class="player-cell">'
                         f'<div class="player-cell-left">'
@@ -532,7 +533,7 @@ def render_board():
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
+                        f'<a href="javascript:void(0)" onclick="smoothRemovePlayer(this, \'{nome_escaped}\')" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
                         f'</div>'
                         f'</div>'
                     )
@@ -543,7 +544,6 @@ def render_board():
         cols_html.append("".join(col_content))
 
     return f'<div class="board-grid">{"".join(cols_html)}</div>'
-
 
 st.markdown(render_board(), unsafe_allow_html=True)
 
