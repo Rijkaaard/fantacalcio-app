@@ -197,9 +197,49 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
     }
+
+    /* --- STILI ANIMAZIONE RIMOZIONE HOVER --- */
+    .player-cell-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+
     .player-cell-cost {
-        color: #fbbf24;
         font-weight: 700;
+        transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: inline-block;
+    }
+
+    .delete-btn {
+        opacity: 0;
+        max-width: 0;
+        margin-left: 0;
+        color: #ef4444 !important;
+        text-decoration: none !important;
+        font-weight: 800;
+        font-size: 11px;
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        overflow: hidden;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .delete-btn:hover {
+        color: #dc2626 !important;
+        transform: scale(1.2);
+    }
+
+    .player-cell:hover .delete-btn {
+        opacity: 1;
+        max-width: 20px;
+        margin-left: 6px;
+    }
+
+    .player-cell:hover .player-cell-cost {
+        transform: translateX(-2px);
     }
 
     stImage > img {
@@ -277,6 +317,15 @@ if df_listone is None:
 
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = []
+
+# --- GESTIONE RIMOZIONE GIOCATORE VIA HOVER ---
+if "remove_player" in st.query_params:
+    player_to_remove = st.query_params["remove_player"]
+    st.session_state.acquisti = [
+        a for a in st.session_state.acquisti if a["Giocatore"] != player_to_remove
+    ]
+    st.query_params.clear()
+    st.rerun()
 
 giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
@@ -406,12 +455,6 @@ with c_right:
 # ==============================================================================
 # 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
 # ==============================================================================
-# ==============================================================================
-# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
-# ==============================================================================
-# ==============================================================================
-# 2. TABELLONE 10 COLONNE ORIZZONTALI (ROSE SQUADRE)
-# ==============================================================================
 def render_board():
     cols_html = []
 
@@ -454,11 +497,11 @@ def render_board():
                     prezzo_medio = g.get("Prezzo_Medio", 0)
 
                     if costo < prezzo_medio:
-                        colore_prezzo = "#22c55e"  # Verde neon (affare)
+                        colore_prezzo = "#22c55e"  # Verde (affare)
                     elif costo > prezzo_medio:
-                        colore_prezzo = "#ef4444"  # Rosso neon (sopra media)
+                        colore_prezzo = "#ef4444"  # Rosso (sopra media)
                     else:
-                        colore_prezzo = "#fbbf24"  # Giallo standard (in media)
+                        colore_prezzo = "#fbbf24"  # Giallo (in media)
 
                     col_content.append(
                         f'<div class="player-cell">'
@@ -466,7 +509,10 @@ def render_board():
                         f'{logo_html}'
                         f'<span class="player-cell-name">{g["Giocatore"]}</span>'
                         f'</div>'
+                        f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
+                        f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
+                        f'</div>'
                         f'</div>'
                     )
                 else:
@@ -476,6 +522,8 @@ def render_board():
         cols_html.append("".join(col_content))
 
     return f'<div class="board-grid">{"".join(cols_html)}</div>'
+
+
 st.markdown(render_board(), unsafe_allow_html=True)
 
 if st.session_state.acquisti:
