@@ -43,6 +43,20 @@ st.set_page_config(
 )
 
 # ==============================================================================
+# 🧼 PULIZIA INTERFACCIA (RIMOZIONE BARRA SUPERIORE STREAMLIT)
+# ==============================================================================
+hide_st_style = """
+    <style>
+    [data-testid="stHeader"] {visibility: hidden;}
+    [data-testid="stToolbar"] {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stApp {padding-top: 0px !important;}
+    </style>
+"""
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
+# ==============================================================================
 # 💾 GESTIONE SALVATAGGIO PERSISTENTE
 # ==============================================================================
 DATA_FILE = "fanta_asta_data.json"
