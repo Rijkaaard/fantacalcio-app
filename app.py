@@ -43,6 +43,19 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+# --- TRIGGER RIMOZIONE SILENZIOSA ---
+st.markdown('<style>div[data-testid="stTextInput"]:has(input[aria-label="TriggerRimozione"]) { display: none; }</style>', unsafe_allow_html=True)
+st.text_input("TriggerRimozione", key="trigger_rimozione", label_visibility="collapsed")
+
+if st.session_state.get("trigger_rimozione"):
+    giocatore_da_rimuovere = st.session_state.trigger_rimozione
+    st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != giocatore_da_rimuovere]
+    save_acquisti()
+    st.session_state.trigger_rimozione = ""  # Resetta il trigger
+    st.rerun()
+
+# Rimuovi il vecchio blocco 'if "remove_player" in st.query_params:' che causava il refresh
+
 # ==============================================================================
 # 🎨 STILE CSS FANTA-LAB DARK NEON
 # ==============================================================================
@@ -339,14 +352,6 @@ if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
 # --- GESTIONE RIMOZIONE GIOCATORE VIA HOVER ---
-if "remove_player" in st.query_params:
-    player_to_remove = st.query_params["remove_player"]
-    st.session_state.acquisti = [
-        a for a in st.session_state.acquisti if a["Giocatore"] != player_to_remove
-    ]
-    save_acquisti()
-    st.query_params.clear()
-    st.rerun()
 
 giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
@@ -532,7 +537,23 @@ def render_board():
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
-                        f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
+                        # Sostituisci QUESTA RIGA:
+                    # f'<a href="?remove_player={g["Giocatore"]}" target="_self" class="delete-btn" ...>✖</a>'
+                    
+                    # CON QUESTA:
+                    nome_escaped = g["Giocatore"].replace("'", "\\'")
+                    col_content.append(
+                        f'<div class="player-cell">'
+                        f'<div class="player-cell-left">'
+                        f'{logo_html}'
+                        f'<span class="player-cell-name">{g["Giocatore"]}</span>'
+                        f'</div>'
+                        f'<div class="player-cell-right">'
+                        f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
+                        f'<a href="javascript:void(0)" onclick="window.parent.silentlyRemovePlayer(\'{nome_escaped}\')" class="delete-btn" title="Rimuovi {g["Giocatore"]}">✖</a>'
+                        f'</div>'
+                        f'</div>'
+                    )
                         f'</div>'
                         f'</div>'
                     )
@@ -555,9 +576,26 @@ if st.session_state.acquisti:
         st.rerun()
 
 # --- JAVASCRIPT PROTEGGI-MEMORIA (EVITA DUPLICAZIONE LISTENER) ---
+# --- JAVASCRIPT: PONTE JS -> STREAMLIT ---
 components.html(
     """
 <script>
+// Funzione per inviare il nome del giocatore a Streamlit senza ricaricare la pagina
+window.parent.silentlyRemovePlayer = function(playerName) {
+    const doc = window.parent.document;
+    const input = doc.querySelector('input[aria-label="TriggerRimozione"]');
+    
+    if (input) {
+        // Usa il setter nativo di React per forzare l'aggiornamento del valore
+        let nativeInputValueSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, "value").set;
+        nativeInputValueSetter.call(input, playerName);
+        
+        // Simula la digitazione per innescare st.rerun() in background
+        input.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+};
+
+// Auto-focus barra di ricerca
 if (!window.parent._fantalab_keydown_attached) {
     window.parent._fantalab_keydown_attached = true;
     const doc = window.parent.document;
