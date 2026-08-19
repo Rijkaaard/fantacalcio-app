@@ -32,7 +32,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🎨 STILE CSS FANTA-LAB DARK NEON
+# 🎨 STILE CSS FANTA-LAB DARK NEON (PULITO ED ELEGANTE)
 # ==============================================================================
 st.markdown(
     """
@@ -46,20 +46,34 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
+        padding-top: 1.2rem !important;
         padding-left: 1rem !important;
         padding-right: 1rem !important;
         max-width: 100% !important;
     }
 
-    /* Cards container upper section */
+    /* Cards contenitori in alto */
     .fantalab-card {
-        background: linear-gradient(145deg, #161129, #100c21);
+        background: #120d24;
         border: 1px solid #282045;
-        border-radius: 16px;
+        border-radius: 12px;
         padding: 16px;
-        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-        margin-bottom: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        margin-bottom: 16px;
+        transition: border-color 0.3s ease;
+    }
+    
+    .fantalab-card:hover {
+        border-color: #4c3b7a;
+    }
+
+    .card-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #a78bfa;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        text-transform: uppercase;
     }
 
     /* Left teams mini list */
@@ -70,7 +84,7 @@ st.markdown(
         padding: 4px 10px;
         margin-bottom: 3px;
         background: #1b1533;
-        border-radius: 8px;
+        border-radius: 6px;
         font-size: 11px;
         font-weight: 600;
         border: 1px solid #2a224a;
@@ -249,7 +263,7 @@ c_left, c_right = st.columns([1.2, 3])
 with c_left:
     st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
     st.markdown(
-        "<div style='font-size:12px; font-weight:800; color:#a78bfa; margin-bottom:8px;'>SQUADRE & BUDGET</div>",
+        '<div class="card-title">SQUADRE & BUDGET</div>',
         unsafe_allow_html=True,
     )
     for sq in FANTASQUADRE:
@@ -270,7 +284,7 @@ with c_left:
 with c_right:
     st.markdown('<div class="fantalab-card">', unsafe_allow_html=True)
     st.markdown(
-        "<div style='font-size:14px; font-weight:800; color:#a78bfa; margin-bottom:10px;'>🔨 ASSEGNA GIOCATORE</div>",
+        '<div class="card-title">ASSEGNA GIOCATORE</div>',
         unsafe_allow_html=True,
     )
 
@@ -398,10 +412,19 @@ def render_board():
         for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
-            pct = int((len(giocatori_r) / num_slots) * 100)
+
+            # Calcolo percentuale del budget iniziale (500) speso per questo reparto
+            speso_ruolo = sum(g["Costo"] for g in giocatori_r)
+            pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
+
+            pct_str = (
+                f"{int(pct_budget)}%"
+                if pct_budget.is_integer()
+                else f"{pct_budget}%"
+            )
 
             col_content.append(
-                f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct}%</span></div>'
+                f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct_str}</span></div>'
             )
 
             for i in range(num_slots):
