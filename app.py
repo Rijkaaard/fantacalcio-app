@@ -2,22 +2,42 @@ import os
 import pandas as pd
 import streamlit as st
 
-# 1. Configurazione della pagina
+# ==============================================================================
+# ⚙️ CONFIGURAZIONE PER 10 SQUADRE E SLOT ROSA
+# ==============================================================================
+BUDGET_INIZIALE = 500
+
+# Personalizza qui i nomi dei 10 partecipanti
+FANTASQUADRE = [
+    "Squadra 1",
+    "Squadra 2",
+    "Squadra 3",
+    "Squadra 4",
+    "Squadra 5",
+    "Squadra 6",
+    "Squadra 7",
+    "Squadra 8",
+    "Squadra 9",
+    "Squadra 10",
+]
+
+# Definizione slot per ruolo (Totale 25 giocatori)
+SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
+# ==============================================================================
+
 st.set_page_config(
-    page_title="Fantacalcio - Asta & Listone",
+    page_title="Asta Fantacalcio - 10 Squadre",
     page_icon="⚽",
     layout="wide",
-    initial_sidebar_state="expanded",
 )
 
 
-# 2. Caricamento e pulizia dati
+# Caricamento e pulizia dati
 @st.cache_data
 def load_data(file_path):
     if not os.path.exists(file_path):
         return None
 
-    # Tenta prima con la virgola, poi con il punto e virgola se fallisce
     try:
         df = pd.read_csv(file_path)
         if len(df.columns) == 1 and ";" in df.columns[0]:
@@ -25,10 +45,8 @@ def load_data(file_path):
     except Exception:
         df = pd.read_csv(file_path, sep=";")
 
-    # Rimuove spazi vuoti invisibili prima e dopo i nomi delle colonne
     df.columns = df.columns.str.strip()
 
-    # Cerca la colonna del prezzo medio (gestisce differenze di maiuscole/spazi)
     colonna_prezzo = None
     for col in df.columns:
         if col.lower().replace(" ", "").replace("_", "") in [
@@ -39,168 +57,255 @@ def load_data(file_path):
             colonna_prezzo = col
             break
 
-    if colonna_prezzo is None:
-        st.error(
-            f"❌ Impossibile trovare la colonna del prezzo! Le colonne trovate nel tuo file CSV sono: `{list(df.columns)}`"
-        )
-        st.stop()
+    if colonna_prezzo:
+        df = df.rename(columns={colonna_prezzo: "Prezzo Medio"})
 
-    # Rinomina la colonna trovata per uniformarla
-    df = df.rename(columns={colonna_prezzo: "Prezzo Medio"})
-
-    # Convertiamo i valori in numeri
     df["Prezzo_Numerico"] = pd.to_numeric(
         df["Prezzo Medio"], errors="coerce"
     ).fillna(0)
-
     return df
 
-# Nome del file CSV nella stessa cartella
-CSV_FILENAME = "fantalab_listone.csv"
-df = load_data(CSV_FILENAME)
 
-# Se il file non esiste, mostra un messaggio di errore
-if df is None:
-    st.error(
-        f"⚠️ File `{CSV_FILENAME}` non trovato! "
-        "Assicurati di aver salvato la tabella in un file `.csv` con questo nome nella stessa cartella di `app.py`."
-    )
+df_listone = load_data("fantalab_listone.csv")
+
+if df_listone is None:
+    st.error("⚠️ File `fantalab_listone.csv` non trovato nella cartella!")
     st.stop()
 
-# 3. Titolo Principale
-st.title("⚽ Fantacalcio: Dashboard Listone & Asta")
-st.markdown("Analizza i prezzi medi, filtra i giocatori e pianifica la tua rosa.")
+# Memoria dell'Asta
+if "acquisti" not in st.session_state:
+    st.session_state.acquisti = []
 
-# 4. Sidebar - Filtri
-st.sidebar.header("🔍 Filtri Giocatori")
-
-# Filtro Ricerca Testuale
-search_name = st.sidebar.text_input(
-    "Cerca Giocatore", placeholder="Es. Dimarco..."
-)
-
-# Filtro Ruolo
-ruoli_disponibili = sorted(df["Ruolo"].unique().tolist())
-selected_ruoli = st.sidebar.multiselect(
-    "Ruolo",
-    options=ruoli_disponibili,
-    default=ruoli_disponibili,
-    help="Seleziona uno o più ruoli (P, D, C, A)",
-)
-
-# Filtro Squadra
-squadre_disponibili = sorted(df["Squadra"].unique().tolist())
-selected_squadre = st.sidebar.multiselect(
-    "Squadra", options=squadre_disponibili, default=squadre_disponibili
-)
-
-# Filtro Prezzo Medio (Slider)
-max_price = int(df["Prezzo_Numerico"].max())
-min_price = int(df["Prezzo_Numerico"].min())
-
-price_range = st.sidebar.slider(
-    "Range Prezzo Medio",
-    min_value=min_price,
-    max_value=max_price,
-    value=(min_price, max_price),
-)
-
-# 5. Applicazione dei Filtri
-df_filtered = df[
-    (df["Ruolo"].isin(selected_ruoli))
-    & (df["Squadra"].isin(selected_squadre))
-    & (df["Prezzo_Numerico"] >= price_range[0])
-    & (df["Prezzo_Numerico"] <= price_range[1])
-]
-
-if search_name:
-    df_filtered = df_filtered[
-        df_filtered["Giocatore"].str.contains(search_name, case=False, na=False)
-    ]
-
-# 6. Metriche in Evidenza
-col1, col2, col3, col4 = st.columns(4)
-col1.metric("Giocatori Trovati", len(df_filtered))
-col2.metric(
-    "Prezzo Medio Max",
-    (
-        f"{int(df_filtered['Prezzo_Numerico'].max())} cr"
-        if not df_filtered.empty
-        else "0 cr"
-    ),
-)
-col3.metric(
-    "Prezzo Medio Min",
-    (
-        f"{int(df_filtered['Prezzo_Numerico'].min())} cr"
-        if not df_filtered.empty
-        else "0 cr"
-    ),
-)
-col4.metric(
-    "Media Prezzo della Selezione",
-    (
-        f"{df_filtered['Prezzo_Numerico'].mean():.1f} cr"
-        if not df_filtered.empty
-        else "0 cr"
-    ),
-)
-
-st.divider()
-
-# 7. Layout Principale: Tabella e Calcolatore Rosa
-tab1, tab2 = st.tabs(["📋 Listone Completo", "🛒 Calcolatore / Target Asta"])
-
-with tab1:
-    st.subheader("Listone Filtrato")
-
-    # Ordinamento predefinito per Prezzo Medio decrescente
-    df_display = df_filtered[
-        ["Giocatore", "Ruolo", "Squadra", "Prezzo Medio", "Prezzo_Numerico"]
-    ].sort_values(by="Prezzo_Numerico", ascending=False)
-
-    # Mostra la tabella ordinabile
-    st.dataframe(
-        df_display[["Giocatore", "Ruolo", "Squadra", "Prezzo Medio"]],
-        use_container_width=True,
-        hide_index=True,
-        height=500,
+if st.session_state.acquisti:
+    df_acquisti = pd.DataFrame(st.session_state.acquisti)
+else:
+    df_acquisti = pd.DataFrame(
+        columns=[
+            "Giocatore",
+            "Ruolo",
+            "Squadra_SerieA",
+            "Prezzo_Asta",
+            "Squadra_Fanta",
+        ]
     )
 
-    # Pulsante per scaricare i dati filtrati in CSV
-    csv_download = df_display[
-        ["Giocatore", "Ruolo", "Squadra", "Prezzo Medio"]
-    ].to_csv(index=False)
-    st.download_button(
-        label="📥 Scarica Selezione (CSV)",
-        data=csv_download,
-        file_name="listone_filtrato.csv",
-        mime="text/csv",
-    )
+st.title("⚽ Asta Live Fantacalcio - 10 Partecipanti")
 
-with tab2:
-    st.subheader("Simulatore Budget Asta")
-    st.markdown(
-        "Seleziona i calciatori che vorresti acquistare per valutare la spesa stimata totale."
-    )
+tab_asta, tab_rose, tab_listone = st.tabs(
+    ["🔨 Assegna Giocatore", "📊 10 Rose & Crediti", "📋 Listone Completo"]
+)
 
-    # Multiselect per selezionare i target
-    target_giocatori = st.multiselect(
-        "Seleziona Giocatori Target",
-        options=sorted(df["Giocatore"].tolist()),
-        placeholder="Aggiungi calciatori alla tua lista obiettivi...",
-    )
+# --- TAB 1: ASSEGNAZIONE GIOCATORI ---
+with tab_asta:
+    giocatori_presi = df_acquisti["Giocatore"].tolist()
+    df_liberi = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-    if target_giocatori:
-        df_targets = df[df["Giocatore"].isin(target_giocatori)].copy()
-        spesa_totale = df_targets["Prezzo_Numerico"].sum()
+    st.subheader("Chiamata Calciatore")
+    col_search, col_info = st.columns([2, 1])
 
-        st.markdown(f"### 💰 Spesa Totale Stimata: **{int(spesa_totale)} crediti**")
+    with col_search:
+        giocatore_sel = st.selectbox(
+            "Cerca giocatore:",
+            options=sorted(df_liberi["Giocatore"].tolist()),
+            index=None,
+            placeholder="Scrivi il nome del calciatore...",
+        )
 
+    if giocatore_sel:
+        info_g = df_liberi[df_liberi["Giocatore"] == giocatore_sel].iloc[0]
+
+        with col_info:
+            st.metric(
+                label=f"{info_g['Ruolo']} - {info_g['Squadra']}",
+                value=f"FM: {info_g['Prezzo Medio']} cr",
+            )
+
+        st.divider()
+        c_team, c_price, c_btn = st.columns([2, 1, 1])
+
+        with c_team:
+            squadra_dest = st.selectbox(
+                "Acquistato da:", options=FANTASQUADRE
+            )
+
+        with c_price:
+            prezzo_acquisto = st.number_input(
+                "Prezzo d'Asta (crediti):", min_value=1, value=1, step=1
+            )
+
+        with c_btn:
+            st.write("")
+            st.write("")
+
+            # Controllo se la squadra ha già riempito lo slot per quel ruolo
+            ruolo_g = info_g["Ruolo"]
+            attuali_ruolo = len(
+                df_acquisti[
+                    (df_acquisti["Squadra_Fanta"] == squadra_dest)
+                    & (df_acquisti["Ruolo"] == ruolo_g)
+                ]
+            )
+            max_ruolo = SLOTS.get(ruolo_g, 0)
+
+            if attuali_ruolo >= max_ruolo:
+                st.error(
+                    f"⚠️ {squadra_dest} ha già completato i {max_ruolo} slot per il ruolo {ruolo_g}!"
+                )
+            else:
+                if st.button("✅ Confirm Acquisto", use_container_width=True):
+                    st.session_state.acquisti.append(
+                        {
+                            "Giocatore": info_g["Giocatore"],
+                            "Ruolo": info_g["Ruolo"],
+                            "Squadra_SerieA": info_g["Squadra"],
+                            "Prezzo_Asta": int(prezzo_acquisto),
+                            "Squadra_Fanta": squadra_dest,
+                        }
+                    )
+                    st.success(
+                        f"**{info_g['Giocatore']}** a **{squadra_dest}** per **{prezzo_acquisto} cr**"
+                    )
+                    st.rerun()
+
+    st.divider()
+    st.subheader("📜 Ultimi Acquisti Effettuati")
+    if not df_acquisti.empty:
         st.dataframe(
-            df_targets[["Giocatore", "Ruolo", "Squadra", "Prezzo Medio"]],
+            df_acquisti[
+                [
+                    "Giocatore",
+                    "Ruolo",
+                    "Squadra_SerieA",
+                    "Squadra_Fanta",
+                    "Prezzo_Asta",
+                ]
+            ].iloc[::-1],
             use_container_width=True,
             hide_index=True,
         )
+
+        if st.button("↩️ Annulla Ultimo Acquisto"):
+            st.session_state.acquisti.pop()
+            st.rerun()
     else:
-        st.info("Nessun giocatore selezionato. Aggiungi qualcuno dal menu sopra!")
+        st.info("Nessun giocatore assegnato.")
+
+
+# --- TAB 2: TABELLE DELLE 10 ROSE ---
+def genera_struttura_rosa(df_sq):
+    """Genera una tabella fisso da 25 righe con slot coperti o liberi"""
+    righe = []
+    for ruolo, num_max in SLOTS.items():
+        presi = df_sq[df_sq["Ruolo"] == ruolo].to_dict("records")
+        for i in range(num_max):
+            if i < len(presi):
+                righe.append(
+                    {
+                        "Slot": f"{ruolo} #{i+1}",
+                        "Giocatore": presi[i]["Giocatore"],
+                        "Club Serie A": presi[i]["Squadra_SerieA"],
+                        "Costo": f"{presi[i]['Prezzo_Asta']} cr",
+                    }
+                )
+            else:
+                righe.append(
+                    {
+                        "Slot": f"{ruolo} #{i+1}",
+                        "Giocatore": "--- (Libero) ---",
+                        "Club Serie A": "-",
+                        "Costo": "-",
+                    }
+                )
+    return pd.DataFrame(righe)
+
+
+with tab_rose:
+    st.subheader("📊 Panoramica Crediti & Slot")
+
+    riepilogo = []
+    for sq in FANTASQUADRE:
+        df_sq = df_acquisti[df_acquisti["Squadra_Fanta"] == sq]
+        speso = df_sq["Prezzo_Asta"].sum() if not df_sq.empty else 0
+        rimanente = BUDGET_INIZIALE - speso
+
+        n_p = len(df_sq[df_sq["Ruolo"] == "P"]) if not df_sq.empty else 0
+        n_d = len(df_sq[df_sq["Ruolo"] == "D"]) if not df_sq.empty else 0
+        n_c = len(df_sq[df_sq["Ruolo"] == "C"]) if not df_sq.empty else 0
+        n_a = len(df_sq[df_sq["Ruolo"] == "A"]) if not df_sq.empty else 0
+
+        riepilogo.append(
+            {
+                "Fantasquadra": sq,
+                "Crediti Rimanenti": f"{rimanente} cr",
+                "Spesi": f"{speso} cr",
+                "Slot Totali": f"{len(df_sq)}/25",
+                "Portieri": f"{n_p}/3",
+                "Difensori": f"{n_d}/8",
+                "Centrocampisti": f"{n_c}/8",
+                "Attaccanti": f"{n_a}/6",
+            }
+        )
+
+    st.dataframe(
+        pd.DataFrame(riepilogo), use_container_width=True, hide_index=True
+    )
+
+    st.divider()
+    st.subheader("📋 Rose Dettagliate delle 10 Squadre")
+
+    # Visualizzazione a Tab individuali per ognuna delle 10 squadre
+    tabs_squadre = st.tabs([f"🛡️ {sq}" for sq in FANTASQUADRE])
+
+    for idx, sq in enumerate(FANTASQUADRE):
+        with tabs_squadre[idx]:
+            df_sq = df_acquisti[df_acquisti["Squadra_Fanta"] == sq]
+            speso = df_sq["Prezzo_Asta"].sum() if not df_sq.empty else 0
+            rimanente = BUDGET_INIZIALE - speso
+
+            col_m1, col_m2, col_m3 = st.columns(3)
+            col_m1.metric("Budget Rimanente", f"{rimanente} cr")
+            col_m2.metric("Crediti Spesi", f"{speso} cr")
+            col_m3.metric("Giocatori Acquistati", f"{len(df_sq)} / 25")
+
+            # Genera e mostra la tabella con esattamente 25 slot
+            df_rosa_completa = genera_struttura_rosa(df_sq)
+            st.dataframe(
+                df_rosa_completa,
+                use_container_width=True,
+                hide_index=True,
+                height=910,
+            )
+
+# --- TAB 3: LISTONE COMPLETO ---
+with tab_listone:
+    st.subheader("Stato del Listone Completo")
+    df_merged = df_listone.copy()
+
+    if not df_acquisti.empty:
+        df_merged = df_merged.merge(
+            df_acquisti[["Giocatore", "Squadra_Fanta", "Prezzo_Asta"]],
+            on="Giocatore",
+            how="left",
+        )
+        df_merged["Squadra_Fanta"] = df_merged["Squadra_Fanta"].fillna(
+            "Libero"
+        )
+        df_merged["Prezzo_Asta"] = df_merged["Prezzo_Asta"].fillna("-")
+    else:
+        df_merged["Squadra_Fanta"] = "Libero"
+        df_merged["Prezzo_Asta"] = "-"
+
+    st.dataframe(
+        df_merged[
+            [
+                "Giocatore",
+                "Ruolo",
+                "Squadra",
+                "Prezzo Medio",
+                "Squadra_Fanta",
+                "Prezzo_Asta",
+            ]
+        ],
+        use_container_width=True,
+        hide_index=True,
+    )
