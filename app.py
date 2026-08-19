@@ -58,28 +58,62 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
-# Memoria degli acquisti
+# Memoria dell'applicazione
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = []
 
-# --- SIDEBAR (PANNELLO DI INSERIMENTO A SINISTRA) ---
+if "target_squadra" not in st.session_state:
+    st.session_state.target_squadra = FANTASQUADRE[0]
+
+if "target_ruolo" not in st.session_state:
+    st.session_state.target_ruolo = "TUTTI"
+
+
+# Funzione per impostare la squadra ed il ruolo selezionati dal click
+def imposta_target(squadra, ruolo):
+    st.session_state.target_squadra = squadra
+    st.session_state.target_ruolo = ruolo
+
+
+# --- SIDEBAR (PANNELLO INSERIMENTO) ---
 st.sidebar.title("🔨 Assegna Giocatore")
 
-# Calcola i giocatori già presi per escluderli dalla ricerca
+# Calcola i giocatori già presi per escluderli
 giocatori_presi = [a["Giocatore"] for a in st.session_state.acquisti]
 df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-# Ricerca del giocatore con completamento automatico
+# Filtro automatico per il ruolo selezionato cliccando sulla tabella
+ruolo_selezionato = st.sidebar.radio(
+    "Filtro Ruolo:",
+    options=["TUTTI", "P", "D", "C", "A"],
+    index=["TUTTI", "P", "D", "C", "A"].index(st.session_state.target_ruolo),
+    horizontal=True,
+)
+
+if ruolo_selezionato != "TUTTI":
+    df_filtrati = df_disponibili[
+        df_disponibili["Ruolo"] == ruolo_selezionato
+    ]
+else:
+    df_filtrati = df_disponibili
+
+# Ricerca del giocatore
 giocatore_selezionato = st.sidebar.selectbox(
     "Cerca Nome Giocatore:",
-    options=sorted(df_disponibili["Giocatore"].tolist()),
+    options=sorted(df_filtrati["Giocatore"].tolist()),
     index=None,
-    placeholder="Inizia a scrivere il nome...",
+    placeholder=f"Scrivi un nome ({ruolo_selezionato})...",
+)
+
+squadra_dest = st.sidebar.selectbox(
+    "Fantasquadra:",
+    options=FANTASQUADRE,
+    index=FANTASQUADRE.index(st.session_state.target_squadra),
 )
 
 if giocatore_selezionato:
-    info_g = df_disponibili[
-        df_disponibili["Giocatore"] == giocatore_selezionato
+    info_g = df_filtrati[
+        df_filtrati["Giocatore"] == giocatore_selezionato
     ].iloc[0]
 
     st.sidebar.info(
@@ -87,12 +121,10 @@ if giocatore_selezionato:
         f"**Prezzo Medio (FM):** {int(info_g['Prezzo_Numerico'])}"
     )
 
-    squadra_dest = st.sidebar.selectbox("Fantasquadra:", options=FANTASQUADRE)
     costo_asta = st.sidebar.number_input(
         "Costo d'acquisto:", min_value=1, value=1, step=1
     )
 
-    # Verifica se la squadra ha posto per quel ruolo
     ruolo_g = info_g["Ruolo"]
     presi_ruolo = len(
         [
@@ -105,7 +137,7 @@ if giocatore_selezionato:
 
     if presi_ruolo >= max_slot:
         st.sidebar.error(
-            f"❌ {squadra_dest} ha già coperto tutti i {max_slot} slot per il ruolo {ruolo_g}!"
+            f"❌ {squadra_dest} ha già coperto i {max_slot} slot per il ruolo {ruolo_g}!"
         )
     else:
         if st.sidebar.button("✅ Inserisci in Rosa", use_container_width=True):
@@ -126,76 +158,79 @@ if st.session_state.acquisti:
         st.session_state.acquisti.pop()
         st.rerun()
 
-# --- AREA PRINCIPALE: TABELLONI DELLE 10 SQUADRE ---
+
+# --- AREA PRINCIPALE (TABELLONI INTERATTIVI) ---
 st.title("⚽ Tabellone Asta Fantacalcio")
 
 
-def genera_html_tabella(nome_squadra):
+def render_squadra_table(nome_squadra):
     acquisti_sq = [
         a
         for a in st.session_state.acquisti
         if a["Squadra_Fanta"] == nome_squadra
     ]
 
-    rows = []
+    # Header Tabella
+    st.markdown(
+        f"""
+        <div style="background-color: #2d2d2d; color: white; text-align: center; font-weight: bold; padding: 6px; border: 1px solid #444; border-bottom: none; text-transform: uppercase;">
+            {nome_squadra}
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Intestazione colonne
+    c_r, c_n, c_c, c_d = st.columns([0.15, 0.45, 0.20, 0.20])
+    c_r.markdown("**Ruolo**")
+    c_n.markdown("**Nome**")
+    c_c.markdown("**Costo**")
+    c_d.markdown("**Diff.**")
+
+    # Generazione righe slot per ruolo
     for ruolo, num_slots in SLOTS.items():
         giocatori_ruolo = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
 
         for i in range(num_slots):
-            if i < len(giocatori_ruolo):
-                g = giocatori_ruolo[i]
-                nome = g["Giocatore"]
-                costo = g["Costo"]
-                diff = costo - g["Prezzo_Medio"]
-
-                if diff > 0:
-                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #ff4d4d; font-weight: bold;">+{diff}</td>'
-                elif diff < 0:
-                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #2eb82e; font-weight: bold;">{diff}</td>'
-                else:
-                    diff_td = '<td style="padding: 2px 6px; text-align: right; color: #aaa;">0</td>'
-
-                costo_txt = str(costo)
-            else:
-                nome = ""
-                costo_txt = ""
-                diff_td = '<td style="padding: 2px 6px;"></td>'
-
-            rows.append(
-                f'<tr style="border-bottom: 1px solid #333;">'
-                f'<td style="padding: 2px 6px; font-weight: bold; width: 12%; border-right: 1px solid #333;">{ruolo}</td>'
-                f'<td style="padding: 2px 6px; width: 50%; border-right: 1px solid #333;">{nome}</td>'
-                f'<td style="padding: 2px 6px; text-align: right; width: 18%; border-right: 1px solid #333;">{costo_txt}</td>'
-                f"{diff_td}"
-                f"</tr>"
+            col_ruolo, col_nome, col_costo, col_diff = st.columns(
+                [0.15, 0.45, 0.20, 0.20]
             )
 
-    table_rows = "".join(rows)
+            col_ruolo.markdown(f"**{ruolo}**")
 
-    html = f"""<table style="width:100%; border-collapse: collapse; border: 1px solid #444; font-size: 13px; font-family: sans-serif; background-color: #1a1a1a; color: #ffffff; margin-bottom: 25px;">
-<thead>
-<tr style="background-color: #2d2d2d; border-bottom: 1px solid #444;">
-<th colspan="4" style="padding: 6px; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #ffffff;">{nome_squadra}</th>
-</tr>
-<tr style="background-color: #222222; border-bottom: 1px solid #444; font-size: 12px; color: #bbb;">
-<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #333;">Ruolo</th>
-<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #333;">Nome</th>
-<th style="padding: 4px 6px; text-align: right; border-right: 1px solid #333;">Costo</th>
-<th style="padding: 4px 6px; text-align: right;">Differenza</th>
-</tr>
-</thead>
-<tbody>{table_rows}</tbody>
-</table>"""
-    return html
+            if i < len(giocatori_ruolo):
+                g = giocatori_ruolo[i]
+                col_nome.write(g["Giocatore"])
+                col_costo.write(str(g["Costo"]))
+
+                diff = g["Costo"] - g["Prezzo_Medio"]
+                if diff > 0:
+                    col_diff.markdown(f":red[**+{diff}**]")
+                elif diff < 0:
+                    col_diff.markdown(f":green[**{diff}**]")
+                else:
+                    col_diff.write("0")
+            else:
+                # Pulsante per selezionare lo slot libero
+                col_nome.button(
+                    "➕ Seleziona",
+                    key=f"btn_{nome_squadra}_{ruolo}_{i}",
+                    on_click=imposta_target,
+                    args=(nome_squadra, ruolo),
+                )
+                col_costo.write("-")
+                col_diff.write("-")
 
 
-# Disposizione delle tabelle a due a due
+# Disposizione tabelle affiancate a due a due
 for i in range(0, 10, 2):
-    col1, col2 = st.columns(2)
+    c1, c2 = st.columns(2)
 
-    with col1:
-        st.html(genera_html_tabella(FANTASQUADRE[i]))
+    with c1:
+        render_squadra_table(FANTASQUADRE[i])
+        st.divider()
 
-    with col2:
+    with c2:
         if i + 1 < 10:
-            st.html(genera_html_tabella(FANTASQUADRE[i + 1]))
+            render_squadra_table(FANTASQUADRE[i + 1])
+            st.divider()
