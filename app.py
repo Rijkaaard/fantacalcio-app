@@ -131,29 +131,13 @@ st.title("⚽ Tabellone Asta Fantacalcio")
 
 
 def genera_html_tabella(nome_squadra):
-    """Genera la tabella in stile Excel esattamente come richiesto"""
     acquisti_sq = [
         a
         for a in st.session_state.acquisti
         if a["Squadra_Fanta"] == nome_squadra
     ]
 
-    html = f"""
-    <table style="width:100%; border-collapse: collapse; border: 1px solid #333; font-family: sans-serif; font-size: 13px; margin-bottom: 25px;">
-        <thead>
-            <tr style="background-color: #e6e6e6; color: black; font-weight: bold; text-align: center; border-bottom: 1px solid #333;">
-                <th colspan="4" style="padding: 6px; font-size: 15px; text-transform: uppercase;">{nome_squadra}</th>
-            </tr>
-            <tr style="background-color: #f2f2f2; color: black; border-bottom: 1px solid #333; text-align: left;">
-                <th style="padding: 4px 8px; width: 15%; border-right: 1px solid #ccc;">Ruolo</th>
-                <th style="padding: 4px 8px; width: 45%; border-right: 1px solid #ccc;">Nome</th>
-                <th style="padding: 4px 8px; width: 20%; text-align: right; border-right: 1px solid #ccc;">Costo</th>
-                <th style="padding: 4px 8px; width: 20%; text-align: right;">Differenza</th>
-            </tr>
-        </thead>
-        <tbody>
-    """
-
+    rows = []
     for ruolo, num_slots in SLOTS.items():
         giocatori_ruolo = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
 
@@ -164,48 +148,54 @@ def genera_html_tabella(nome_squadra):
                 costo = g["Costo"]
                 diff = costo - g["Prezzo_Medio"]
 
-                # Formattazione differenza con i colori verde/rosso
                 if diff > 0:
-                    diff_txt = f"+{diff}"
-                    diff_style = "color: red; font-weight: bold;"
+                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #ff4d4d; font-weight: bold;">+{diff}</td>'
                 elif diff < 0:
-                    diff_txt = f"{diff}"
-                    diff_style = "color: green; font-weight: bold;"
+                    diff_td = f'<td style="padding: 2px 6px; text-align: right; color: #2eb82e; font-weight: bold;">{diff}</td>'
                 else:
-                    diff_txt = "0"
-                    diff_style = "color: black;"
+                    diff_td = '<td style="padding: 2px 6px; text-align: right; color: #aaa;">0</td>'
 
                 costo_txt = str(costo)
             else:
                 nome = ""
                 costo_txt = ""
-                diff_txt = ""
-                diff_style = ""
+                diff_td = '<td style="padding: 2px 6px;"></td>'
 
-            html += f"""
-            <tr style="border-bottom: 1px solid #e0e0e0;">
-                <td style="padding: 3px 8px; font-weight: bold; border-right: 1px solid #ccc;">{ruolo}</td>
-                <td style="padding: 3px 8px; border-right: 1px solid #ccc;">{nome}</td>
-                <td style="padding: 3px 8px; text-align: right; border-right: 1px solid #ccc;">{costo_txt}</td>
-                <td style="padding: 3px 8px; text-align: right; {diff_style}">{diff_txt}</td>
-            </tr>
-            """
+            rows.append(
+                f'<tr style="border-bottom: 1px solid #333;">'
+                f'<td style="padding: 2px 6px; font-weight: bold; width: 12%; border-right: 1px solid #333;">{ruolo}</td>'
+                f'<td style="padding: 2px 6px; width: 50%; border-right: 1px solid #333;">{nome}</td>'
+                f'<td style="padding: 2px 6px; text-align: right; width: 18%; border-right: 1px solid #333;">{costo_txt}</td>'
+                f"{diff_td}"
+                f"</tr>"
+            )
 
-    html += "</tbody></table>"
+    table_rows = "".join(rows)
+
+    html = f"""<table style="width:100%; border-collapse: collapse; border: 1px solid #444; font-size: 13px; font-family: sans-serif; background-color: #1a1a1a; color: #ffffff; margin-bottom: 25px;">
+<thead>
+<tr style="background-color: #2d2d2d; border-bottom: 1px solid #444;">
+<th colspan="4" style="padding: 6px; font-size: 14px; text-align: center; text-transform: uppercase; letter-spacing: 1px; color: #ffffff;">{nome_squadra}</th>
+</tr>
+<tr style="background-color: #222222; border-bottom: 1px solid #444; font-size: 12px; color: #bbb;">
+<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #333;">Ruolo</th>
+<th style="padding: 4px 6px; text-align: left; border-right: 1px solid #333;">Nome</th>
+<th style="padding: 4px 6px; text-align: right; border-right: 1px solid #333;">Costo</th>
+<th style="padding: 4px 6px; text-align: right;">Differenza</th>
+</tr>
+</thead>
+<tbody>{table_rows}</tbody>
+</table>"""
     return html
 
 
-# Disposizione delle tabelle a due a due (2 colonne per riga)
+# Disposizione delle tabelle a due a due
 for i in range(0, 10, 2):
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown(
-            genera_html_tabella(FANTASQUADRE[i]), unsafe_allow_html=True
-        )
+        st.html(genera_html_tabella(FANTASQUADRE[i]))
 
     with col2:
         if i + 1 < 10:
-            st.markdown(
-                genera_html_tabella(FANTASQUADRE[i + 1]), unsafe_allow_html=True
-            )
+            st.html(genera_html_tabella(FANTASQUADRE[i + 1]))
