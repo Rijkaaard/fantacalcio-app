@@ -262,6 +262,36 @@ st.markdown(
         align-items: center;
         justify-content: flex-end;
     }
+
+    /* Stile personalizzato per la classifica crediti */
+    .ranking-row {
+        background: #171033;
+        border: 1px solid #282045;
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+        font-size: 13px;
+    }
+    .ranking-info {
+        font-weight: 700;
+        color: #ffffff;
+    }
+    .ranking-sub {
+        font-size: 11px;
+        color: #9ca3af;
+        margin-left: 8px;
+    }
+    .ranking-badge {
+        background: #1f173b;
+        color: #fbbf24;
+        font-weight: 700;
+        padding: 4px 10px;
+        border-radius: 6px;
+        border: 1px solid #3b2c63;
+    }
     </style>
 """,
     unsafe_allow_html=True,
@@ -494,30 +524,35 @@ def render_control_panel():
                 st.info("Nessun calciatore ancora assegnato.")
 
         with tab_classifica:
-            # Calcolo e ordinamento delle squadre in base ai crediti residui (dal più alto al più basso)
             dati_classifica = []
             for s_info in SQUADRE_INFO:
                 sq_full = f"{s_info['nome']} - {s_info['mister']}"
                 rimasti, tot_giocatori, max_off, acquisti_sq = get_squadra_stats(sq_full)
-                spesi = BUDGET_INIZIALE - rimasti
                 dati_classifica.append({
                     "Squadra": s_info['nome'],
                     "Mister": s_info['mister'],
-                    "Crediti Residui": rimasti,
-                    "Crediti Spesi": spesi,
-                    "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}",
-                    "Offerta Max": max_off if max_off > 0 else 0
+                    "Crediti": rimasti,
+                    "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}"
                 })
             
-            df_classifica = pd.DataFrame(dati_classifica)
-            df_classifica = df_classifica.sort_values(by="Crediti Residui", ascending=False).reset_index(drop=True)
-            df_classifica.index = df_classifica.index + 1  # Partiamo da 1 per la posizione
+            # Ordinamento dal più alto al più basso per crediti
+            dati_classifica = sorted(dati_classifica, key=lambda x: x["Crediti"], reverse=True)
 
-            st.dataframe(
-                df_classifica[["Squadra", "Mister", "Crediti Residui", "Crediti Spesi", "Rosa", "Offerta Max"]],
-                use_container_width=True,
-                height=220
-            )
+            for idx, item in enumerate(dati_classifica, start=1):
+                st.markdown(
+                    f'<div class="ranking-row">'
+                    f'<div>'
+                    f'<span style="font-weight: 800; color: #a78bfa; margin-right: 10px;">{idx}.</span>'
+                    f'<span class="ranking-info">{item["Squadra"]}</span>'
+                    f'<span class="ranking-sub">({item["Mister"]})</span>'
+                    f'</div>'
+                    f'<div style="display: flex; align-items: center; gap: 12px;">'
+                    f'<span style="font-size: 11px; color: #9ca3af;">Rosa: {item["Rosa"]}</span>'
+                    f'<span class="ranking-badge">🟡 {item["Crediti"]} crediti</span>'
+                    f'</div>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
 
 if not is_tv_mode:
     render_control_panel()
