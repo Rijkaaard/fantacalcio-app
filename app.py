@@ -149,7 +149,7 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* CUSTOM RUOLI PILLS IDENTICI ALLO SCREENSHOT */
+    /* CUSTOM RUOLI PILLS */
     .role-pills-container {
         display: flex;
         align-items: center;
@@ -322,7 +322,6 @@ st.markdown(
         border-bottom: 1px solid #4c0519; 
     }
 
-    /* Badge ruolo per la preview */
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
@@ -340,7 +339,6 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* Cella vuota: trasparente con bordo viola chiaro originale */
     .player-cell {
         height: 22px;
         width: 100%;
@@ -356,31 +354,15 @@ st.markdown(
         font-size: 9.5px;
     }
 
-    /* Cella piena: uniforme con angoli arrotondati a 3px */
     .player-cell-filled {
         border: 1px solid rgba(0, 0, 0, 0.5) !important;
         border-radius: 3px !important;
     }
 
-    /* Portieri (P): Sfumatura Arancione brillante/scuro */
-    .player-cell-p {
-        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
-    }
-
-    /* Difensori (D): Verde scuro */
-    .player-cell-d {
-        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
-    }
-
-    /* Centrocampisti (C): Blu scuro */
-    .player-cell-c {
-        background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important;
-    }
-
-    /* Attaccanti (A): Rosso scuro */
-    .player-cell-a {
-        background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
-    }
+    .player-cell-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
+    .player-cell-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
+    .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
+    .player-cell-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
 
     .player-cell-left {
         display: flex;
@@ -413,7 +395,6 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Top 3 Affari Centrato e Staccato dai Bordi */
     .deal-box-single {
         background: #1a1d33;
         border: 1px solid #282c4a;
@@ -468,7 +449,6 @@ st.markdown(
         line-height: 1;
     }
 
-    /* Classifica Crediti */
     .ranking-row {
         background: #15182b;
         border: 1px solid #232740;
@@ -498,7 +478,6 @@ st.markdown(
         border: 1px solid #282c4a;
     }
 
-    /* Pulsanti di conferma generici */
     .stButton button {
         background-color: #0284c7;
         color: white;
@@ -571,27 +550,11 @@ def get_logo_base64_cached(squadra):
         return ALL_LOGOS[sq_str]
     return ""
 
-def get_logo_path(squadra):
-    if not squadra or pd.isna(squadra):
-        return None
-    sq_str = str(squadra).strip().upper()
-    codice_squadra = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
-    estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
-    for ext in estensioni:
-        path = os.path.join("loghi", f"{codice_squadra}.{ext}")
-        if os.path.exists(path):
-            return path
-        path_lower = os.path.join("loghi", f"{codice_squadra.lower()}.{ext}")
-        if os.path.exists(path_lower):
-            return path_lower
-    return None
-
 df_listone = load_data("fantalab_listone.csv")
 
 if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
-
 
 def get_squadra_stats(nome_squadra):
     acquisti = [a for a in st.session_state.acquisti if a["Squadra_Fanta"] == nome_squadra]
@@ -616,7 +579,6 @@ def render_control_panel():
     giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
     df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-    # Colonna Sinistra: Widget Aggiungi, Svincola, Top 3 Migliori/Peggiori Affari
     with col_gestione:
         # WIDGET 1: AGGIUNGI CALCIATORE
         with st.container(border=True):
@@ -624,7 +586,6 @@ def render_control_panel():
 
             f_col1, f_col2 = st.columns([1.5, 1])
             with f_col1:
-                # PULSANTI FILTRO RUOLO IDENTICI ALLO SCREENSHOT
                 c_tut, c_p, c_d, c_c, c_a = st.columns([2.2, 1, 1, 1, 1])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
@@ -737,11 +698,12 @@ def render_control_panel():
             if giocatore_selezionato and not btn_conferma:
                 info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
                 squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-                logo_path = get_logo_path(squadra_serie_a)
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
+                # FIX BLOCCO: Utilizzo sicuro di get_logo_base64_cached senza open() fatali
+                logo_b64 = get_logo_base64_cached(squadra_serie_a)
+                logo_html = f'<img src="{logo_b64}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" />' if logo_b64 else ""
                 
                 st.markdown(
                     f'<div class="player-preview-box">'
@@ -782,20 +744,18 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
-        # CALCOLO LOGICA SCALARE TOP 3 AFFARI
+        # CALCOLO TOP 3 AFFARI
         acquisti_validi = [
             a for a in st.session_state.acquisti 
             if a.get("Prezzo_Medio", 0) > 0 and a["Costo"] != a["Prezzo_Medio"]
         ]
 
-        # Top 3 Migliori: Ordinati per scarto decrescente (Prezzo_Medio - Costo)
         migliori_affari = sorted(
             [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) > 0],
             key=lambda x: (x["Prezzo_Medio"] - x["Costo"]),
             reverse=True
         )[:3]
 
-        # Top 3 Peggiori: Ordinati per scarto crescente (Prezzo_Medio - Costo)
         peggiori_affari = sorted(
             [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
             key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
@@ -837,7 +797,7 @@ def render_control_panel():
             </div>
             '''
 
-        # WIDGET 3 & 4: TOP 3 MIGLIORI E PEGGIORI AFFARI (AFFIANCATI FIANCO A FIANCO)
+        # WIDGET 3 & 4: TOP 3 MIGLIORI E PEGGIORI AFFARI
         col_top_best, col_top_worst = st.columns(2)
 
         with col_top_best:
@@ -870,7 +830,6 @@ def render_control_panel():
 
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
-        # WIDGET 5: CLASSIFICA CREDITI
         st.markdown('<div class="classifica-container">', unsafe_allow_html=True)
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
@@ -909,7 +868,7 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO OGNI 5 SECONDI)
+# 2. TABELLONE FRAGMENT
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
