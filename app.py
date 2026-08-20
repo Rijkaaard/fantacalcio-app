@@ -325,38 +325,43 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Affari */
+    /* Widget Affari Spazioso */
     .deal-card-content {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 4px 0;
+        padding: 8px 4px;
     }
     .deal-player-name {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
     .deal-logos-row {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
-        margin-bottom: 4px;
+        gap: 12px;
+        margin-bottom: 8px;
     }
     .deal-logo-img {
-        width: 22px;
-        height: 22px;
+        width: 32px;
+        height: 32px;
         object-fit: contain;
     }
+    .deal-arrow {
+        color: #38bdf8;
+        font-size: 16px;
+        font-weight: bold;
+    }
     .deal-price-info {
-        font-size: 10.5px;
+        font-size: 11px;
         font-weight: 700;
     }
 
@@ -646,23 +651,21 @@ def render_control_panel():
         worst_deal = None
 
         if acquisti_validi:
-            # Differenza = Prezzo Medio - Costo (più è alta, più è un affare)
             best_deal = max(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
             worst_deal = min(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
 
-            # Se la differenza del migliore non è positiva (>0), non c'è un vero affare
             if (best_deal["Prezzo_Medio"] - best_deal["Costo"]) <= 0:
                 best_deal = None
 
-            # Se la differenza del peggiore non è negativa (<0), non c'è un vero peggior affare
             if (worst_deal["Prezzo_Medio"] - worst_deal["Costo"]) >= 0:
                 worst_deal = None
 
         def render_deal_card(deal_data, title, title_color, price_color):
             if not deal_data:
-                return f'<div style="text-align:center; font-size:11px; color:#64748b; padding:10px 0;">Nessun dato</div>'
+                return f'<div style="text-align:center; font-size:11px; color:#64748b; padding:15px 0;">Nessun dato</div>'
             
             g_nome = deal_data["Giocatore"]
+            ruolo = deal_data.get("Ruolo", "")
             costo = deal_data["Costo"]
             p_medio = deal_data["Prezzo_Medio"]
 
@@ -674,13 +677,15 @@ def render_control_panel():
             nome_fanta = sq_fanta_full.split(" - ")[0]
             codice_fanta = MAPPA_NOME_CODICE_FANTA.get(nome_fanta, nome_fanta)
             logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
-            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:11px; color:#f8fafc;">{codice_fanta}</strong>'
+            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:12px; color:#f8fafc;">{codice_fanta}</strong>'
+
+            ruolo_str = f" ({ruolo})" if ruolo else ""
 
             return (
                 f'<div class="deal-card-content">'
-                f'<div class="deal-player-name">{g_nome}</div>'
-                f'<div class="deal-logos-row">{logo_sa_html} <span style="color:#64748b; font-weight:bold; font-size:12px;">➡️</span> {logo_fanta_html}</div>'
-                f'<div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:9.5px; font-weight:normal;">(Medio: {p_medio} FM)</span></div>'
+                f'<div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>'
+                f'<div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>'
+                f'<div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:10px; font-weight:normal;">(Medio: {p_medio} FM)</span></div>'
                 f'</div>'
             )
 
