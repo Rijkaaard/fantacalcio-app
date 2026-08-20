@@ -320,6 +320,7 @@ st.markdown(
         align-items: center;
         justify-content: flex-end;
         font-weight: 700;
+        color: #ffffff !important;
     }
 
     /* Classifica Crediti */
@@ -686,15 +687,6 @@ def render_board_fragment():
                     logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
 
                     costo = g["Costo"]
-                    prezzo_medio = g.get("Prezzo_Medio", 0)
-
-                    if costo < prezzo_medio:
-                        colore_prezzo = "#22c55e"
-                    elif costo > prezzo_medio:
-                        colore_prezzo = "#ef4444"
-                    else:
-                        colore_prezzo = "#facc15"
-
                     cell_role_class = f"player-cell-{ruolo.lower()}"
 
                     col_content.append(
@@ -704,7 +696,7 @@ def render_board_fragment():
                         f'<span class="player-cell-name">{nome_g}</span>'
                         f'</div>'
                         f'<div class="player-cell-right">'
-                        f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
+                        f'<span class="player-cell-cost">{costo}</span>'
                         f'</div>'
                         f'</div>'
                     )
