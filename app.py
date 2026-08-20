@@ -43,7 +43,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🧼 PULIZIA INTERFACCIA E ANTISFARFALLIO CSS
+# 🧼 PULIZIA INTERFACCIA CSS
 # ==============================================================================
 hide_st_style = """
     <style>
@@ -52,12 +52,6 @@ hide_st_style = """
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     .stApp {padding-top: 0px !important;}
-    
-    .stApp, .stApp > div, [data-testid="stVerticalBlock"], [data-testid="stFragment"] {
-        opacity: 1 !important;
-        filter: none !important;
-        transition: none !important;
-    }
     [data-testid="stStatusWidget"] {
         display: none !important;
     }
@@ -277,7 +271,7 @@ st.markdown(
 )
 
 # ==============================================================================
-# CARICAMENTO DATI E CACHE PER I LOGHI (ZERO SFARFALLIO)
+# CARICAMENTO DATI E CACHE LOGHI
 # ==============================================================================
 def load_data(file_path):
     if not os.path.exists(file_path):
@@ -503,7 +497,7 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO SILENZIOSO AUTOMATICO OGNI 3 SECONDI)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO OGNI 3 SECONDI)
 # ==============================================================================
 @st.fragment(run_every=3)
 def render_board_fragment():
