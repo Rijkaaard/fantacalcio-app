@@ -84,81 +84,80 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB"
+# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" ORIGINALE (ESATTO COME A DESTRA)
 # ==============================================================================
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Palette e Sfondo Generale stile FantaLab Dashboard */
+    /* Sfondo generale blu scuro profondo tipico di FantaLab */
     html, body, [class*="css"], .stApp {
-        background-color: #0b1120 !important;
-        color: #f1f5f9;
+        background-color: #0b0c16 !important;
+        color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
     }
 
     .stMainBlockContainer {
-        padding-top: 1rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-top: 0.8rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
         max-width: 100% !important;
     }
 
-    /* Container pannelli stile card flat moderna */
+    /* Container pannelli stile box scuro con bordo fine */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #111827 !important;
-        border: 1px solid #1f2937 !important;
-        border-radius: 10px !important;
-        padding: 14px 18px !important;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
-        margin-bottom: 8px !important;
+        background: #131525 !important;
+        border: 1px solid #23263b !important;
+        border-radius: 8px !important;
+        padding: 10px 14px !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        margin-bottom: 6px !important;
     }
 
     /* Titoli delle sezioni */
     .card-title {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         color: #38bdf8;
-        letter-spacing: 0.8px;
-        margin-bottom: 8px;
+        letter-spacing: 0.5px;
+        margin-bottom: 6px;
         text-transform: uppercase;
         display: flex;
         align-items: center;
         gap: 6px;
     }
 
-    /* Griglia del tabellone */
+    /* Griglia del tabellone - Colonne compatte e allineate */
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(130px, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(10, minmax(120px, 1fr));
+        gap: 6px;
         width: 100%;
         overflow-x: auto;
-        padding-bottom: 20px;
-        padding-top: 5px;
+        padding-bottom: 15px;
+        padding-top: 2px;
     }
 
     /* Colonna Squadra */
     .team-column {
-        background: #111827;
-        border: 1px solid #1f2937;
-        border-radius: 8px;
+        background: #111322;
+        border: 1px solid #1f2238;
+        border-radius: 6px;
         overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
     .team-header {
-        background: #1f2937;
-        padding: 8px 6px;
+        background: #1a1d33;
+        padding: 6px 4px;
         text-align: center;
-        border-bottom: 2px solid #374151;
+        border-bottom: 2px solid #282c4a;
     }
     
     .team-logo-container {
-        width: 44px;
-        height: 44px;
-        margin: 0 auto 4px auto;
+        width: 38px;
+        height: 38px;
+        margin: 0 auto 3px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
@@ -172,87 +171,88 @@ st.markdown(
     }
 
     .team-header-name {
-        font-size: 10px;
+        font-size: 9px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 2px;
+        margin-bottom: 1px;
     }
     .team-header-budget {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 800;
-        color: #f59e0b;
-        margin: 2px 0;
+        color: #facc15;
+        margin: 1px 0;
     }
     .team-header-sub {
         display: flex;
         justify-content: space-between;
-        font-size: 8px;
+        font-size: 7.5px;
         color: #94a3b8;
         padding: 0 2px;
         font-weight: 600;
     }
 
-    /* Barre dei Ruoli stile FantaLab */
+    /* Barre dei Ruoli FantaLab (Stile esatto con colori P, D, C, A distinti) */
     .role-bar {
-        font-size: 9px;
+        font-size: 8.5px;
         font-weight: 700;
-        padding: 3px 6px;
+        padding: 2px 5px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.3px;
     }
     .role-p { background-color: #b45309; border-top: 1px solid #d97706; border-bottom: 1px solid #d97706; }
-    .role-d { background-color: #166534; border-top: 1px solid #22c55e; border-bottom: 1px solid #22c55e; }
-    .role-c { background-color: #1e40af; border-top: 1px solid #3b82f6; border-bottom: 1px solid #3b82f6; }
-    .role-a { background-color: #9f1239; border-top: 1px solid #f43f5e; border-bottom: 1px solid #f43f5e; }
+    .role-d { background-color: #15803d; border-top: 1px solid #22c55e; border-bottom: 1px solid #22c55e; }
+    .role-c { background-color: #1d4ed8; border-top: 1px solid #3b82f6; border-bottom: 1px solid #3b82f6; }
+    .role-a { background-color: #be123c; border-top: 1px solid #f43f5e; border-bottom: 1px solid #f43f5e; }
 
     /* Badge ruolo per la preview */
-    .badge-ruolo-p { background-color: #d97706; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
-    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-ruolo-p { background-color: #d97706; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
 
     .player-preview-box {
-        background: #1f2937;
-        border: 1px solid #374151;
-        border-radius: 8px;
-        padding: 10px 14px;
+        background: #1a1d33;
+        border: 1px solid #2e3352;
+        border-radius: 6px;
+        padding: 8px 12px;
         display: flex;
         align-items: center;
-        gap: 12px;
-        margin-top: 8px;
-        margin-bottom: 4px;
+        gap: 10px;
+        margin-top: 6px;
+        margin-bottom: 2px;
     }
 
+    /* Celle calciatore ultra-compatte stile FantaLab */
     .player-cell {
-        height: 24px;
-        background: #0f172a;
-        border-bottom: 1px solid #1e293b;
+        height: 22px;
+        background: #0e101d;
+        border-bottom: 1px solid #181b2e;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 5px;
-        font-size: 10px;
+        padding: 0 4px;
+        font-size: 9.5px;
     }
     .player-cell:nth-child(even) {
-        background: #111827;
+        background: #111322;
     }
 
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
-        max-width: 92px;
+        max-width: 88px;
     }
 
     .player-team-logo {
-        width: 13px;
-        height: 13px;
+        width: 12px;
+        height: 12px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -272,48 +272,47 @@ st.markdown(
         font-weight: 700;
     }
 
-    /* Classifica Crediti stile FantaLab */
+    /* Classifica Crediti */
     .ranking-row {
-        background: #182232;
-        border: 1px solid #273548;
-        border-radius: 6px;
-        padding: 7px 10px;
+        background: #15182b;
+        border: 1px solid #232740;
+        border-radius: 5px;
+        padding: 6px 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 5px;
-        font-size: 12px;
+        margin-bottom: 4px;
+        font-size: 11px;
     }
     .ranking-info {
         font-weight: 600;
         color: #ffffff;
     }
     .ranking-sub {
-        font-size: 10px;
+        font-size: 9.5px;
         color: #94a3b8;
-        margin-left: 5px;
+        margin-left: 4px;
     }
     .ranking-badge {
-        background: #111827;
-        color: #f59e0b;
+        background: #0f111e;
+        color: #facc15;
         font-weight: 700;
-        padding: 3px 8px;
+        padding: 2px 7px;
         border-radius: 4px;
-        border: 1px solid #374151;
+        border: 1px solid #282c4a;
     }
 
-    /* Personalizzazione Pulsanti Streamlit per look FantaLab */
+    /* Pulsanti stile FantaLab */
     .stButton button {
         background-color: #0284c7 !important;
         color: white !important;
         font-weight: 600 !important;
-        border-radius: 6px !important;
+        border-radius: 5px !important;
         border: none !important;
         transition: all 0.2s ease;
     }
     .stButton button:hover {
         background-color: #0369a1 !important;
-        border-color: transparent !important;
     }
     </style>
 """,
@@ -510,14 +509,14 @@ def render_control_panel():
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:26px; height:26px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
                 
                 st.markdown(
                     f'<div class="player-preview-box">'
                     f'{logo_html}'
-                    f'<span style="font-size: 14px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
+                    f'<span style="font-size: 13px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
                     f'<span class="{badge_class}">{ruolo_g}</span>'
-                    f'<span style="margin-left: auto; font-size: 12px; color: #f59e0b; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'<span style="margin-left: auto; font-size: 11px; color: #facc15; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
@@ -584,7 +583,7 @@ def render_control_panel():
                     f'<span class="ranking-sub">({item["Mister"]})</span>'
                     f'</div>'
                     f'<div style="display: flex; align-items: center; gap: 8px;">'
-                    f'<span style="font-size: 10px; color: #94a3b8;">{item["Rosa"]}</span>'
+                    f'<span style="font-size: 9.5px; color: #94a3b8;">{item["Rosa"]}</span>'
                     f'<span class="ranking-badge">🟡 {item["Crediti"]}</span>'
                     f'</div>'
                     f'</div>',
@@ -654,7 +653,7 @@ def render_board_fragment():
                     elif costo > prezzo_medio:
                         colore_prezzo = "#ef4444"
                     else:
-                        colore_prezzo = "#f59e0b"
+                        colore_prezzo = "#facc15"
 
                     col_content.append(
                         f'<div class="player-cell">'
@@ -668,7 +667,7 @@ def render_board_fragment():
                         f'</div>'
                     )
                 else:
-                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#334155;">-</span></div>')
+                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#282c4a;">-</span></div>')
 
         col_content.append("</div>")
         cols_html.append("".join(col_content))
