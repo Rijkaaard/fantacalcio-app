@@ -235,7 +235,7 @@ st.markdown(
     }
 
     /* Badge ruolo per la preview */
-    .badge-ruolo-p { background-color: #d97706; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
@@ -258,7 +258,7 @@ st.markdown(
         width: 100%;
         background: transparent;
         border: 1px solid rgba(167, 139, 250, 0.25) !important;
-        border-radius: 3px;
+        border-radius: 3px !important;
         margin: 2px 0;
         box-sizing: border-box;
         display: flex;
@@ -268,15 +268,15 @@ st.markdown(
         font-size: 9.5px;
     }
 
-    /* Cella piena: sfumatura scura e discreta stile screenshot + bordo nero tenue */
+    /* Cella piena: uniforme con angoli arrotondati a 3px */
     .player-cell-filled {
         border: 1px solid rgba(0, 0, 0, 0.5) !important;
-        border-radius: 5px !important;
+        border-radius: 3px !important;
     }
 
-    /* Portieri (P): Giallo-Aranciato scuro */
+    /* Portieri (P): Sfumatura Arancione brillante/scuro */
     .player-cell-p {
-        background: linear-gradient(90deg, #18150b 0%, #3a2b09 50%, #1e1709 100%) !important;
+        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
     }
 
     /* Difensori (D): Verde scuro */
@@ -325,43 +325,59 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Affari Spazioso */
+    /* Widget Top 3 Affari Spazioso */
+    .deal-box-single {
+        background: #1a1d33;
+        border: 1px solid #282c4a;
+        border-radius: 6px;
+        padding: 6px 4px;
+        min-height: 85px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
     .deal-card-content {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-        padding: 8px 4px;
+    }
+    .deal-rank-title {
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin-bottom: 2px;
     }
     .deal-player-name {
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        max-width: 100%;
     }
     .deal-logos-row {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 12px;
-        margin-bottom: 8px;
+        gap: 8px;
+        margin-bottom: 4px;
     }
     .deal-logo-img {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
     }
     .deal-arrow {
         color: #38bdf8;
-        font-size: 16px;
+        font-size: 12px;
         font-weight: bold;
     }
     .deal-price-info {
-        font-size: 11px;
+        font-size: 9.5px;
         font-weight: 700;
     }
 
@@ -516,7 +532,7 @@ def render_control_panel():
     giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
     df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-    # Colonna Sinistra: Widget Aggiungi, Svincola, Miglior Affare, Peggior Affare
+    # Colonna Sinistra: Widget Aggiungi, Svincola, Top 3 Migliori/Peggiori Affari
     with col_gestione:
         # WIDGET 1: AGGIUNGI CALCIATORE
         with st.container(border=True):
@@ -638,31 +654,35 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
-        # WIDGET 3 & 4: MIGLIOR AFFARE E PEGGIOR AFFARE (AFFIANCATI)
-        col_best, col_worst = st.columns(2)
-
-        # Calcolo affari
+        # CALCOLO LOGICA SCALARE TOP 3 AFFARI
         acquisti_validi = [
             a for a in st.session_state.acquisti 
             if a.get("Prezzo_Medio", 0) > 0 and a["Costo"] != a["Prezzo_Medio"]
         ]
 
-        best_deal = None
-        worst_deal = None
+        # Top 3 Migliori: Ordinati per scarto decrescente (Prezzo_Medio - Costo)
+        migliori_affari = sorted(
+            [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) > 0],
+            key=lambda x: (x["Prezzo_Medio"] - x["Costo"]),
+            reverse=True
+        )[:3]
 
-        if acquisti_validi:
-            best_deal = max(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
-            worst_deal = min(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
+        # Top 3 Peggiori: Ordinati per scarto crescente (Prezzo_Medio - Costo)
+        peggiori_affari = sorted(
+            [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
+            key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
+        )[:3]
 
-            if (best_deal["Prezzo_Medio"] - best_deal["Costo"]) <= 0:
-                best_deal = None
-
-            if (worst_deal["Prezzo_Medio"] - worst_deal["Costo"]) >= 0:
-                worst_deal = None
-
-        def render_deal_card(deal_data, title, title_color, price_color):
+        def render_deal_box(deal_data, label_rank, price_color):
             if not deal_data:
-                return f'<div style="text-align:center; font-size:11px; color:#64748b; padding:15px 0;">Nessun dato</div>'
+                return f'''
+                <div class="deal-box-single">
+                    <div class="deal-card-content">
+                        <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
+                        <div style="font-size:10px; color:#64748b; padding:10px 0;">- N/D -</div>
+                    </div>
+                </div>
+                '''
             
             g_nome = deal_data["Giocatore"]
             ruolo = deal_data.get("Ruolo", "")
@@ -677,27 +697,48 @@ def render_control_panel():
             nome_fanta = sq_fanta_full.split(" - ")[0]
             codice_fanta = MAPPA_NOME_CODICE_FANTA.get(nome_fanta, nome_fanta)
             logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
-            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:12px; color:#f8fafc;">{codice_fanta}</strong>'
+            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:10px; color:#f8fafc;">{codice_fanta}</strong>'
 
             ruolo_str = f" ({ruolo})" if ruolo else ""
 
-            return (
-                f'<div class="deal-card-content">'
-                f'<div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>'
-                f'<div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>'
-                f'<div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:10px; font-weight:normal;">(Medio: {p_medio} FM)</span></div>'
-                f'</div>'
-            )
+            return f'''
+            <div class="deal-box-single">
+                <div class="deal-card-content">
+                    <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
+                    <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>
+                    <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
+                    <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8.5px; font-weight:normal;">(Medio: {p_medio})</span></div>
+                </div>
+            </div>
+            '''
 
-        with col_best:
-            with st.container(border=True):
-                st.markdown('<div class="card-title" style="color: #22c55e;">🌟 MIGLIOR AFFARE</div>', unsafe_allow_html=True)
-                st.markdown(render_deal_card(best_deal, "MIGLIOR AFFARE", "#22c55e", "#22c55e"), unsafe_allow_html=True)
+        # WIDGET 3: TOP 3 MIGLIORI AFFARI
+        with st.container(border=True):
+            st.markdown('<div class="card-title" style="color: #22c55e;">🌟 TOP 3 MIGLIORI AFFARI</div>', unsafe_allow_html=True)
+            col_m1, col_m2, col_m3 = st.columns(3)
+            with col_m1:
+                item_1 = migliori_affari[0] if len(migliori_affari) > 0 else None
+                st.markdown(render_deal_box(item_1, "🥇 1° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+            with col_m2:
+                item_2 = migliori_affari[1] if len(migliori_affari) > 1 else None
+                st.markdown(render_deal_box(item_2, "🥈 2° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+            with col_m3:
+                item_3 = migliori_affari[2] if len(migliori_affari) > 2 else None
+                st.markdown(render_deal_box(item_3, "🥉 3° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
 
-        with col_worst:
-            with st.container(border=True):
-                st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ PEGGIOR AFFARE</div>', unsafe_allow_html=True)
-                st.markdown(render_deal_card(worst_deal, "PEGGIOR AFFARE", "#ef4444", "#ef4444"), unsafe_allow_html=True)
+        # WIDGET 4: TOP 3 PEGGIORI AFFARI
+        with st.container(border=True):
+            st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ TOP 3 PEGGIORI AFFARI</div>', unsafe_allow_html=True)
+            col_p1, col_p2, col_p3 = st.columns(3)
+            with col_p1:
+                item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
+                st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
+            with col_p2:
+                item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
+                st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
+            with col_p3:
+                item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
+                st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
