@@ -452,7 +452,6 @@ def render_control_panel():
                     elif costo_asta > max_offerta:
                         st.error(f"❌ Offerta troppo alta! Offerta Max consentita: **{max_offerta} FM**.")
                     else:
-                        # Salvataggio nel database json
                         nuovo_acquisto = {
                             "Giocatore": info_g["Giocatore"],
                             "Ruolo": ruolo_g,
@@ -463,114 +462,7 @@ def render_control_panel():
                         }
                         st.session_state.acquisti.append(nuovo_acquisto)
                         save_acquisti()
-                        
-                        # Memorizziamo l'ultimo acquisto per l'animazione a schermo
-                        st.session_state.ultimo_acquisto = nuovo_acquisto
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
-
-                # --- ANIMAZIONE / RETTANGOLO NUOVO ACQUISTO ---
-                if "ultimo_acquisto" in st.session_state and st.session_state.ultimo_acquisto:
-                    acq = st.session_state.ultimo_acquisto
-                    sq_sa_name = acq["Squadra_SerieA"]
-                    logo_sa_b64 = get_logo_base64_cached(sq_sa_name)
-                    
-                    fanta_name_full = acq["Squadra_Fanta"]
-                    fanta_code = ""
-                    fanta_short_name = ""
-                    for s in SQUADRE_INFO:
-                        if f"{s['nome']} - {s['mister']}" == fanta_name_full:
-                            fanta_code = s['codice']
-                            fanta_short_name = s['nome']
-                            break
-                    
-                    logo_fanta_b64 = get_logo_base64_cached(fanta_code)
-
-                    # Nota: le graffe del CSS qui sotto sono raddoppiate {{ }} per evitare il SyntaxError
-                    st.markdown(f"""
-                        <style>
-                        @keyframes popIn {{
-                            0% {{ transform: scale(0.8); opacity: 0; }}
-                            70% {{ transform: scale(1.02); opacity: 1; }}
-                            100% {{ transform: scale(1); opacity: 1; }}
-                        }}
-                        .pulse-card {{
-                            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
-                            border: 2px solid #a855f7;
-                            border-radius: 12px;
-                            padding: 15px;
-                            text-align: center;
-                            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
-                            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
-                            margin-top: 10px;
-                            margin-bottom: 10px;
-                        }}
-                        .pulse-header {{
-                            font-size: 11px;
-                            font-weight: 800;
-                            color: #f43f5e;
-                            letter-spacing: 2px;
-                            text-transform: uppercase;
-                            margin-bottom: 5px;
-                        }}
-                        .pulse-player {{
-                            font-size: 18px;
-                            font-weight: 800;
-                            color: #ffffff;
-                            margin-bottom: 10px;
-                        }}
-                        .pulse-details {{
-                            display: flex;
-                            align-items: center;
-                            justify-content: center;
-                            gap: 15px;
-                            font-size: 13px;
-                            font-weight: 600;
-                            color: #e2e8f0;
-                        }}
-                        .pulse-team-box {{
-                            display: flex;
-                            align-items: center;
-                            gap: 6px;
-                            background: rgba(0,0,0,0.3);
-                            padding: 5px 10px;
-                            border-radius: 8px;
-                            border: 1px solid rgba(255,255,255,0.1);
-                        }}
-                        .pulse-logo {{
-                            width: 24px;
-                            height: 24px;
-                            object-fit: contain;
-                        }}
-                        .pulse-arrow {{
-                            color: #fbbf24;
-                            font-weight: 900;
-                            font-size: 16px;
-                        }}
-                        .pulse-price {{
-                            margin-top: 8px;
-                            font-size: 14px;
-                            font-weight: 800;
-                            color: #fbbf24;
-                        }}
-                        </style>
-                        
-                        <div class="pulse-card">
-                            <div class="pulse-header">⚡ NUOVO ACQUISTO ⚡</div>
-                            <div class="pulse-player">{acq['Giocatore']} ({acq['Ruolo']})</div>
-                            <div class="pulse-details">
-                                <div class="pulse-team-box">
-                                    <img src="{logo_sa_b64}" class="pulse-logo">
-                                    <span>{sq_sa_name}</span>
-                                </div>
-                                <div class="pulse-arrow">➔</div>
-                                <div class="pulse-team-box">
-                                    <img src="{logo_fanta_b64}" class="pulse-logo">
-                                    <span>{fanta_short_name}</span>
-                                </div>
-                            </div>
-                            <div class="pulse-price">💰 {acq['Costo']} Crediti</div>
-                        </div>
-                    """, unsafe_allow_html=True)
 
                 if giocatore_selezionato and not btn_conferma:
                     info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
@@ -599,6 +491,7 @@ def render_control_panel():
                             st.success(f"Rimosso con successo.")
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
+
 if not is_tv_mode:
     render_control_panel()
 
@@ -609,6 +502,118 @@ if not is_tv_mode:
 def render_board_fragment():
     st.session_state.acquisti = load_saved_acquisti()
     
+    # --- POPUP ANIMATO IN VISTA TV PER L'ULTIMO ACQUISTO ---
+    if is_tv_mode and st.session_state.acquisti:
+        ultimo_acq = st.session_state.acquisti[-1]
+        
+        sq_sa_name = ultimo_acq["Squadra_SerieA"]
+        logo_sa_b64 = get_logo_base64_cached(sq_sa_name)
+        
+        fanta_name_full = ultimo_acq["Squadra_Fanta"]
+        fanta_code = ""
+        fanta_short_name = ""
+        for s in SQUADRE_INFO:
+            if f"{s['nome']} - {s['mister']}" == fanta_name_full:
+                fanta_code = s['codice']
+                fanta_short_name = s['nome']
+                break
+        
+        logo_fanta_b64 = get_logo_base64_cached(fanta_code)
+
+        st.markdown(f"""
+            <style>
+            @keyframes tvPopUp {{
+                0% {{ transform: scale(0.5); opacity: 0; }}
+                70% {{ transform: scale(1.05); opacity: 1; }}
+                100% {{ transform: scale(1); opacity: 1; }}
+            }}
+            .tv-overlay {{
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(5, 3, 10, 0.82);
+                backdrop-filter: blur(8px);
+                z-index: 999999;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }}
+            .tv-modal-card {{
+                background: linear-gradient(135deg, #130d26 0%, #22123d 100%);
+                border: 3px solid #a855f7;
+                border-radius: 24px;
+                padding: 40px 60px;
+                text-align: center;
+                animation: tvPopUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+                box-shadow: 0 20px 50px rgba(168, 85, 247, 0.5), 0 0 100px rgba(0,0,0,0.8);
+                max-width: 650px;
+                width: 90%;
+            }}
+            .tv-modal-header {{
+                font-size: 18px;
+                font-weight: 900;
+                color: #f43f5e;
+                letter-spacing: 4px;
+                text-transform: uppercase;
+                margin-bottom: 15px;
+            }}
+            .tv-modal-player {{
+                font-size: 34px;
+                font-weight: 900;
+                color: #ffffff;
+                margin-bottom: 25px;
+                text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            }}
+            .tv-modal-teams {{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 35px;
+                margin-bottom: 30px;
+            }}
+            .tv-big-logo {{
+                width: 80px;
+                height: 80px;
+                object-fit: contain;
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.4));
+            }}
+            .tv-modal-arrow {{
+                font-size: 38px;
+                color: #fbbf24;
+                font-weight: 900;
+            }}
+            .tv-modal-price {{
+                font-size: 26px;
+                font-weight: 900;
+                color: #fbbf24;
+                background: rgba(251, 191, 36, 0.1);
+                padding: 10px 25px;
+                border-radius: 12px;
+                border: 1px solid rgba(251, 191, 36, 0.3);
+                display: inline-block;
+            }}
+            </style>
+            
+            <div class="tv-overlay">
+                <div class="tv-modal-card">
+                    <div class="tv-modal-header">⚡ NUOVO ACQUISTO ⚡</div>
+                    <div class="tv-modal-player">{ultimo_acq['Giocatore']} <span style="font-size: 22px; color: #a855f7;">({ultimo_acq['Ruolo']})</span></div>
+                    
+                    <div class="tv-modal-teams">
+                        <img src="{logo_sa_b64}" class="tv-big-logo" title="{sq_sa_name}">
+                        <div class="tv-modal-arrow">➔</div>
+                        <img src="{logo_fanta_b64}" class="tv-big-logo" title="{fanta_short_name}">
+                    </div>
+                    
+                    <div>
+                        <div class="tv-modal-price">💰 {ultimo_acq['Costo']} Crediti</div>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+
     cols_html = []
 
     for s_info in SQUADRE_INFO:
