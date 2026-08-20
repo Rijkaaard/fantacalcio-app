@@ -255,13 +255,14 @@ st.markdown(
         margin-bottom: 2px;
     }
 
-    /* Celle calciatore trasparenti con contorno viola chiaro */
+    /* Celle calciatore trasparenti, allineate e con contorno viola sottile/discreto */
     .player-cell {
         height: 22px;
         background: transparent !important;
-        border: 1px solid #a78bfa !important;
+        border: 1px solid rgba(167, 139, 250, 0.25) !important;
         border-radius: 3px;
-        margin: 2px 2px;
+        margin: 2px 0;
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: space-between;
