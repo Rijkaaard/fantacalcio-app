@@ -1,5 +1,6 @@
 Giocatore,Ruolo,Squadra,Prezzo Medio
 Bijlow,P,GEN,9
+Bleve,P,LEC,1
 Butez,P,COM,45
 Caprile,P,CAG,12
 Carnesecchi,P,ATA,41
@@ -24,6 +25,7 @@ Martinez Jo.,P,INT,50
 Mascardi,P,TOR,1
 Meret,P,NAP,47
 Milinkovic-Savic V.,P,NAP,43
+Montipò,P,VEN,3
 Motta,P,LAZ,25
 Muric,P,SAS,7
 Okoye,P,UDI,15
@@ -94,7 +96,6 @@ Carlos Augusto,D,INT,10
 Casale,D,BOL,1
 Celik,D,JUV,14
 Chalobah T.,D,COM,16
-Circati,D,PAR,3
 Cittadini,D,FRO,1
 Coco,D,TOR,4
 Comert,D,TOR,4
@@ -179,6 +180,7 @@ Norton-Cuffy,D,GEN,8
 Obert,D,CAG,5
 Obrador,D,SAS,6
 Olivera,D,NAP,6
+Omar Fayed,D,FRO,1
 Ostigard,D,GEN,21
 Otoa,D,GEN,1
 Oyono A.,D,FRO,3
@@ -256,6 +258,7 @@ Belahyane,C,LAZ,1
 Berisha M.,C,LEC,4
 Bernabè,C,PAR,13
 Bernardeschi,C,BOL,21
+Boga,C,JUV,15
 Boloca,C,SAS,1
 Brescianini,C,FIO,2
 Busio,C,VEN,6
@@ -299,6 +302,7 @@ Ellertsson,C,GEN,2
 Fabbian,C,FIO,1
 Fadera,C,COM,2
 Fagioli,C,FIO,7
+Favasuli,C,NAP,5
 Fazzini,C,CAG,12
 Felici,C,CAG,1
 Ferguson,C,BOL,2
@@ -355,6 +359,7 @@ Miller L.,C,UDI,1
 Miretti,C,JUV,4
 Mkhitaryan,C,INT,9
 Modric,C,MIL,21
+Mora,C,ROM,38
 Moro N.,C,BOL,2
 Musah,C,MIL,1
 Ndour,C,FIO,6
@@ -418,6 +423,13 @@ Adams C.,A,TOR,11
 Adorante,A,VEN,3
 Albarracin,A,CAG,1
 Azon,A,COM,1
+Bayo V.,A,UDI,1
+Berardi,A,SAS,71
+Bonny,A,INT,41
+Borrelli,A,CAG,18
+Bowie,A,SAS,31
+Buksa,A,UDI,2
+Camarda,A,MIL,10
 Castro S.,A,ROM,48
 Colombo,A,GEN,38
 Cutrone,A,MON,14
@@ -462,6 +474,7 @@ Martinez L.,A,INT,175
 Mendy P.,A,CAG,2
 Milik,A,JUV,2
 Morata,A,COM,6
+Moreira,A,COM,26
 Moro L.,A,SAS,1
 Mota,A,MON,13
 Mutandwa,A,CAG,1
