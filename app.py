@@ -83,12 +83,8 @@ if "acquisti" not in st.session_state:
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
-# Tracciamento dell'ultimo acquisto per l'effetto nella cella
-if "ultimo_acquisto_notificato" not in st.session_state:
-    st.session_state.ultimo_acquisto_notificato = len(st.session_state.acquisti)
-
 # ==============================================================================
-# 🎨 STILE CSS E ANIMAZIONE LEGGERA PER LA CELLA
+# 🎨 STILE CSS E ANIMAZIONE POST-POSIZIONAMENTO
 # ==============================================================================
 st.markdown(
     """
@@ -233,19 +229,20 @@ st.markdown(
         justify-content: space-between;
         padding: 0 4px;
         font-size: 9.5px;
+        transition: background-color 0.3s ease;
     }
     .player-cell:nth-child(even) {
         background: #130e26;
     }
 
-    /* Animazione leggera per evidenziare l'ultimo acquisto nella cella */
+    /* Animazione pulita che parte solo a posizionamento avvenuto */
     @keyframes pulseNew {
         0% { background-color: #7c3aed; color: #ffffff; }
         50% { background-color: #4c1d95; color: #fde047; }
         100% { background-color: #16102b; color: #e2e8f0; }
     }
 
-    .player-cell-new {
+    .player-cell-animated {
         animation: pulseNew 3s ease-in-out;
     }
 
@@ -390,7 +387,6 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
-
 def get_squadra_stats(nome_squadra):
     acquisti = [a for a in st.session_state.acquisti if a["Squadra_Fanta"] == nome_squadra]
     spesi = sum(a["Costo"] for a in acquisti)
@@ -400,7 +396,6 @@ def get_squadra_stats(nome_squadra):
 
     max_offerta = rimasti - (slot_mancanti - 1) if slot_mancanti > 0 else 0
     return rimasti, tot_giocatori, max_offerta, acquisti
-
 
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
@@ -484,9 +479,6 @@ def render_control_panel():
                     }
                     st.session_state.acquisti.append(nuovo_acquisto)
                     save_acquisti()
-                    
-                    # Segna che c'è un nuovo acquisto da evidenziare
-                    st.session_state.ultimo_acquisto_notificato = len(st.session_state.acquisti)
                     
                     st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                     
@@ -577,13 +569,12 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT CON EVIDENZIAZIONE DELL'ULTIMO ACQUISTO NELLA CELLA
+# 2. TABELLONE FRAGMENT CON ANIMAZIONE RITARDATA DOPO IL POSIZIONAMENTO
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
     st.session_state.acquisti = load_saved_acquisti()
     
-    # Individuiamo l'ultimo giocatore acquistato in assoluto (se esiste)
     ultimo_giocatore_nome = None
     if st.session_state.acquisti:
         ultimo_giocatore_nome = st.session_state.acquisti[-1]["Giocatore"]
@@ -616,6 +607,7 @@ def render_board_fragment():
         for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
+            # Ordinamento stabile immediato in base al prezzo medio
             giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
             speso_ruolo = sum(g["Costo"] for g in giocatori_r)
@@ -642,18 +634,15 @@ def render_board_fragment():
                     else:
                         colore_prezzo = "#fbbf24"
 
-                    # Se questo è l'ultimo giocatore acquistato, applichiamo la classe animata
                     is_ultimo = (nome_g == ultimo_giocatore_nome)
-                    cell_class = "player-cell player-cell-new" if is_ultimo else "player-cell"
-                    
-                    # Se è l'ultimo, possiamo opzionalmente mostrare una scritta lampeggiante iniziale o evidenziarla con l'animazione pulita
-                    content_display = f'<span class="player-cell-name">{nome_g}</span>'
+                    # Assegniamo un attributo identificativo per permettere allo script JS di trovarlo
+                    data_attr = f'data-ultimo="true"' if is_ultimo else ''
                     
                     col_content.append(
-                        f'<div class="{cell_class}">'
+                        f'<div class="player-cell" {data_attr}>'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
-                        f'{content_display}'
+                        f'<span class="player-cell-name">{nome_g}</span>'
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
@@ -668,5 +657,19 @@ def render_board_fragment():
 
     st.markdown(f'<div class="board-grid">{"".join(cols_html)}</div>', unsafe_allow_html=True)
 
+    # Script JavaScript leggero che attende 50ms (dopo il rendering e posizionamento stabile) prima di avviare l'animazione
+    st.markdown(
+        """
+        <script>
+        setTimeout(function() {
+            const cells = document.querySelectorAll('[data-ultimo="true"]');
+            cells.forEach(cell => {
+                cell.classList.add('player-cell-animated');
+            });
+        }, 50);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 
 render_board_fragment()
