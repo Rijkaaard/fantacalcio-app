@@ -93,6 +93,9 @@ if "acquisti" not in st.session_state:
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
+if "filtro_ruolo_selezionato" not in st.session_state:
+    st.session_state.filtro_ruolo_selezionato = "TUTTI"
+
 # ==============================================================================
 # 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" CON SFONDO #0f0932
 # ==============================================================================
@@ -146,44 +149,66 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* CUSTOM RUOLI PILLS (STILE SCREENSHOT) */
-    div[data-testid="stSegmentedControl"] {
-        gap: 8px !important;
-        background: transparent !important;
+    /* CUSTOM RUOLI PILLS IDENTICI ALLO SCREENSHOT */
+    .role-pills-container {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
     }
 
-    div[data-testid="stSegmentedControl"] button {
-        background-color: transparent !important;
-        border: 1px solid #3b3f5c !important;
-        color: #94a3b8 !important;
+    .stButton.pill-tutti button {
+        background-color: #0d0620 !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #c0b9dd !important;
+        border-radius: 25px !important;
+        padding: 0 16px !important;
+        height: 38px !important;
         font-weight: 800 !important;
         font-size: 13px !important;
-        height: 38px !important;
-        min-height: 38px !important;
-        border-radius: 50% !important;
-        width: 38px !important;
-        min-width: 38px !important;
-        padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
+        letter-spacing: 0.5px !important;
         box-shadow: none !important;
     }
 
-    /* Il primo pulsante (TUTTI) ha forma a pillola */
-    div[data-testid="stSegmentedControl"] button:first-child {
-        width: 80px !important;
-        min-width: 80px !important;
-        border-radius: 20px !important;
-        font-size: 11px !important;
+    .stButton.pill-tutti-active button {
+        background-color: #d81b60 !important;
+        border: 1px solid #d81b60 !important;
+        color: #ffffff !important;
+        border-radius: 25px !important;
+        padding: 0 16px !important;
+        height: 38px !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
         letter-spacing: 0.5px !important;
+        box-shadow: 0 2px 8px rgba(216, 27, 96, 0.4) !important;
     }
 
-    /* Stato Selezionato (Attivo) */
-    div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
-        background-color: #d91b5c !important;
-        border-color: #d91b5c !important;
+    .stButton.pill-circle button {
+        background-color: #0d0620 !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        color: #c0b9dd !important;
+        border-radius: 50% !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        padding: 0 !important;
+        font-weight: 800 !important;
+        font-size: 14px !important;
+        box-shadow: none !important;
+    }
+
+    .stButton.pill-circle-active button {
+        background-color: #d81b60 !important;
+        border: 1px solid #d81b60 !important;
         color: #ffffff !important;
+        border-radius: 50% !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        padding: 0 !important;
+        font-weight: 800 !important;
+        font-size: 14px !important;
+        box-shadow: 0 2px 8px rgba(216, 27, 96, 0.4) !important;
     }
 
     .card-title {
@@ -473,17 +498,14 @@ st.markdown(
         border: 1px solid #282c4a;
     }
 
-    /* Pulsanti stile FantaLab */
+    /* Pulsanti di conferma generici */
     .stButton button {
-        background-color: #0284c7 !important;
-        color: white !important;
-        font-weight: 600 !important;
-        border-radius: 5px !important;
-        border: none !important;
+        background-color: #0284c7;
+        color: white;
+        font-weight: 600;
+        border-radius: 5px;
+        border: none;
         transition: all 0.2s ease;
-    }
-    .stButton button:hover {
-        background-color: #0369a1 !important;
     }
     </style>
 """,
@@ -600,20 +622,58 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1.2, 1])
+            f_col1, f_col2 = st.columns([1.5, 1])
             with f_col1:
-                filtro_ruolo = st.segmented_control(
-                    "Filtra per Ruolo",
-                    options=["TUTTI", "P", "D", "C", "A"],
-                    default="TUTTI",
-                    label_visibility="collapsed",
-                    key="ctrl_ruolo"
-                )
+                # PULSANTI FILTRO RUOLO IDENTICI ALLO SCREENSHOT
+                c_tut, c_p, c_d, c_c, c_a = st.columns([2.2, 1, 1, 1, 1])
+                curr_r = st.session_state.filtro_ruolo_selezionato
+
+                with c_tut:
+                    cls_tut = "pill-tutti-active" if curr_r == "TUTTI" else "pill-tutti"
+                    st.markdown(f'<div class="{cls_tut}">', unsafe_allow_html=True)
+                    if st.button("TUTTI", key="btn_r_tutti"):
+                        st.session_state.filtro_ruolo_selezionato = "TUTTI"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                with c_p:
+                    cls_p = "pill-circle-active" if curr_r == "P" else "pill-circle"
+                    st.markdown(f'<div class="{cls_p}">', unsafe_allow_html=True)
+                    if st.button("P", key="btn_r_p"):
+                        st.session_state.filtro_ruolo_selezionato = "P"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                with c_d:
+                    cls_d = "pill-circle-active" if curr_r == "D" else "pill-circle"
+                    st.markdown(f'<div class="{cls_d}">', unsafe_allow_html=True)
+                    if st.button("D", key="btn_r_d"):
+                        st.session_state.filtro_ruolo_selezionato = "D"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                with c_c:
+                    cls_c = "pill-circle-active" if curr_r == "C" else "pill-circle"
+                    st.markdown(f'<div class="{cls_c}">', unsafe_allow_html=True)
+                    if st.button("C", key="btn_r_c"):
+                        st.session_state.filtro_ruolo_selezionato = "C"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
+                with c_a:
+                    cls_a = "pill-circle-active" if curr_r == "A" else "pill-circle"
+                    st.markdown(f'<div class="{cls_a}">', unsafe_allow_html=True)
+                    if st.button("A", key="btn_r_a"):
+                        st.session_state.filtro_ruolo_selezionato = "A"
+                        st.rerun()
+                    st.markdown('</div>', unsafe_allow_html=True)
+
             with f_col2:
                 squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
                 filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0, key="ctrl_sa")
 
             df_filtrati = df_disponibili.copy()
+            filtro_ruolo = st.session_state.filtro_ruolo_selezionato
             if filtro_ruolo and filtro_ruolo != "TUTTI":
                 df_filtrati = df_filtrati[df_filtrati["Ruolo"] == filtro_ruolo]
             if filtro_sa != "Tutte le squadre":
