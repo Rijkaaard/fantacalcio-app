@@ -203,6 +203,12 @@ st.markdown(
     .role-c { background-color: #1d4ed8; }
     .role-a { background-color: #be123c; }
 
+    /* Classi badge ruolo personalizzate per i preview/ricerche */
+    .badge-ruolo-p { background-color: #d97706; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-d { background-color: #15803d; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-c { background-color: #1d4ed8; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-a { background-color: #be123c; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+
     .player-cell {
         height: 22px;
         background: #16102b;
@@ -432,15 +438,21 @@ def render_control_panel():
                 info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
                 squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
                 logo_path = get_logo_path(squadra_serie_a)
-
-                if logo_path:
-                    col_logo, col_info = st.columns([0.12, 0.88])
-                    with col_logo:
-                        st.image(logo_path, width=42)
-                    with col_info:
-                        st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
-                else:
-                    st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
+                ruolo_g = info_g["Ruolo"]
+                badge_class = f"badge-ruolo-{ruolo_g.lower()}"
+                
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px;" />' if logo_path else ""
+                
+                st.markdown(
+                    f'<div style="display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 15px;">'
+                    f'{logo_html}'
+                    f'<strong>{info_g["Giocatore"]}</strong>'
+                    f'<span class="{badge_class}">{ruolo_g}</span>'
+                    f'<span style="color: #9ca3af; margin-left: 5px;">| {squadra_serie_a}</span>'
+                    f'<span style="margin-left: auto; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
 
         with tab_svincola:
             if st.session_state.acquisti:
