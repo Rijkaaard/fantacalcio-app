@@ -149,8 +149,11 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* CUSTOM RUOLI PILLS - EXACT LOOK AS IMAGE */
-    div[data-testid="column"] .stButton button {
+    /* STILI PER I PULSANTI DEI RUOLI (IDENTICI ALLA FOTO) */
+    .pill-tutti button, 
+    .pill-tutti-active button, 
+    .pill-circle button, 
+    .pill-circle-active button {
         border-radius: 9999px !important;
         height: 42px !important;
         font-family: 'Inter', sans-serif !important;
@@ -163,28 +166,32 @@ st.markdown(
         justify-content: center !important;
     }
 
-    /* Stato Disattivato (Bordo grigio e sfondo scuro) */
-    .pill-tutti button, .pill-circle button {
+    /* Inattivi (Sfondo scuro, bordo viola/grigio) */
+    .pill-tutti button, 
+    .pill-circle button {
         background-color: #110927 !important;
         border: 1px solid #362d59 !important;
         color: #94a3b8 !important;
     }
 
-    /* Cerchio perfetto per i ruoli P, D, C, A */
-    .pill-circle button, .pill-circle-active button {
+    /* Cerchi per P, D, C, A */
+    .pill-circle button, 
+    .pill-circle-active button {
         width: 42px !important;
         min-width: 42px !important;
         padding: 0 !important;
     }
 
-    /* Pillola allungata per TUTTI */
-    .pill-tutti button, .pill-tutti-active button {
+    /* Pillola per TUTTI */
+    .pill-tutti button, 
+    .pill-tutti-active button {
         padding: 0 22px !important;
         width: 100% !important;
     }
 
-    /* Stato Attivo (Fucsia/Magenta pieno) */
-    .pill-tutti-active button, .pill-circle-active button {
+    /* Attivi (Fucsia/Magenta) */
+    .pill-tutti-active button, 
+    .pill-circle-active button {
         background-color: #d81b60 !important;
         border: 1px solid #d81b60 !important;
         color: #ffffff !important;
@@ -455,15 +462,6 @@ st.markdown(
         padding: 2px 7px;
         border-radius: 4px;
         border: 1px solid #282c4a;
-    }
-
-    .stButton button {
-        background-color: #0284c7;
-        color: white;
-        font-weight: 600;
-        border-radius: 5px;
-        border: none;
-        transition: all 0.2s ease;
     }
     </style>
 """,
@@ -800,7 +798,7 @@ def render_control_panel():
                     item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p2:
-                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 0 else None
+                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
                     item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
