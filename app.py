@@ -160,22 +160,26 @@ st.markdown(
 
     .team-header {
         background: #191233;
-        padding: 6px 4px;
+        padding: 8px 4px;
         text-align: center;
         border-bottom: 1px solid #2d2252;
     }
     
     .team-logo-container {
-        width: 26px;
-        height: 26px;
-        margin: 0 auto 3px auto;
+        width: 36px;
+        height: 36px;
+        margin: 0 auto 6px auto;
+        background: #151029;
+        border: 1px solid #2d2252;
+        border-radius: 6px;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 2px;
     }
     .fanta-team-logo {
-        max-width: 26px;
-        max-height: 26px;
+        max-width: 32px;
+        max-height: 32px;
         object-fit: contain;
     }
 
@@ -186,6 +190,7 @@ st.markdown(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-bottom: 2px;
     }
     .team-header-budget {
         font-size: 13px;
@@ -495,13 +500,13 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Gestione logo fanta squadra
+        # Gestione logo fanta squadra racchiuso nel quadrato
         fanta_logo_p = get_fanta_logo_path(s_info['codice'])
         fanta_logo_b64 = get_logo_base64(fanta_logo_p) if fanta_logo_p else ""
         if fanta_logo_b64:
             logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
         else:
-            logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio vuoto riservato se manca l'immagine
+            logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio quadrato vuoto riservato se manca
         
         col_content = [
             f'<div class="team-column">'
