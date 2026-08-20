@@ -118,7 +118,7 @@ st.markdown(
         background: #131525 !important;
         border: 1px solid #23263b !important;
         border-radius: 8px !important;
-        padding: 10px 14px !important;
+        padding: 10px 14px 16px 14px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
         margin-bottom: 6px !important;
     }
@@ -325,13 +325,15 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Top 3 Affari Centrato e Bilanciato */
+    /* Widget Top 3 Affari Centrato e Staccato dai Bordi */
     .deal-box-single {
         background: #1a1d33;
         border: 1px solid #282c4a;
         border-radius: 6px;
-        padding: 12px 6px;
-        height: 110px;
+        padding: 10px 6px;
+        height: 105px;
+        margin-top: 6px;
+        margin-bottom: 6px;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
