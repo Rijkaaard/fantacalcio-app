@@ -128,7 +128,7 @@ st.markdown(
         font-weight: 700;
         color: #38bdf8;
         letter-spacing: 0.5px;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
         text-transform: uppercase;
         display: flex;
         align-items: center;
@@ -249,7 +249,7 @@ st.markdown(
         align-items: center;
         gap: 10px;
         margin-top: 6px;
-        margin-bottom: 2px;
+        margin-bottom: 4px;
     }
 
     /* Cella vuota: trasparente con bordo viola chiaro originale */
@@ -325,16 +325,17 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Top 3 Affari Spazioso */
+    /* Widget Top 3 Affari Spazioso (spazio extra per evitare tagli) */
     .deal-box-single {
         background: #1a1d33;
         border: 1px solid #282c4a;
         border-radius: 6px;
-        padding: 6px 4px;
-        min-height: 85px;
+        padding: 8px 6px;
+        min-height: 95px;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        margin-bottom: 2px;
     }
     .deal-card-content {
         display: flex;
@@ -344,13 +345,13 @@ st.markdown(
         text-align: center;
     }
     .deal-rank-title {
-        font-size: 10px;
+        font-size: 9.5px;
         font-weight: 800;
         text-transform: uppercase;
-        margin-bottom: 2px;
+        margin-bottom: 3px;
     }
     .deal-player-name {
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -363,21 +364,21 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 8px;
+        gap: 6px;
         margin-bottom: 4px;
     }
     .deal-logo-img {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
         object-fit: contain;
     }
     .deal-arrow {
         color: #38bdf8;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: bold;
     }
     .deal-price-info {
-        font-size: 9.5px;
+        font-size: 9px;
         font-weight: 700;
     }
 
@@ -679,7 +680,7 @@ def render_control_panel():
                 <div class="deal-box-single">
                     <div class="deal-card-content">
                         <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
-                        <div style="font-size:10px; color:#64748b; padding:10px 0;">- N/D -</div>
+                        <div style="font-size:10px; color:#64748b; padding:12px 0;">- N/D -</div>
                     </div>
                 </div>
                 '''
@@ -697,7 +698,7 @@ def render_control_panel():
             nome_fanta = sq_fanta_full.split(" - ")[0]
             codice_fanta = MAPPA_NOME_CODICE_FANTA.get(nome_fanta, nome_fanta)
             logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
-            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:10px; color:#f8fafc;">{codice_fanta}</strong>'
+            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:9px; color:#f8fafc;">{codice_fanta}</strong>'
 
             ruolo_str = f" ({ruolo})" if ruolo else ""
 
@@ -707,38 +708,41 @@ def render_control_panel():
                     <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
                     <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>
                     <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
-                    <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8.5px; font-weight:normal;">(Medio: {p_medio})</span></div>
+                    <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8px; font-weight:normal;">(Medio: {p_medio})</span></div>
                 </div>
             </div>
             '''
 
-        # WIDGET 3: TOP 3 MIGLIORI AFFARI
-        with st.container(border=True):
-            st.markdown('<div class="card-title" style="color: #22c55e;">🌟 TOP 3 MIGLIORI AFFARI</div>', unsafe_allow_html=True)
-            col_m1, col_m2, col_m3 = st.columns(3)
-            with col_m1:
-                item_1 = migliori_affari[0] if len(migliori_affari) > 0 else None
-                st.markdown(render_deal_box(item_1, "🥇 1° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
-            with col_m2:
-                item_2 = migliori_affari[1] if len(migliori_affari) > 1 else None
-                st.markdown(render_deal_box(item_2, "🥈 2° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
-            with col_m3:
-                item_3 = migliori_affari[2] if len(migliori_affari) > 2 else None
-                st.markdown(render_deal_box(item_3, "🥉 3° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+        # WIDGET 3 & 4: TOP 3 MIGLIORI E PEGGIORI AFFARI (AFFIANCATI FIANCO A FIANCO)
+        col_top_best, col_top_worst = st.columns(2)
 
-        # WIDGET 4: TOP 3 PEGGIORI AFFARI
-        with st.container(border=True):
-            st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ TOP 3 PEGGIORI AFFARI</div>', unsafe_allow_html=True)
-            col_p1, col_p2, col_p3 = st.columns(3)
-            with col_p1:
-                item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
-                st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
-            with col_p2:
-                item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
-                st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
-            with col_p3:
-                item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
-                st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
+        with col_top_best:
+            with st.container(border=True):
+                st.markdown('<div class="card-title" style="color: #22c55e;">🌟 TOP 3 MIGLIORI AFFARI</div>', unsafe_allow_html=True)
+                col_m1, col_m2, col_m3 = st.columns(3)
+                with col_m1:
+                    item_1 = migliori_affari[0] if len(migliori_affari) > 0 else None
+                    st.markdown(render_deal_box(item_1, "🥇 1° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+                with col_m2:
+                    item_2 = migliori_affari[1] if len(migliori_affari) > 1 else None
+                    st.markdown(render_deal_box(item_2, "🥈 2° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+                with col_m3:
+                    item_3 = migliori_affari[2] if len(migliori_affari) > 2 else None
+                    st.markdown(render_deal_box(item_3, "🥉 3° MIGLIORE", "#22c55e"), unsafe_allow_html=True)
+
+        with col_top_worst:
+            with st.container(border=True):
+                st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ TOP 3 PEGGIORI AFFARI</div>', unsafe_allow_html=True)
+                col_p1, col_p2, col_p3 = st.columns(3)
+                with col_p1:
+                    item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
+                    st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
+                with col_p2:
+                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
+                    st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
+                with col_p3:
+                    item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
+                    st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
