@@ -151,22 +151,26 @@ st.markdown(
 
     /* RIDUZIONE SPAZIATURA TRA PULSANTI FILTRO */
     div[data-testid="stHorizontalBlock"]:has(.role-btn-container) {
-        gap: 6px !important;
+        gap: 4px !important;
     }
 
+    /* BOTTONI CIRCOLARI E STRETTI */
     .role-btn-container button {
-        border-radius: 9999px !important;
-        height: 40px !important;
+        border-radius: 50% !important;
+        width: 38px !important;
+        height: 38px !important;
+        min-width: 38px !important;
+        max-width: 38px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 14px !important;
+        font-size: 11px !important;
         transition: all 0.2s ease !important;
         box-shadow: none !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         padding: 0 !important;
-        margin: 0 !important;
+        margin: 0 auto !important;
     }
 
     /* STILE BOTTONI INATTIVI (Secondary) */
@@ -547,16 +551,16 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1.5, 1])
+            f_col1, f_col2 = st.columns([1.1, 1])
             with f_col1:
-                # COLONNE MOLTO VICINE ED EQUILIBRATE PER I PULSANTI
-                c_tut, c_p, c_d, c_c, c_a = st.columns([1.8, 1, 1, 1, 1])
+                # COLONNE MOLTO STRETTE E COMPATTE PER I BOTTONI CIRCOLARI
+                c_tut, c_p, c_d, c_c, c_a = st.columns([0.6, 0.6, 0.6, 0.6, 0.6])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
                 with c_tut:
                     st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
                     type_tut = "primary" if curr_r == "TUTTI" else "secondary"
-                    if st.button("TUTTI", key="btn_r_tutti", type=type_tut, use_container_width=True):
+                    if st.button("ALL", key="btn_r_tutti", type=type_tut, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "TUTTI"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
