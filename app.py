@@ -84,7 +84,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS COMPATTO (OTTIMIZZATO PER SPAZIATURA E PULIZIA)
+# 🎨 STILE CSS (PADDING BILANCIATO PER MARGINI PERFETTAMENTI UGUALI SOPRA/SOTTO)
 # ==============================================================================
 st.markdown(
     """
@@ -104,11 +104,12 @@ st.markdown(
         max-width: 100% !important;
     }
 
+    /* Padding simmetrico per bilanciare esattamente lo spazio sopra e sotto */
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 8px 10px !important; /* Padding simmetrico sopra e sotto */
+        padding: 12px 10px 12px 10px !important; 
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
         margin-bottom: 6px !important;
     }
@@ -118,19 +119,20 @@ st.markdown(
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 5px; /* Margine originale ripristinato */
+        margin-bottom: 5px;
         text-transform: uppercase;
     }
 
+    /* Dimensioni originali delle righe preservate al 100% */
     .team-mini-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 2px 6px; /* Dimensione righe originale */
-        margin-bottom: 2px; /* Margine righe originale */
+        padding: 2px 6px;
+        margin-bottom: 2px;
         background: #1b1533;
         border-radius: 4px;
-        font-size: 9px; /* Grandezza font originale */
+        font-size: 9px;
         font-weight: 600;
         border: 1px solid #2a224a;
     }
