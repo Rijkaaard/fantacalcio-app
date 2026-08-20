@@ -84,7 +84,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS (PADDING BILANCIATO PER MARGINI PERFETTAMENTI UGUALI SOPRA/SOTTO)
+# 🎨 STILE CSS
 # ==============================================================================
 st.markdown(
     """
@@ -104,12 +104,11 @@ st.markdown(
         max-width: 100% !important;
     }
 
-    /* Padding simmetrico per bilanciare esattamente lo spazio sopra e sotto */
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 12px 10px 12px 10px !important; 
+        padding: 12px 15px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
         margin-bottom: 6px !important;
     }
@@ -121,31 +120,6 @@ st.markdown(
         letter-spacing: 0.5px;
         margin-bottom: 5px;
         text-transform: uppercase;
-    }
-
-    /* Dimensioni originali delle righe preservate al 100% */
-    .team-mini-row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 2px 6px;
-        margin-bottom: 2px;
-        background: #1b1533;
-        border-radius: 4px;
-        font-size: 9px;
-        font-weight: 600;
-        border: 1px solid #2a224a;
-    }
-    .team-mini-name {
-        color: #d1d5db;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 120px;
-    }
-    .team-mini-budget {
-        color: #fbbf24;
-        font-weight: 700;
     }
 
     .board-grid {
@@ -371,148 +345,130 @@ query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE ISOLATO IN UN FRAGMENT
+# 1. PANNELLO SUPERIORE (A TUTTO SCHERMO, SENZA BOX SQUADRE)
 # ==============================================================================
 @st.fragment
 def render_control_panel():
     st.session_state.acquisti = load_saved_acquisti()
-    c_left, c_right = st.columns([1.2, 3])
 
-    with c_left:
-        with st.container(border=True):
-            st.markdown('<div class="card-title">SQUADRE & BUDGET</div>', unsafe_allow_html=True)
-            for sq in FANTASQUADRE:
-                rim, tot, _, _ = get_squadra_stats(sq)
-                nome_breve = sq.split(" - ")[0]
-                st.markdown(
-                    f"""
-                    <div class="team-mini-row">
-                        <span class="team-mini-name">{nome_breve}</span>
-                        <span class="team-mini-budget">🟡 {rim}</span>
-                    </div>
-                    """,
-                    unsafe_allow_html=True,
+    with st.container(border=True):
+        st.markdown('<div class="card-title">GESTIONE ASTA LIBERA & FILTRI</div>', unsafe_allow_html=True)
+
+        tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
+
+        giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
+        df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
+
+        with tab_assegna:
+            f_col1, f_col2 = st.columns([1, 1])
+            with f_col1:
+                filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0, key="ctrl_ruolo")
+            with f_col2:
+                squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
+                filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0, key="ctrl_sa")
+
+            df_filtrati = df_disponibili.copy()
+            if filtro_ruolo != "Tutti":
+                df_filtrati = df_filtrati[df_filtrati["Ruolo"] == filtro_ruolo]
+            if filtro_sa != "Tutte le squadre":
+                df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == filtro_sa]
+
+            col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
+
+            with col_g:
+                giocatore_selezionato = st.selectbox(
+                    "Cerca Calciatore",
+                    options=sorted(df_filtrati["Giocatore"].tolist()),
+                    index=None,
+                    placeholder="🔍 Cerca calciatore...",
+                    label_visibility="collapsed",
+                    key=f"search_box_{st.session_state.search_version}",
                 )
 
-    with c_right:
-        with st.container(border=True):
-            st.markdown('<div class="card-title">GESTIONE ASTA LIBERA & FILTRI</div>', unsafe_allow_html=True)
+            with col_sq:
+                sq_dest = st.selectbox(
+                    "Aggiudicato a", 
+                    options=FANTASQUADRE, 
+                    label_visibility="collapsed",
+                    key="ctrl_dest"
+                )
 
-            tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
+            with col_costo:
+                costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed", key="ctrl_costo")
 
-            giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
-            df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
+            with col_btn:
+                btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary", key="ctrl_btn_conf")
 
-            with tab_assegna:
-                f_col1, f_col2 = st.columns([1, 1])
-                with f_col1:
-                    filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0, key="ctrl_ruolo")
-                with f_col2:
-                    squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
-                    filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0, key="ctrl_sa")
+            if giocatore_selezionato and btn_conferma:
+                info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
+                ruolo_g = info_g["Ruolo"]
+                squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
 
-                df_filtrati = df_disponibili.copy()
-                if filtro_ruolo != "Tutti":
-                    df_filtrati = df_filtrati[df_filtrati["Ruolo"] == filtro_ruolo]
-                if filtro_sa != "Tutte le squadre":
-                    df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == filtro_sa]
+                rimasti, _, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
+                giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_g])
+                max_slot_ruolo = SLOTS[ruolo_g]
 
-                col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
-
-                with col_g:
-                    giocatore_selezionato = st.selectbox(
-                        "Cerca Calciatore",
-                        options=sorted(df_filtrati["Giocatore"].tolist()),
-                        index=None,
-                        placeholder="🔍 Cerca calciatore...",
-                        label_visibility="collapsed",
-                        key=f"search_box_{st.session_state.search_version}",
-                    )
-
-                with col_sq:
-                    sq_dest = st.selectbox(
-                        "Aggiudicato a", 
-                        options=FANTASQUADRE, 
-                        label_visibility="collapsed",
-                        key="ctrl_dest"
-                    )
-
-                with col_costo:
-                    costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed", key="ctrl_costo")
-
-                with col_btn:
-                    btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary", key="ctrl_btn_conf")
-
-                if giocatore_selezionato and btn_conferma:
-                    info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
-                    ruolo_g = info_g["Ruolo"]
-                    squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-
-                    rimasti, _, max_offerta, acquisti_sq = get_squadra_stats(sq_dest)
-                    giocatori_ruolo = len([a for a in acquisti_sq if a["Ruolo"] == ruolo_g])
-                    max_slot_ruolo = SLOTS[ruolo_g]
-
-                    if giocatori_ruolo >= max_slot_ruolo:
-                        st.error(f"❌ Questa squadra ha già completato i slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!")
-                    elif costo_asta > max_offerta:
-                        st.error(f"❌ Offerta troppo alta! Offerta Max consentita: **{max_offerta} FM**.")
-                    else:
-                        nuovo_acquisto = {
-                            "Giocatore": info_g["Giocatore"],
-                            "Ruolo": ruolo_g,
-                            "Costo": int(costo_asta),
-                            "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
-                            "Squadra_SerieA": squadra_sa,
-                            "Squadra_Fanta": sq_dest,
-                        }
-                        st.session_state.acquisti.append(nuovo_acquisto)
-                        save_acquisti()
-                        st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
-                        
-                        st.session_state.search_version += 1
-                        st.rerun()
-
-                if giocatore_selezionato and not btn_conferma:
-                    info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
-                    squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-                    logo_path = get_logo_path(squadra_serie_a)
-
-                    if logo_path:
-                        col_logo, col_info = st.columns([0.12, 0.88])
-                        with col_logo:
-                            st.image(logo_path, width=42)
-                        with col_info:
-                            st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
-                    else:
-                        st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
-
-            with tab_svincola:
-                if st.session_state.acquisti:
-                    col_del_g, col_del_btn = st.columns([3, 1])
-                    with col_del_g:
-                        lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
-                        g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed", key="ctrl_del_box")
-                    with col_del_btn:
-                        if st.button("❌ RIMUOVI", type="primary", use_container_width=True, key="ctrl_btn_del"):
-                            st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
-                            save_acquisti()
-                            st.success(f"Rimosso con successo.")
-                    
-                    st.markdown("---")
-                    
-                    with st.expander("⚠️ Area Pericolosa: Reset Totale"):
-                        st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
-                        conferma_reset = st.checkbox("Conferma di voler eliminare TUTTI i calciatori", key="chk_reset_totale")
-                        if st.button("🗑️ RIMUOVI TUTTI I CALCIATORI", type="primary", use_container_width=True, key="btn_reset_totale"):
-                            if conferma_reset:
-                                st.session_state.acquisti = []
-                                save_acquisti()
-                                st.success("Tutti i calciatori sono stati rimossi con successo!")
-                                st.rerun()
-                            else:
-                                st.error("Devi spuntare la casella di conferma per procedere con il reset totale.")
+                if giocatori_ruolo >= max_slot_ruolo:
+                    st.error(f"❌ Questa squadra ha già completato i slot per il ruolo **{ruolo_g}** ({max_slot_ruolo}/{max_slot_ruolo})!")
+                elif costo_asta > max_offerta:
+                    st.error(f"❌ Offerta troppo alta! Offerta Max consentita: **{max_offerta} FM**.")
                 else:
-                    st.info("Nessun calciatore ancora assegnato.")
+                    nuovo_acquisto = {
+                        "Giocatore": info_g["Giocatore"],
+                        "Ruolo": ruolo_g,
+                        "Costo": int(costo_asta),
+                        "Prezzo_Medio": int(info_g["Prezzo_Numerico"]),
+                        "Squadra_SerieA": squadra_sa,
+                        "Squadra_Fanta": sq_dest,
+                    }
+                    st.session_state.acquisti.append(nuovo_acquisto)
+                    save_acquisti()
+                    st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
+                    
+                    st.session_state.search_version += 1
+                    st.rerun()
+
+            if giocatore_selezionato and not btn_conferma:
+                info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
+                squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
+                logo_path = get_logo_path(squadra_serie_a)
+
+                if logo_path:
+                    col_logo, col_info = st.columns([0.12, 0.88])
+                    with col_logo:
+                        st.image(logo_path, width=42)
+                    with col_info:
+                        st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
+                else:
+                    st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
+
+        with tab_svincola:
+            if st.session_state.acquisti:
+                col_del_g, col_del_btn = st.columns([3, 1])
+                with col_del_g:
+                    lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
+                    g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed", key="ctrl_del_box")
+                with col_del_btn:
+                    if st.button("❌ RIMUOVI", type="primary", use_container_width=True, key="ctrl_btn_del"):
+                        st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
+                        save_acquisti()
+                        st.success(f"Rimosso con successo.")
+                
+                st.markdown("---")
+                
+                with st.expander("⚠️ Area Pericolosa: Reset Totale"):
+                    st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
+                    conferma_reset = st.checkbox("Conferma di voler eliminare TUTTI i calciatori", key="chk_reset_totale")
+                    if st.button("🗑️ RIMUOVI TUTTI I CALCIATORI", type="primary", use_container_width=True, key="btn_reset_totale"):
+                        if conferma_reset:
+                            st.session_state.acquisti = []
+                            save_acquisti()
+                            st.success("Tutti i calciatori sono stati rimossi con successo!")
+                            st.rerun()
+                        else:
+                            st.error("Devi spuntare la casella di conferma per procedere con il reset totale.")
+            else:
+                st.info("Nessun calciatore ancora assegnato.")
 
 if not is_tv_mode:
     render_control_panel()
