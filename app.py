@@ -250,12 +250,12 @@ st.markdown(
         margin-bottom: 2px;
     }
 
-    /* Struttura Base Cella (Trasparente e bordo nero discreto) */
+    /* Cella vuota: trasparente con bordo viola chiaro originale */
     .player-cell {
         height: 22px;
         width: 100%;
         background: transparent;
-        border: 1px solid rgba(0, 0, 0, 0.4) !important;
+        border: 1px solid rgba(167, 139, 250, 0.25) !important;
         border-radius: 3px;
         margin: 2px 0;
         box-sizing: border-box;
@@ -266,18 +266,30 @@ st.markdown(
         font-size: 9.5px;
     }
 
-    /* Gradienti semplici da scuro a chiaro solo per celle piene */
+    /* Cella piena: sfumatura scura e discreta stile screenshot + bordo nero tenue */
+    .player-cell-filled {
+        border: 1px solid rgba(0, 0, 0, 0.5) !important;
+        border-radius: 5px !important;
+    }
+
+    /* Portieri (P): Giallo-Aranciato scuro */
     .player-cell-p {
-        background: linear-gradient(135deg, #9a3412, #ea580c) !important;
+        background: linear-gradient(90deg, #18150b 0%, #3a2b09 50%, #1e1709 100%) !important;
     }
+
+    /* Difensori (D): Verde scuro */
     .player-cell-d {
-        background: linear-gradient(135deg, #166534, #16a34a) !important;
+        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
     }
+
+    /* Centrocampisti (C): Blu scuro */
     .player-cell-c {
-        background: linear-gradient(135deg, #1e40af, #2563eb) !important;
+        background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important;
     }
+
+    /* Attaccanti (A): Rosso scuro */
     .player-cell-a {
-        background: linear-gradient(135deg, #9f1239, #e11d48) !important;
+        background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
     }
 
     .player-cell-left {
@@ -296,11 +308,11 @@ st.markdown(
     }
 
     .player-cell-name {
-        color: #e2e8f0;
+        color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-weight: 500;
+        font-weight: 600;
     }
 
     .player-cell-right {
@@ -686,7 +698,7 @@ def render_board_fragment():
                     cell_role_class = f"player-cell-{ruolo.lower()}"
 
                     col_content.append(
-                        f'<div class="player-cell {cell_role_class}">'
+                        f'<div class="player-cell player-cell-filled {cell_role_class}">'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
                         f'<span class="player-cell-name">{nome_g}</span>'
