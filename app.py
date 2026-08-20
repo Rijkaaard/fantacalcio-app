@@ -38,10 +38,8 @@ MAPPA_CODICI_LOGHI = {
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
-# Nome della scheda dinamico in base alla vista
 page_title_str = "Asta | Tabellone TV" if is_tv_mode else "Asta | Admin"
 
-# Gestione icona personalizzata
 icona_path = "logo_icon.png"
 page_icon_param = icona_path if os.path.exists(icona_path) else "⚽"
 
@@ -101,7 +99,6 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Sfondo generale impostato su #0f0932 */
     html, body, [class*="css"], .stApp {
         background-color: #0f0932 !important;
         color: #f8fafc;
@@ -115,7 +112,6 @@ st.markdown(
         max-width: 100% !important;
     }
 
-    /* Container pannelli stile box scuro con bordo fine */
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #131525 !important;
         border: 1px solid #23263b !important;
@@ -125,7 +121,6 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* Titoli delle sezioni */
     .card-title {
         font-size: 11px;
         font-weight: 700;
@@ -138,7 +133,6 @@ st.markdown(
         gap: 6px;
     }
 
-    /* Griglia del tabellone - Colonne compatte e allineate */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, minmax(120px, 1fr));
@@ -149,7 +143,6 @@ st.markdown(
         padding-top: 2px;
     }
 
-    /* Colonna Squadra senza sfondo e senza bordi scuri */
     .team-column {
         background: transparent !important;
         border: none !important;
@@ -205,7 +198,7 @@ st.markdown(
         font-weight: 600;
     }
 
-    /* Barre dei Ruoli FantaLab - Effetto Metallizzato */
+    /* Barre dei Ruoli FantaLab */
     .role-bar {
         font-size: 8.5px;
         font-weight: 700;
@@ -257,12 +250,12 @@ st.markdown(
         margin-bottom: 2px;
     }
 
-    /* Celle calciatore perfettamente allineate ai bordi destri e sinistri dell'header */
+    /* Struttura Base Cella (Trasparente e bordo nero discreto) */
     .player-cell {
         height: 22px;
         width: 100%;
-        background: transparent !important;
-        border: 1px solid rgba(167, 139, 250, 0.25) !important;
+        background: transparent;
+        border: 1px solid rgba(0, 0, 0, 0.4) !important;
         border-radius: 3px;
         margin: 2px 0;
         box-sizing: border-box;
@@ -271,6 +264,20 @@ st.markdown(
         justify-content: space-between;
         padding: 0 4px;
         font-size: 9.5px;
+    }
+
+    /* Gradienti semplici da scuro a chiaro solo per celle piene */
+    .player-cell-p {
+        background: linear-gradient(135deg, #9a3412, #ea580c) !important;
+    }
+    .player-cell-d {
+        background: linear-gradient(135deg, #166534, #16a34a) !important;
+    }
+    .player-cell-c {
+        background: linear-gradient(135deg, #1e40af, #2563eb) !important;
+    }
+    .player-cell-a {
+        background: linear-gradient(135deg, #9f1239, #e11d48) !important;
     }
 
     .player-cell-left {
@@ -456,9 +463,7 @@ def render_control_panel():
 
     # Colonna Sinistra: Widget Aggiungi e Widget Rimuovi
     with col_gestione:
-        # ----------------------------------------------------------------------
         # WIDGET 1: AGGIUNGI CALCIATORE
-        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -549,9 +554,7 @@ def render_control_panel():
                     unsafe_allow_html=True
                 )
 
-        # ----------------------------------------------------------------------
         # WIDGET 2: RIMUOVI / SVINCOLA CALCIATORE
-        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">🗑️ SVINCOLA / RIMUOVI CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -582,9 +585,7 @@ def render_control_panel():
 
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
-        # ----------------------------------------------------------------------
         # WIDGET 3: CLASSIFICA CREDITI
-        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
 
@@ -682,8 +683,10 @@ def render_board_fragment():
                     else:
                         colore_prezzo = "#facc15"
 
+                    cell_role_class = f"player-cell-{ruolo.lower()}"
+
                     col_content.append(
-                        f'<div class="player-cell">'
+                        f'<div class="player-cell {cell_role_class}">'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
                         f'<span class="player-cell-name">{nome_g}</span>'
