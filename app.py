@@ -149,49 +149,35 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* STILI PER I PULSANTI DEI RUOLI (IDENTICI ALLA FOTO) */
-    .pill-tutti button, 
-    .pill-tutti-active button, 
-    .pill-circle button, 
-    .pill-circle-active button {
+    /* RIDUZIONE SPAZIATURA TRA PULSANTI FILTRO */
+    div[data-testid="stHorizontalBlock"]:has(.role-btn-container) {
+        gap: 6px !important;
+    }
+
+    .role-btn-container button {
         border-radius: 9999px !important;
-        height: 42px !important;
+        height: 40px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 15px !important;
+        font-size: 14px !important;
         transition: all 0.2s ease !important;
         box-shadow: none !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 
-    /* Inattivi (Sfondo scuro, bordo viola/grigio) */
-    .pill-tutti button, 
-    .pill-circle button {
+    /* STILE BOTTONI INATTIVI (Secondary) */
+    .role-btn-container button[kind="secondary"] {
         background-color: #110927 !important;
         border: 1px solid #362d59 !important;
         color: #94a3b8 !important;
     }
 
-    /* Cerchi per P, D, C, A */
-    .pill-circle button, 
-    .pill-circle-active button {
-        width: 42px !important;
-        min-width: 42px !important;
-        padding: 0 !important;
-    }
-
-    /* Pillola per TUTTI */
-    .pill-tutti button, 
-    .pill-tutti-active button {
-        padding: 0 22px !important;
-        width: 100% !important;
-    }
-
-    /* Attivi (Fucsia/Magenta) */
-    .pill-tutti-active button, 
-    .pill-circle-active button {
+    /* STILE BOTTONI ATTIVI (Primary - Fucsia/Magenta) */
+    .role-btn-container button[kind="primary"] {
         background-color: #d81b60 !important;
         border: 1px solid #d81b60 !important;
         color: #ffffff !important;
@@ -563,45 +549,46 @@ def render_control_panel():
 
             f_col1, f_col2 = st.columns([1.5, 1])
             with f_col1:
-                c_tut, c_p, c_d, c_c, c_a = st.columns([2.2, 1, 1, 1, 1])
+                # COLONNE MOLTO VICINE ED EQUILIBRATE PER I PULSANTI
+                c_tut, c_p, c_d, c_c, c_a = st.columns([1.8, 1, 1, 1, 1])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
                 with c_tut:
-                    cls_tut = "pill-tutti-active" if curr_r == "TUTTI" else "pill-tutti"
-                    st.markdown(f'<div class="{cls_tut}">', unsafe_allow_html=True)
-                    if st.button("TUTTI", key="btn_r_tutti"):
+                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    type_tut = "primary" if curr_r == "TUTTI" else "secondary"
+                    if st.button("TUTTI", key="btn_r_tutti", type=type_tut, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "TUTTI"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_p:
-                    cls_p = "pill-circle-active" if curr_r == "P" else "pill-circle"
-                    st.markdown(f'<div class="{cls_p}">', unsafe_allow_html=True)
-                    if st.button("P", key="btn_r_p"):
+                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    type_p = "primary" if curr_r == "P" else "secondary"
+                    if st.button("P", key="btn_r_p", type=type_p, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "P"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_d:
-                    cls_d = "pill-circle-active" if curr_r == "D" else "pill-circle"
-                    st.markdown(f'<div class="{cls_d}">', unsafe_allow_html=True)
-                    if st.button("D", key="btn_r_d"):
+                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    type_d = "primary" if curr_r == "D" else "secondary"
+                    if st.button("D", key="btn_r_d", type=type_d, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "D"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_c:
-                    cls_c = "pill-circle-active" if curr_r == "C" else "pill-circle"
-                    st.markdown(f'<div class="{cls_c}">', unsafe_allow_html=True)
-                    if st.button("C", key="btn_r_c"):
+                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    type_c = "primary" if curr_r == "C" else "secondary"
+                    if st.button("C", key="btn_r_c", type=type_c, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "C"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_a:
-                    cls_a = "pill-circle-active" if curr_r == "A" else "pill-circle"
-                    st.markdown(f'<div class="{cls_a}">', unsafe_allow_html=True)
-                    if st.button("A", key="btn_r_a"):
+                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    type_a = "primary" if curr_r == "A" else "secondary"
+                    if st.button("A", key="btn_r_a", type=type_a, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "A"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -798,7 +785,7 @@ def render_control_panel():
                     item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p2:
-                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
+                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
                     item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
