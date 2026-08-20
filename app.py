@@ -53,7 +53,6 @@ hide_st_style = """
     footer {visibility: hidden;}
     .stApp {padding-top: 0px !important;}
     
-    /* Forza la massima stabilità visiva ed evita transizioni/fade */
     .stApp, .stApp > div, [data-testid="stVerticalBlock"], [data-testid="stFragment"] {
         opacity: 1 !important;
         filter: none !important;
@@ -278,7 +277,7 @@ st.markdown(
 )
 
 # ==============================================================================
-# CARICAMENTO DATI E CACHE LOGHI (EVITA LO SFARFALLIO)
+# CARICAMENTO DATI E CACHE PER I LOGHI (ZERO SFARFALLIO)
 # ==============================================================================
 def load_data(file_path):
     if not os.path.exists(file_path):
@@ -304,14 +303,44 @@ def load_data(file_path):
     return df
 
 @st.cache_data
+def load_all_logos():
+    logos = {}
+    if not os.path.exists("loghi"):
+        return logos
+    for filename in os.listdir("loghi"):
+        if filename.lower().endswith(("png", "jpg", "jpeg", "webp", "svg")):
+            name_without_ext = os.path.splitext(filename)[0].upper()
+            path = os.path.join("loghi", filename)
+            try:
+                ext = filename.split(".")[-1].lower()
+                mime_type = "image/png" if ext == "png" else f"image/{ext}"
+                with open(path, "rb") as image_file:
+                    encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
+                logos[name_without_ext] = f"data:{mime_type};base64,{encoded_string}"
+            except Exception:
+                pass
+    return logos
+
+ALL_LOGOS = load_all_logos()
+
+def get_logo_base64_cached(squadra):
+    if not squadra or pd.isna(squadra):
+        return ""
+    sq_str = str(squadra).strip().upper()
+    codice = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
+    
+    if codice in ALL_LOGOS:
+        return ALL_LOGOS[codice]
+    if sq_str in ALL_LOGOS:
+        return ALL_LOGOS[sq_str]
+    return ""
+
 def get_logo_path(squadra):
     if not squadra or pd.isna(squadra):
         return None
-
     sq_str = str(squadra).strip().upper()
     codice_squadra = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
     estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
-
     for ext in estensioni:
         path = os.path.join("loghi", f"{codice_squadra}.{ext}")
         if os.path.exists(path):
@@ -319,33 +348,7 @@ def get_logo_path(squadra):
         path_lower = os.path.join("loghi", f"{codice_squadra.lower()}.{ext}")
         if os.path.exists(path_lower):
             return path_lower
-
     return None
-
-@st.cache_data
-def get_fanta_logo_path(codice):
-    if not codice:
-        return None
-    estensioni = ["png", "jpg", "jpeg", "webp", "svg"]
-    for ext in estensioni:
-        path = os.path.join("loghi", f"{codice}.{ext}")
-        if os.path.exists(path):
-            return path
-        path_lower = os.path.join("loghi", f"{codice.lower()}.{ext}")
-        if os.path.exists(path_lower):
-            return path_lower
-    return None
-
-@st.cache_data
-def get_logo_base64(path):
-    if not path or not os.path.exists(path):
-        return ""
-    ext = path.split(".")[-1].lower()
-    mime_type = "image/png" if ext == "png" else f"image/{ext}"
-    with open(path, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read()).decode("utf-8")
-    return f"data:{mime_type};base64,{encoded_string}"
-
 
 df_listone = load_data("fantalab_listone.csv")
 
@@ -517,8 +520,7 @@ def render_board_fragment():
         logo_fanta_html = '<div class="team-logo-container"></div>'  
         
         if is_tv_mode:
-            fanta_logo_p = get_fanta_logo_path(s_info['codice'])
-            fanta_logo_b64 = get_logo_base64(fanta_logo_p) if fanta_logo_p else ""
+            fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
             if fanta_logo_b64:
                 logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
         
@@ -550,8 +552,7 @@ def render_board_fragment():
                     g = giocatori_r[i]
                     nome_g = g["Giocatore"]
                     sq_sa = g.get("Squadra_SerieA", "")
-                    logo_p = get_logo_path(sq_sa)
-                    logo_b64 = get_logo_base64(logo_p) if logo_p else ""
+                    logo_b64 = get_logo_base64_cached(sq_sa)
                     logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
 
                     costo = g["Costo"]
