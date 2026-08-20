@@ -94,16 +94,16 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" ORIGINALE (ESATTO COME A DESTRA)
+# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" CON SFONDO #0f0932
 # ==============================================================================
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Sfondo generale blu scuro profondo tipico di FantaLab */
+    /* Sfondo generale impostato su #0f0932 come richiesto */
     html, body, [class*="css"], .stApp {
-        background-color: #0b0c16 !important;
+        background-color: #0f0932 !important;
         color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
     }
