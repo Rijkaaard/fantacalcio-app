@@ -80,6 +80,9 @@ def save_acquisti():
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
+if "last_popup_len" not in st.session_state:
+    st.session_state.last_popup_len = len(st.session_state.acquisti)
+
 # ==============================================================================
 # 🎨 STILE CSS COMPATTO (SCALATO IN BASSO PER TV)
 # ==============================================================================
@@ -496,14 +499,21 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO OGNI 3 SECONDI)
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO OGNI 5 SECONDI)
 # ==============================================================================
-@st.fragment(run_every=3)
+@st.fragment(run_every=5)
 def render_board_fragment():
     st.session_state.acquisti = load_saved_acquisti()
     
-    # --- POPUP ANIMATO IN VISTA TV PER L'ULTIMO ACQUISTO ---
-    if is_tv_mode and st.session_state.acquisti:
+    current_len = len(st.session_state.acquisti)
+    show_popup = False
+    
+    if is_tv_mode and current_len > st.session_state.last_popup_len:
+        show_popup = True
+        st.session_state.last_popup_len = current_len
+    
+    # --- POPUP ANIMATO IN VISTA TV PER L'ULTIMO ACQUISTO (DURATA 5 SECONDI) ---
+    if show_popup and st.session_state.acquisti:
         ultimo_acq = st.session_state.acquisti[-1]
         
         sq_sa_name = ultimo_acq["Squadra_SerieA"]
@@ -520,12 +530,17 @@ def render_board_fragment():
         
         logo_fanta_b64 = get_logo_base64_cached(fanta_code)
 
+        img_sa_html = f'<img src="{logo_sa_b64}" class="tv-big-logo" title="{sq_sa_name}">' if logo_sa_b64 else f'<div style="font-size:14px; font-weight:bold; color:#fff;">{sq_sa_name}</div>'
+        img_fanta_html = f'<img src="{logo_fanta_b64}" class="tv-big-logo" title="{fanta_short_name}">' if logo_fanta_b64 else f'<div style="font-size:14px; font-weight:bold; color:#fff;">{fanta_short_name}</div>'
+
         st.markdown(f"""
             <style>
-            @keyframes tvPopUp {{
+            @keyframes tvPopUpAutoClose {{
                 0% {{ transform: scale(0.5); opacity: 0; }}
-                70% {{ transform: scale(1.05); opacity: 1; }}
-                100% {{ transform: scale(1); opacity: 1; }}
+                15% {{ transform: scale(1.05); opacity: 1; }}
+                25% {{ transform: scale(1); opacity: 1; }}
+                85% {{ transform: scale(1); opacity: 1; }}
+                100% {{ transform: scale(0.9); opacity: 0; visibility: hidden; }}
             }}
             .tv-overlay {{
                 position: fixed;
@@ -539,6 +554,7 @@ def render_board_fragment():
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                animation: tvPopUpAutoClose 5s ease forwards;
             }}
             .tv-modal-card {{
                 background: linear-gradient(135deg, #130d26 0%, #22123d 100%);
@@ -546,7 +562,6 @@ def render_board_fragment():
                 border-radius: 24px;
                 padding: 40px 60px;
                 text-align: center;
-                animation: tvPopUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
                 box-shadow: 0 20px 50px rgba(168, 85, 247, 0.5), 0 0 100px rgba(0,0,0,0.8);
                 max-width: 650px;
                 width: 90%;
@@ -602,9 +617,9 @@ def render_board_fragment():
                     <div class="tv-modal-player">{ultimo_acq['Giocatore']} <span style="font-size: 22px; color: #a855f7;">({ultimo_acq['Ruolo']})</span></div>
                     
                     <div class="tv-modal-teams">
-                        <img src="{logo_sa_b64}" class="tv-big-logo" title="{sq_sa_name}">
+                        {img_sa_html}
                         <div class="tv-modal-arrow">➔</div>
-                        <img src="{logo_fanta_b64}" class="tv-big-logo" title="{fanta_short_name}">
+                        {img_fanta_html}
                     </div>
                     
                     <div>
