@@ -105,17 +105,17 @@ st.markdown(
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 10px !important;
+        padding: 6px 8px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
     }
 
     .card-title {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 8px;
+        margin-bottom: 4px;
         text-transform: uppercase;
     }
 
@@ -123,11 +123,11 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 3px 8px;
-        margin-bottom: 2px;
+        padding: 1.5px 6px;
+        margin-bottom: 1px;
         background: #1b1533;
-        border-radius: 6px;
-        font-size: 10px;
+        border-radius: 4px;
+        font-size: 9.5px;
         font-weight: 600;
         border: 1px solid #2a224a;
     }
@@ -163,15 +163,15 @@ st.markdown(
 
     .team-header {
         background: #191233;
-        padding: 8px 4px;
+        padding: 6px 4px;
         text-align: center;
         border-bottom: 1px solid #2d2252;
     }
     
     .team-logo-container {
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 6px auto;
+        width: 50px;
+        height: 50px;
+        margin: 0 auto 4px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
@@ -463,6 +463,10 @@ def render_control_panel():
                         st.session_state.acquisti.append(nuovo_acquisto)
                         save_acquisti()
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
+                        
+                        # Resetta la barra di ricerca svuotando la chiave e ricaricando
+                        st.session_state.pop("search_box", None)
+                        st.rerun()
 
                 if giocatore_selezionato and not btn_conferma:
                     info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
@@ -492,7 +496,6 @@ def render_control_panel():
                     
                     st.markdown("---")
                     
-                    # Pulsante Reset Totale con conferma integrata via checkbox o doppio click
                     with st.expander("⚠️ Area Pericolosa: Reset Totale"):
                         st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
                         conferma_reset = st.checkbox("Conferma di voler eliminare TUTTI i calciatori", key="chk_reset_totale")
@@ -525,8 +528,8 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        logo_fanta_html = '<div class="team-logo-container"></div>'  
-        
+        # Mostra il container del logo della fanta-squadra solo se in modalità TV e il logo esiste, altrimenti stringa vuota (niente spazi spuri)
+        logo_fanta_html = ""
         if is_tv_mode:
             fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
             if fanta_logo_b64:
