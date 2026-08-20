@@ -114,6 +114,29 @@ st.markdown(
         max-width: 100% !important;
     }
 
+    /* Allineamento colonne e contenitore flessibile */
+    [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        align-items: stretch !important;
+    }
+
+    [data-testid="stColumn"] {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    [data-testid="stColumn"] > div {
+        flex: 1 !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    .classifica-container [data-testid="stVerticalBlockBorderWrapper"] {
+        height: 100% !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #131525 !important;
         border: 1px solid #23263b !important;
@@ -742,6 +765,7 @@ def render_control_panel():
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
         # WIDGET 5: CLASSIFICA CREDITI
+        st.markdown('<div class="classifica-container">', unsafe_allow_html=True)
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
 
@@ -773,6 +797,7 @@ def render_control_panel():
                     f'</div>',
                     unsafe_allow_html=True
                 )
+        st.markdown('</div>', unsafe_allow_html=True)
 
 if not is_tv_mode:
     render_control_panel()
