@@ -43,7 +43,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🧼 PULIZIA INTERFACCIA E ANTISFARFALLIO (BLOCCO DISSOLVENZA STREAMLIT)
+# 🧼 PULIZIA INTERFACCIA E ANTISFARFALLIO CSS
 # ==============================================================================
 hide_st_style = """
     <style>
@@ -53,8 +53,8 @@ hide_st_style = """
     footer {visibility: hidden;}
     .stApp {padding-top: 0px !important;}
     
-    /* Impedisce l'effetto di oscuramento/fade durante i refresh e i frammenti */
-    .stApp, .stApp > div, [data-testid="stVerticalBlock"] {
+    /* Forza la massima stabilità visiva ed evita transizioni/fade */
+    .stApp, .stApp > div, [data-testid="stVerticalBlock"], [data-testid="stFragment"] {
         opacity: 1 !important;
         filter: none !important;
         transition: none !important;
@@ -278,7 +278,7 @@ st.markdown(
 )
 
 # ==============================================================================
-# CARICAMENTO DATI
+# CARICAMENTO DATI E CACHE LOGHI (EVITA LO SFARFALLIO)
 # ==============================================================================
 def load_data(file_path):
     if not os.path.exists(file_path):
@@ -303,7 +303,7 @@ def load_data(file_path):
     df["Prezzo_Numerico"] = pd.to_numeric(df["Prezzo Medio"], errors="coerce").fillna(0)
     return df
 
-
+@st.cache_data
 def get_logo_path(squadra):
     if not squadra or pd.isna(squadra):
         return None
@@ -322,7 +322,7 @@ def get_logo_path(squadra):
 
     return None
 
-
+@st.cache_data
 def get_fanta_logo_path(codice):
     if not codice:
         return None
@@ -336,7 +336,7 @@ def get_fanta_logo_path(codice):
             return path_lower
     return None
 
-
+@st.cache_data
 def get_logo_base64(path):
     if not path or not os.path.exists(path):
         return ""
