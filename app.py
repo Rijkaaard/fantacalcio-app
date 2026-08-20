@@ -35,9 +35,19 @@ MAPPA_CODICI_LOGHI = {
     "VERONA": "VER",
 }
 
+query_params = st.query_params
+is_tv_mode = query_params.get("vista") == "tv"
+
+# Nome della scheda dinamico in base alla vista
+page_title_str = "Asta | Tabellone TV" if is_tv_mode else "Asta | Admin"
+
+# Gestione icona personalizzata (assicurati di avere un file 'logo_icon.png' o cambia il percorso)
+icona_path = "logo_icon.png"
+page_icon_param = icona_path if os.path.exists(icona_path) else "⚽"
+
 st.set_page_config(
-    page_title="FantaLab - Tabellone Asta",
-    page_icon="⚽",
+    page_title=page_title_str,
+    page_icon=page_icon_param,
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -194,7 +204,7 @@ st.markdown(
         font-weight: 600;
     }
 
-    /* Barre dei Ruoli FantaLab (Stile esatto con colori P, D, C, A distinti) */
+    /* Barre dei Ruoli FantaLab */
     .role-bar {
         font-size: 8.5px;
         font-weight: 700;
@@ -411,9 +421,6 @@ def get_squadra_stats(nome_squadra):
     return rimasti, tot_giocatori, max_offerta, acquisti
 
 
-query_params = st.query_params
-is_tv_mode = query_params.get("vista") == "tv"
-
 # ==============================================================================
 # 1. PANNELLO SUPERIORE A WIDGET SEPARATI
 # ==============================================================================
@@ -571,7 +578,6 @@ def render_control_panel():
                     "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}"
                 })
             
-            # Ordinamento dal più alto al più basso per crediti
             dati_classifica = sorted(dati_classifica, key=lambda x: x["Crediti"], reverse=True)
 
             for idx, item in enumerate(dati_classifica, start=1):
