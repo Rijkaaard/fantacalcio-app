@@ -213,12 +213,12 @@ st.markdown(
         background: #171033;
         border: 2px solid #3b2c63;
         border-radius: 10px;
-        padding: 12px 16px;
+        padding: 10px 14px;
         display: flex;
         align-items: center;
-        gap: 15px;
-        margin-top: 10px;
-        margin-bottom: 5px;
+        gap: 12px;
+        margin-top: 8px;
+        margin-bottom: 4px;
     }
 
     .player-cell {
@@ -282,7 +282,7 @@ st.markdown(
     .ranking-sub {
         font-size: 11px;
         color: #9ca3af;
-        margin-left: 8px;
+        margin-left: 6px;
     }
     .ranking-badge {
         background: #1f173b;
@@ -393,21 +393,25 @@ query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE (A TUTTO SCHERMO, SENZA BOX SQUADRE)
+# 1. PANNELLO SUPERIORE A WIDGET SEPARATI
 # ==============================================================================
 @st.fragment
 def render_control_panel():
     st.session_state.acquisti = load_saved_acquisti()
 
-    with st.container(border=True):
-        st.markdown('<div class="card-title">GESTIONE ASTA LIBERA & FILTRI</div>', unsafe_allow_html=True)
+    col_gestione, col_classifica = st.columns([1.3, 1])
 
-        tab_assegna, tab_svincola, tab_classifica = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi", "🏆 Classifica Crediti"])
+    giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
+    df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-        giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
-        df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
+    # Colonna Sinistra: Widget Aggiungi e Widget Rimuovi
+    with col_gestione:
+        # ----------------------------------------------------------------------
+        # WIDGET 1: AGGIUNGI CALCIATORE
+        # ----------------------------------------------------------------------
+        with st.container(border=True):
+            st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-        with tab_assegna:
             f_col1, f_col2 = st.columns([1, 1])
             with f_col1:
                 filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0, key="ctrl_ruolo")
@@ -483,19 +487,24 @@ def render_control_panel():
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:32px; height:32px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:28px; height:28px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
                 
                 st.markdown(
                     f'<div class="player-preview-box">'
                     f'{logo_html}'
-                    f'<span style="font-size: 18px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
+                    f'<span style="font-size: 15px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
                     f'<span class="{badge_class}">{ruolo_g}</span>'
-                    f'<span style="margin-left: auto; font-size: 15px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'<span style="margin-left: auto; font-size: 13px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
 
-        with tab_svincola:
+        # ----------------------------------------------------------------------
+        # WIDGET 2: RIMUOCI / SVINCOLA CALCIATORE
+        # ----------------------------------------------------------------------
+        with st.container(border=True):
+            st.markdown('<div class="card-title">🗑️ SVINCOLA / RIMUOVI CALCIATORE</div>', unsafe_allow_html=True)
+
             if st.session_state.acquisti:
                 col_del_g, col_del_btn = st.columns([3, 1])
                 with col_del_g:
@@ -506,8 +515,6 @@ def render_control_panel():
                         st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
                         save_acquisti()
                         st.success(f"Rimosso con successo.")
-                
-                st.markdown("---")
                 
                 with st.expander("⚠️ Area Pericolosa: Reset Totale"):
                     st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
@@ -523,7 +530,14 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
-        with tab_classifica:
+    # Colonna Destra: Widget Classifica Crediti
+    with col_classifica:
+        # ----------------------------------------------------------------------
+        # WIDGET 3: CLASSIFICA CREDITI
+        # ----------------------------------------------------------------------
+        with st.container(border=True):
+            st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
+
             dati_classifica = []
             for s_info in SQUADRE_INFO:
                 sq_full = f"{s_info['nome']} - {s_info['mister']}"
@@ -542,12 +556,12 @@ def render_control_panel():
                 st.markdown(
                     f'<div class="ranking-row">'
                     f'<div>'
-                    f'<span style="font-weight: 800; color: #a78bfa; margin-right: 10px;">{idx}.</span>'
+                    f'<span style="font-weight: 800; color: #a78bfa; margin-right: 8px;">{idx}.</span>'
                     f'<span class="ranking-info">{item["Squadra"]}</span>'
                     f'<span class="ranking-sub">({item["Mister"]})</span>'
                     f'</div>'
-                    f'<div style="display: flex; align-items: center; gap: 12px;">'
-                    f'<span style="font-size: 11px; color: #9ca3af;">Rosa: {item["Rosa"]}</span>'
+                    f'<div style="display: flex; align-items: center; gap: 10px;">'
+                    f'<span style="font-size: 11px; color: #9ca3af;">{item["Rosa"]}</span>'
                     f'<span class="ranking-badge">🟡 {item["Crediti"]} crediti</span>'
                     f'</div>'
                     f'</div>',
