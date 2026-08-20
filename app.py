@@ -35,6 +35,8 @@ MAPPA_CODICI_LOGHI = {
     "VERONA": "VER",
 }
 
+MAPPA_NOME_CODICE_FANTA = {s['nome']: s['codice'] for s in SQUADRE_INFO}
+
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
@@ -323,6 +325,41 @@ st.markdown(
         color: #ffffff !important;
     }
 
+    /* Widget Affari */
+    .deal-card-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 4px 0;
+    }
+    .deal-player-name {
+        font-size: 12px;
+        font-weight: 800;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 4px;
+    }
+    .deal-logos-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 4px;
+    }
+    .deal-logo-img {
+        width: 22px;
+        height: 22px;
+        object-fit: contain;
+    }
+    .deal-price-info {
+        font-size: 10.5px;
+        font-weight: 700;
+    }
+
     /* Classifica Crediti */
     .ranking-row {
         background: #15182b;
@@ -474,7 +511,7 @@ def render_control_panel():
     giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
     df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
-    # Colonna Sinistra: Widget Aggiungi e Widget Rimuovi
+    # Colonna Sinistra: Widget Aggiungi, Svincola, Miglior Affare, Peggior Affare
     with col_gestione:
         # WIDGET 1: AGGIUNGI CALCIATORE
         with st.container(border=True):
@@ -596,9 +633,70 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
+        # WIDGET 3 & 4: MIGLIOR AFFARE E PEGGIOR AFFARE (AFFIANCATI)
+        col_best, col_worst = st.columns(2)
+
+        # Calcolo affari
+        acquisti_validi = [
+            a for a in st.session_state.acquisti 
+            if a.get("Prezzo_Medio", 0) > 0 and a["Costo"] != a["Prezzo_Medio"]
+        ]
+
+        best_deal = None
+        worst_deal = None
+
+        if acquisti_validi:
+            # Differenza = Prezzo Medio - Costo (più è alta, più è un affare)
+            best_deal = max(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
+            worst_deal = min(acquisti_validi, key=lambda x: x["Prezzo_Medio"] - x["Costo"])
+
+            # Se la differenza del migliore non è positiva (>0), non c'è un vero affare
+            if (best_deal["Prezzo_Medio"] - best_deal["Costo"]) <= 0:
+                best_deal = None
+
+            # Se la differenza del peggiore non è negativa (<0), non c'è un vero peggior affare
+            if (worst_deal["Prezzo_Medio"] - worst_deal["Costo"]) >= 0:
+                worst_deal = None
+
+        def render_deal_card(deal_data, title, title_color, price_color):
+            if not deal_data:
+                return f'<div style="text-align:center; font-size:11px; color:#64748b; padding:10px 0;">Nessun dato</div>'
+            
+            g_nome = deal_data["Giocatore"]
+            costo = deal_data["Costo"]
+            p_medio = deal_data["Prezzo_Medio"]
+
+            sq_sa = deal_data.get("Squadra_SerieA", "")
+            logo_sa_b64 = get_logo_base64_cached(sq_sa)
+            logo_sa_html = f'<img src="{logo_sa_b64}" class="deal-logo-img" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+
+            sq_fanta_full = deal_data.get("Squadra_Fanta", "")
+            nome_fanta = sq_fanta_full.split(" - ")[0]
+            codice_fanta = MAPPA_NOME_CODICE_FANTA.get(nome_fanta, nome_fanta)
+            logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
+            logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:11px; color:#f8fafc;">{codice_fanta}</strong>'
+
+            return (
+                f'<div class="deal-card-content">'
+                f'<div class="deal-player-name">{g_nome}</div>'
+                f'<div class="deal-logos-row">{logo_sa_html} <span style="color:#64748b; font-weight:bold; font-size:12px;">➡️</span> {logo_fanta_html}</div>'
+                f'<div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:9.5px; font-weight:normal;">(Medio: {p_medio} FM)</span></div>'
+                f'</div>'
+            )
+
+        with col_best:
+            with st.container(border=True):
+                st.markdown('<div class="card-title" style="color: #22c55e;">🌟 MIGLIOR AFFARE</div>', unsafe_allow_html=True)
+                st.markdown(render_deal_card(best_deal, "MIGLIOR AFFARE", "#22c55e", "#22c55e"), unsafe_allow_html=True)
+
+        with col_worst:
+            with st.container(border=True):
+                st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ PEGGIOR AFFARE</div>', unsafe_allow_html=True)
+                st.markdown(render_deal_card(worst_deal, "PEGGIOR AFFARE", "#ef4444", "#ef4444"), unsafe_allow_html=True)
+
     # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
-        # WIDGET 3: CLASSIFICA CREDITI
+        # WIDGET 5: CLASSIFICA CREDITI
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
 
