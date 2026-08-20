@@ -43,7 +43,7 @@ st.set_page_config(
 )
 
 # ==============================================================================
-# 🧼 PULIZIA INTERFACCIA (RIMOZIONE BARRA SUPERIORE STREAMLIT)
+# 🧼 PULIZIA INTERFACCIA E ANTISFARFALLIO (BLOCCO DISSOLVENZA STREAMLIT)
 # ==============================================================================
 hide_st_style = """
     <style>
@@ -52,6 +52,16 @@ hide_st_style = """
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     .stApp {padding-top: 0px !important;}
+    
+    /* Impedisce l'effetto di oscuramento/fade durante i refresh e i frammenti */
+    .stApp, .stApp > div, [data-testid="stVerticalBlock"] {
+        opacity: 1 !important;
+        filter: none !important;
+        transition: none !important;
+    }
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
     </style>
 """
 st.markdown(hide_st_style, unsafe_allow_html=True)
@@ -359,7 +369,7 @@ query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE ISOLATO IN UN FRAGMENT (ELIMINA IL LAMPEGGIO GLOBALE)
+# 1. PANNELLO SUPERIORE ISOLATO IN UN FRAGMENT
 # ==============================================================================
 @st.fragment
 def render_control_panel():
