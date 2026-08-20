@@ -81,7 +81,7 @@ if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
 # ==============================================================================
-# 🎨 STILE CSS COMPATTO (SCALATO IN BASSO PER TV)
+# 🎨 STILE CSS COMPATTO (OTTIMIZZATO PER SPAZIATURA E PULIZIA)
 # ==============================================================================
 st.markdown(
     """
@@ -105,7 +105,7 @@ st.markdown(
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 6px 8px !important;
+        padding: 8px 10px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
         margin-bottom: 6px !important;
     }
@@ -115,19 +115,20 @@ st.markdown(
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 4px;
+        margin-bottom: 5px;
         text-transform: uppercase;
     }
 
+    /* Stile ottimizzato per dare respiro alle 10 squadre senza toccare il fondo */
     .team-mini-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1.5px 6px;
-        margin-bottom: 1px;
+        padding: 2px 6px;
+        margin-bottom: 2px;
         background: #1b1533;
         border-radius: 4px;
-        font-size: 9.5px;
+        font-size: 9px;
         font-weight: 600;
         border: 1px solid #2a224a;
     }
@@ -464,8 +465,8 @@ def render_control_panel():
                         save_acquisti()
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                         
-                        # Resetta la barra di ricerca svuotando la chiave e ricaricando
-                        st.session_state.pop("search_box", None)
+                        # Resetta la barra di ricerca azzerandone lo stato
+                        st.session_state["search_box"] = None
                         st.rerun()
 
                 if giocatore_selezionato and not btn_conferma:
@@ -528,7 +529,6 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Mostra il container del logo della fanta-squadra solo se in modalità TV e il logo esiste, altrimenti stringa vuota (niente spazi spuri)
         logo_fanta_html = ""
         if is_tv_mode:
             fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
