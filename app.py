@@ -325,30 +325,25 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Widget Top 3 Affari Spazioso (spazio extra per evitare tagli) */
+    /* Widget Top 3 Affari Centrato e Bilanciato */
     .deal-box-single {
         background: #1a1d33;
         border: 1px solid #282c4a;
         border-radius: 6px;
-        padding: 8px 6px;
-        min-height: 95px;
+        padding: 12px 6px;
+        height: 110px;
+        box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        margin-bottom: 2px;
-    }
-    .deal-card-content {
-        display: flex;
-        flex-direction: column;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
         text-align: center;
     }
     .deal-rank-title {
         font-size: 9.5px;
         font-weight: 800;
         text-transform: uppercase;
-        margin-bottom: 3px;
+        line-height: 1;
     }
     .deal-player-name {
         font-size: 11px;
@@ -357,15 +352,15 @@ st.markdown(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 4px;
         max-width: 100%;
+        line-height: 1.2;
     }
     .deal-logos-row {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
-        margin-bottom: 4px;
+        height: 22px;
     }
     .deal-logo-img {
         width: 22px;
@@ -380,6 +375,7 @@ st.markdown(
     .deal-price-info {
         font-size: 9px;
         font-weight: 700;
+        line-height: 1;
     }
 
     /* Classifica Crediti */
@@ -678,10 +674,9 @@ def render_control_panel():
             if not deal_data:
                 return f'''
                 <div class="deal-box-single">
-                    <div class="deal-card-content">
-                        <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
-                        <div style="font-size:10px; color:#64748b; padding:12px 0;">- N/D -</div>
-                    </div>
+                    <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
+                    <div style="font-size:10px; color:#64748b;">- N/D -</div>
+                    <div class="deal-price-info" style="color:transparent;">.</div>
                 </div>
                 '''
             
@@ -704,12 +699,10 @@ def render_control_panel():
 
             return f'''
             <div class="deal-box-single">
-                <div class="deal-card-content">
-                    <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
-                    <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>
-                    <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
-                    <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8px; font-weight:normal;">(Medio: {p_medio})</span></div>
-                </div>
+                <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
+                <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>
+                <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
+                <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8px; font-weight:normal;">(Medio: {p_medio})</span></div>
             </div>
             '''
 
