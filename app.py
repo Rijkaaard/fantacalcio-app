@@ -149,66 +149,45 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* CUSTOM RUOLI PILLS */
-    .role-pills-container {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 8px;
-    }
-
-    .stButton.pill-tutti button {
-        background-color: #0d0620 !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        color: #c0b9dd !important;
-        border-radius: 25px !important;
-        padding: 0 16px !important;
-        height: 38px !important;
+    /* CUSTOM RUOLI PILLS - EXACT LOOK AS IMAGE */
+    div[data-testid="column"] .stButton button {
+        border-radius: 9999px !important;
+        height: 42px !important;
+        font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 13px !important;
-        letter-spacing: 0.5px !important;
+        font-size: 15px !important;
+        transition: all 0.2s ease !important;
         box-shadow: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    .stButton.pill-tutti-active button {
+    /* Stato Disattivato (Bordo grigio e sfondo scuro) */
+    .pill-tutti button, .pill-circle button {
+        background-color: #110927 !important;
+        border: 1px solid #362d59 !important;
+        color: #94a3b8 !important;
+    }
+
+    /* Cerchio perfetto per i ruoli P, D, C, A */
+    .pill-circle button, .pill-circle-active button {
+        width: 42px !important;
+        min-width: 42px !important;
+        padding: 0 !important;
+    }
+
+    /* Pillola allungata per TUTTI */
+    .pill-tutti button, .pill-tutti-active button {
+        padding: 0 22px !important;
+        width: 100% !important;
+    }
+
+    /* Stato Attivo (Fucsia/Magenta pieno) */
+    .pill-tutti-active button, .pill-circle-active button {
         background-color: #d81b60 !important;
         border: 1px solid #d81b60 !important;
         color: #ffffff !important;
-        border-radius: 25px !important;
-        padding: 0 16px !important;
-        height: 38px !important;
-        font-weight: 800 !important;
-        font-size: 13px !important;
-        letter-spacing: 0.5px !important;
-        box-shadow: 0 2px 8px rgba(216, 27, 96, 0.4) !important;
-    }
-
-    .stButton.pill-circle button {
-        background-color: #0d0620 !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        color: #c0b9dd !important;
-        border-radius: 50% !important;
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        padding: 0 !important;
-        font-weight: 800 !important;
-        font-size: 14px !important;
-        box-shadow: none !important;
-    }
-
-    .stButton.pill-circle-active button {
-        background-color: #d81b60 !important;
-        border: 1px solid #d81b60 !important;
-        color: #ffffff !important;
-        border-radius: 50% !important;
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        padding: 0 !important;
-        font-weight: 800 !important;
-        font-size: 14px !important;
-        box-shadow: 0 2px 8px rgba(216, 27, 96, 0.4) !important;
     }
 
     .card-title {
@@ -701,7 +680,6 @@ def render_control_panel():
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                # FIX BLOCCO: Utilizzo sicuro di get_logo_base64_cached senza open() fatali
                 logo_b64 = get_logo_base64_cached(squadra_serie_a)
                 logo_html = f'<img src="{logo_b64}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" />' if logo_b64 else ""
                 
@@ -822,7 +800,7 @@ def render_control_panel():
                     item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p2:
-                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
+                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
                     item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
