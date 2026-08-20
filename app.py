@@ -83,12 +83,12 @@ if "acquisti" not in st.session_state:
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
-# Tracciamento ultimo acquisto per la notifica TV da 5 secondi
+# Tracciamento dell'ultimo acquisto per l'effetto nella cella
 if "ultimo_acquisto_notificato" not in st.session_state:
     st.session_state.ultimo_acquisto_notificato = len(st.session_state.acquisti)
 
 # ==============================================================================
-# 🎨 STILE CSS E ANIMAZIONE POP-UP TV
+# 🎨 STILE CSS E ANIMAZIONE LEGGERA PER LA CELLA
 # ==============================================================================
 st.markdown(
     """
@@ -238,6 +238,17 @@ st.markdown(
         background: #130e26;
     }
 
+    /* Animazione leggera per evidenziare l'ultimo acquisto nella cella */
+    @keyframes pulseNew {
+        0% { background-color: #7c3aed; color: #ffffff; }
+        50% { background-color: #4c1d95; color: #fde047; }
+        100% { background-color: #16102b; color: #e2e8f0; }
+    }
+
+    .player-cell-new {
+        animation: pulseNew 3s ease-in-out;
+    }
+
     .player-cell-left {
         display: flex;
         align-items: center;
@@ -293,29 +304,6 @@ st.markdown(
         padding: 4px 10px;
         border-radius: 6px;
         border: 1px solid #3b2c63;
-    }
-
-    /* --- ANIMAZIONE POPUP TV (5 SECONDI) --- */
-    @keyframes popupAnimation {
-        0% { transform: translateY(100px); opacity: 0; }
-        15% { transform: translateY(0); opacity: 1; }
-        85% { transform: translateY(0); opacity: 1; }
-        100% { transform: translateY(100px); opacity: 0; }
-    }
-
-    .tv-popup-container {
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 99999;
-        animation: popupAnimation 5s ease-in-out forwards;
-        width: 600px;
-        background: linear-gradient(135deg, #191233 0%, #120d24 100%);
-        border: 2px solid #7c3aed;
-        border-radius: 16px;
-        padding: 16px 24px;
-        box-shadow: 0 10px 35px rgba(124, 58, 237, 0.4);
     }
     </style>
 """,
@@ -496,6 +484,10 @@ def render_control_panel():
                     }
                     st.session_state.acquisti.append(nuovo_acquisto)
                     save_acquisti()
+                    
+                    # Segna che c'è un nuovo acquisto da evidenziare
+                    st.session_state.ultimo_acquisto_notificato = len(st.session_state.acquisti)
+                    
                     st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                     
                     st.session_state.search_version += 1
@@ -585,64 +577,17 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT CON POP-UP ANIMATO DI NOTIFICA TRASFERIMENTO
+# 2. TABELLONE FRAGMENT CON EVIDENZIAZIONE DELL'ULTIMO ACQUISTO NELLA CELLA
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
     st.session_state.acquisti = load_saved_acquisti()
     
-    # Controllo se c'è un nuovo acquisto rispetto all'ultimo notificato
-    current_len = len(st.session_state.acquisti)
-    if current_len > st.session_state.ultimo_acquisto_notificato:
-        ultimo_g = st.session_state.acquisti[-1]
-        
-        # Recupero loghi per il pop-up
-        squadra_sa = ultimo_g.get("Squadra_SerieA", "")
-        logo_sa_b64 = get_logo_base64_cached(squadra_sa)
-        
-        fanta_full = ultimo_g["Squadra_Fanta"]
-        # Trova il codice della squadra fantasy associata per pescare il logo corretto
-        codice_fanta = ""
-        for s in SQUADRE_INFO:
-            if f"{s['nome']} - {s['mister']}" == fanta_full:
-                codice_fanta = s['codice']
-                break
-        logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
-        
-        ruolo = ultimo_g["Ruolo"]
-        badge_cls = f"badge-ruolo-{ruolo.lower()}"
-        
-        img_sa_tag = f'<img src="{logo_sa_b64}" style="width:36px; height:36px; object-fit:contain; vertical-align:middle; margin-right: 8px;" />' if logo_sa_b64 else ""
-        img_fanta_tag = f'<img src="{logo_fanta_b64}" style="width:36px; height:36px; object-fit:contain; vertical-align:middle; margin-left: 8px;" />' if logo_fanta_b64 else ""
-        
-        # HTML del Pop-up animato che dura 5 secondi esatti
-        popup_html = (
-            f'<div class="tv-popup-container">'
-            f'<div style="text-align: center; font-size: 11px; font-weight: 800; color: #a78bfa; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;">✨ NUOVO TRASFERIMENTO ✨</div>'
-            f'<div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">'
-            # Info Calciatore e Ruolo
-            f'<div style="display: flex; align-items: center; gap: 8px; flex: 1.2;">'
-            f'<span style="font-size: 16px; font-weight: 800; color: #ffffff;">{ultimo_g["Giocatore"]}</span>'
-            f'<span class="{badge_cls}">{ruolo}</span>'
-            f'</div>'
-            # Club Reale -> Squadra Immaginaria con freccia
-            f'<div style="display: flex; align-items: center; gap: 6px; flex: 1.3; justify-content: flex-end;">'
-            f'<div style="display: flex; align-items: center; font-size: 12px; font-weight: 700; color: #cbd5e1;">{img_sa_tag}{squadra_sa}</div>'
-            f'<span style="font-size: 18px; color: #a78bfa; font-weight: 800; margin: 0 4px;">➔</span>'
-            f'<div style="display: flex; align-items: center; font-size: 12px; font-weight: 700; color: #fbbf24;">{fanta_full.split(" - ")[0]}{img_fanta_tag}</div>'
-            f'</div>'
-            f'</div>'
-            # Prezzo in basso
-            f'<div style="text-align: center; margin-top: 8px; font-size: 13px; font-weight: 700; color: #34d399;">Prezzo d\'acquisto: 🟡 {ultimo_g["Costo"]} crediti</div>'
-            f'</div>'
-        )
-        
-        st.markdown(popup_html, unsafe_allow_html=True)
-        
-        # Aggiorniamo lo stato in modo che il popup compaia solo una volta per il nuovo acquisto
-        st.session_state.ultimo_acquisto_notificato = current_len
+    # Individuiamo l'ultimo giocatore acquistato in assoluto (se esiste)
+    ultimo_giocatore_nome = None
+    if st.session_state.acquisti:
+        ultimo_giocatore_nome = st.session_state.acquisti[-1]["Giocatore"]
 
-    # Rendering del Tabellone principale delle squadre
     cols_html = []
 
     for s_info in SQUADRE_INFO:
@@ -697,11 +642,18 @@ def render_board_fragment():
                     else:
                         colore_prezzo = "#fbbf24"
 
+                    # Se questo è l'ultimo giocatore acquistato, applichiamo la classe animata
+                    is_ultimo = (nome_g == ultimo_giocatore_nome)
+                    cell_class = "player-cell player-cell-new" if is_ultimo else "player-cell"
+                    
+                    # Se è l'ultimo, possiamo opzionalmente mostrare una scritta lampeggiante iniziale o evidenziarla con l'animazione pulita
+                    content_display = f'<span class="player-cell-name">{nome_g}</span>'
+                    
                     col_content.append(
-                        f'<div class="player-cell">'
+                        f'<div class="{cell_class}">'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
-                        f'<span class="player-cell-name">{nome_g}</span>'
+                        f'{content_display}'
                         f'</div>'
                         f'<div class="player-cell-right">'
                         f'<span class="player-cell-cost" style="color: {colore_prezzo};">{costo}</span>'
