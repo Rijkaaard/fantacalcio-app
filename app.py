@@ -166,12 +166,11 @@ st.markdown(
     }
     
     .team-logo-container {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         margin: 0 auto 6px auto;
-        background: #151029;
-        border: 1px solid #2d2252;
-        border-radius: 0px !important;
+        background: transparent !important;
+        border: none !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -180,8 +179,10 @@ st.markdown(
     .fanta-team-logo {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         border-radius: 0px !important;
+        background: transparent !important;
+        border: none !important;
     }
 
     .team-header-name {
@@ -269,7 +270,6 @@ st.markdown(
 # ==============================================================================
 # CARICAMENTO DATI
 # ==============================================================================
-@st.cache_data
 def load_data(file_path):
     if not os.path.exists(file_path):
         return None
@@ -498,7 +498,7 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV CON TAGLIO QUADRATO
+        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV, PIÙ GRANDE E SENZA RIQUADRI
         logo_fanta_html = '<div class="team-logo-container"></div>'  
         
         if is_tv_mode:
