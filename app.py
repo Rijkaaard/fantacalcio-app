@@ -80,6 +80,9 @@ def save_acquisti():
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
+if "search_version" not in st.session_state:
+    st.session_state.search_version = 0
+
 # ==============================================================================
 # 🎨 STILE CSS COMPATTO (OTTIMIZZATO PER SPAZIATURA E PULIZIA)
 # ==============================================================================
@@ -119,7 +122,6 @@ st.markdown(
         text-transform: uppercase;
     }
 
-    /* Stile ottimizzato per dare respiro alle 10 squadre senza toccare il fondo */
     .team-mini-row {
         display: flex;
         justify-content: space-between;
@@ -416,13 +418,14 @@ def render_control_panel():
                 col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
                 with col_g:
+                    # Utilizziamo una chiave dinamica con la versione per azzerare la ricerca correttamente senza eccezioni
                     giocatore_selezionato = st.selectbox(
                         "Cerca Calciatore",
                         options=sorted(df_filtrati["Giocatore"].tolist()),
                         index=None,
                         placeholder="🔍 Cerca calciatore...",
                         label_visibility="collapsed",
-                        key="search_box",
+                        key=f"search_box_{st.session_state.search_version}",
                     )
 
                 with col_sq:
@@ -465,8 +468,8 @@ def render_control_panel():
                         save_acquisti()
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                         
-                        # Resetta la barra di ricerca azzerandone lo stato
-                        st.session_state["search_box"] = None
+                        # Incrementa la versione per resettare la selectbox pulita al prossimo rerun
+                        st.session_state.search_version += 1
                         st.rerun()
 
                 if giocatore_selezionato and not btn_conferma:
