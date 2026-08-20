@@ -108,7 +108,7 @@ st.markdown(
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 8px 10px !important;
+        padding: 5px 8px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
         margin-bottom: 6px !important;
     }
@@ -118,7 +118,7 @@ st.markdown(
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 5px;
+        margin-bottom: 3px;
         text-transform: uppercase;
     }
 
@@ -126,11 +126,11 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 2px 6px;
-        margin-bottom: 2px;
+        padding: 1px 5px;
+        margin-bottom: 1px;
         background: #1b1533;
-        border-radius: 4px;
-        font-size: 9px;
+        border-radius: 3px;
+        font-size: 8.5px;
         font-weight: 600;
         border: 1px solid #2a224a;
     }
@@ -418,7 +418,6 @@ def render_control_panel():
                 col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
                 with col_g:
-                    # Utilizziamo una chiave dinamica con la versione per azzerare la ricerca correttamente senza eccezioni
                     giocatore_selezionato = st.selectbox(
                         "Cerca Calciatore",
                         options=sorted(df_filtrati["Giocatore"].tolist()),
@@ -468,7 +467,6 @@ def render_control_panel():
                         save_acquisti()
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                         
-                        # Incrementa la versione per resettare la selectbox pulita al prossimo rerun
                         st.session_state.search_version += 1
                         st.rerun()
 
