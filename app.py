@@ -41,7 +41,7 @@ is_tv_mode = query_params.get("vista") == "tv"
 # Nome della scheda dinamico in base alla vista
 page_title_str = "Asta | Tabellone TV" if is_tv_mode else "Asta | Admin"
 
-# Gestione icona personalizzata (assicurati di avere un file 'logo_icon.png' o cambia il percorso)
+# Gestione icona personalizzata
 icona_path = "logo_icon.png"
 page_icon_param = icona_path if os.path.exists(icona_path) else "⚽"
 
@@ -204,20 +204,37 @@ st.markdown(
         font-weight: 600;
     }
 
-    /* Barre dei Ruoli FantaLab */
+    /* Barre dei Ruoli FantaLab - Effetto Metallizzato */
     .role-bar {
         font-size: 8.5px;
         font-weight: 700;
-        padding: 2px 5px;
+        padding: 3px 5px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
-        letter-spacing: 0.3px;
+        letter-spacing: 0.5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
-    .role-p { background-color: #b45309; border-top: 1px solid #d97706; border-bottom: 1px solid #d97706; }
-    .role-d { background-color: #15803d; border-top: 1px solid #22c55e; border-bottom: 1px solid #22c55e; }
-    .role-c { background-color: #1d4ed8; border-top: 1px solid #3b82f6; border-bottom: 1px solid #3b82f6; }
-    .role-a { background-color: #be123c; border-top: 1px solid #f43f5e; border-bottom: 1px solid #f43f5e; }
+    .role-p { 
+        background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
+        border-top: 1px solid #fcd34d; 
+        border-bottom: 1px solid #451a03; 
+    }
+    .role-d { 
+        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); 
+        border-top: 1px solid #86efac; 
+        border-bottom: 1px solid #052e16; 
+    }
+    .role-c { 
+        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); 
+        border-top: 1px solid #93c5fd; 
+        border-bottom: 1px solid #172554; 
+    }
+    .role-a { 
+        background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); 
+        border-top: 1px solid #fecdd3; 
+        border-bottom: 1px solid #4c0519; 
+    }
 
     /* Badge ruolo per la preview */
     .badge-ruolo-p { background-color: #d97706; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
