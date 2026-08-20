@@ -149,18 +149,19 @@ st.markdown(
         padding-top: 2px;
     }
 
-    /* Colonna Squadra */
+    /* Colonna Squadra senza sfondo e senza bordi scuri */
     .team-column {
-        background: #111322;
-        border: 1px solid #1f2238;
-        border-radius: 6px;
-        overflow: hidden;
+        background: transparent !important;
+        border: none !important;
+        display: flex;
+        flex-direction: column;
     }
 
     .team-header {
         background: #1a1d33;
         padding: 6px 4px;
         text-align: center;
+        border-radius: 6px 6px 0 0;
         border-bottom: 2px solid #282c4a;
     }
     
@@ -214,6 +215,7 @@ st.markdown(
         justify-content: space-between;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        margin-top: 2px;
         margin-bottom: 2px;
     }
     .role-p { 
@@ -255,9 +257,10 @@ st.markdown(
         margin-bottom: 2px;
     }
 
-    /* Celle calciatore trasparenti, allineate e con contorno viola sottile/discreto */
+    /* Celle calciatore perfettamente allineate ai bordi destri e sinistri dell'header */
     .player-cell {
         height: 22px;
+        width: 100%;
         background: transparent !important;
         border: 1px solid rgba(167, 139, 250, 0.25) !important;
         border-radius: 3px;
@@ -268,9 +271,6 @@ st.markdown(
         justify-content: space-between;
         padding: 0 4px;
         font-size: 9.5px;
-    }
-    .player-cell:nth-child(even) {
-        background: transparent !important;
     }
 
     .player-cell-left {
