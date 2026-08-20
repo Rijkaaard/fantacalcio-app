@@ -166,21 +166,21 @@ st.markdown(
     }
     
     .team-logo-container {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
         margin: 0 auto 6px auto;
         background: #151029;
         border: 1px solid #2d2252;
-        border-radius: 6px;
+        border-radius: 4px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 2px;
+        overflow: hidden;
     }
     .fanta-team-logo {
-        max-width: 32px;
-        max-height: 32px;
-        object-fit: contain;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
     }
 
     .team-header-name {
@@ -471,7 +471,7 @@ if not is_tv_mode:
                     else:
                         st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
 
-            with tab_svincola:
+            tab_svincola:
                 if st.session_state.acquisti:
                     col_del_g, col_del_btn = st.columns([3, 1])
                     with col_del_g:
@@ -500,13 +500,14 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Gestione logo fanta squadra racchiuso nel quadrato
-        fanta_logo_p = get_fanta_logo_path(s_info['codice'])
-        fanta_logo_b64 = get_logo_base64(fanta_logo_p) if fanta_logo_p else ""
-        if fanta_logo_b64:
-            logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
-        else:
-            logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio quadrato vuoto riservato se manca
+        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV
+        logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio quadrato vuoto di default
+        
+        if is_tv_mode:
+            fanta_logo_p = get_fanta_logo_path(s_info['codice'])
+            fanta_logo_b64 = get_logo_base64(fanta_logo_p) if fanta_logo_p else ""
+            if fanta_logo_b64:
+                logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
         
         col_content = [
             f'<div class="team-column">'
