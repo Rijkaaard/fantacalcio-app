@@ -108,7 +108,7 @@ st.markdown(
         background: #120d24 !important;
         border: 1px solid #282045 !important;
         border-radius: 12px !important;
-        padding: 5px 8px !important;
+        padding: 8px 10px !important; /* Padding simmetrico sopra e sotto */
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
         margin-bottom: 6px !important;
     }
@@ -118,7 +118,7 @@ st.markdown(
         font-weight: 800;
         color: #a78bfa;
         letter-spacing: 0.5px;
-        margin-bottom: 3px;
+        margin-bottom: 5px; /* Margine originale ripristinato */
         text-transform: uppercase;
     }
 
@@ -126,11 +126,11 @@ st.markdown(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 1px 5px;
-        margin-bottom: 1px;
+        padding: 2px 6px; /* Dimensione righe originale */
+        margin-bottom: 2px; /* Margine righe originale */
         background: #1b1533;
-        border-radius: 3px;
-        font-size: 8.5px;
+        border-radius: 4px;
+        font-size: 9px; /* Grandezza font originale */
         font-weight: 600;
         border: 1px solid #2a224a;
     }
