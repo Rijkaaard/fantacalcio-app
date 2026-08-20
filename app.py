@@ -489,6 +489,21 @@ def render_control_panel():
                             st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
                             save_acquisti()
                             st.success(f"Rimosso con successo.")
+                    
+                    st.markdown("---")
+                    
+                    # Pulsante Reset Totale con conferma integrata via checkbox o doppio click
+                    with st.expander("⚠️ Area Pericolosa: Reset Totale"):
+                        st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
+                        conferma_reset = st.checkbox("Conferma di voler eliminare TUTTI i calciatori", key="chk_reset_totale")
+                        if st.button("🗑️ RIMUOVI TUTTI I CALCIATORI", type="primary", use_container_width=True, key="btn_reset_totale"):
+                            if conferma_reset:
+                                st.session_state.acquisti = []
+                                save_acquisti()
+                                st.success("Tutti i calciatori sono stati rimossi con successo!")
+                                st.rerun()
+                            else:
+                                st.error("Devi spuntare la casella di conferma per procedere con il reset totale.")
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
 
