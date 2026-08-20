@@ -471,13 +471,12 @@ def render_control_panel():
                 # --- ANIMAZIONE / RETTANGOLO NUOVO ACQUISTO ---
                 if "ultimo_acquisto" in st.session_state and st.session_state.ultimo_acquisto:
                     acq = st.session_state.ultimo_acquisto
-                    # Troviamo i codici / loghi corretti
                     sq_sa_name = acq["Squadra_SerieA"]
                     logo_sa_b64 = get_logo_base64_cached(sq_sa_name)
                     
-                    # Trova il codice fanta della squadra destinataria
                     fanta_name_full = acq["Squadra_Fanta"]
                     fanta_code = ""
+                    fanta_short_name = ""
                     for s in SQUADRE_INFO:
                         if f"{s['nome']} - {s['mister']}" == fanta_name_full:
                             fanta_code = s['codice']
@@ -486,7 +485,7 @@ def render_control_panel():
                     
                     logo_fanta_b64 = get_logo_base64_cached(fanta_code)
 
-                    # HTML con animazione CSS integrata
+                    # Nota: le graffe del CSS qui sotto sono raddoppiate {{ }} per evitare il SyntaxError
                     st.markdown(f"""
                         <style>
                         @keyframes popIn {{
@@ -504,7 +503,7 @@ def render_control_panel():
                             box-shadow: 0 10px 25px rgba(168, 85, 247, 0.3);
                             margin-top: 10px;
                             margin-bottom: 10px;
-                        }
+                        }}
                         .pulse-header {{
                             font-size: 11px;
                             font-weight: 800;
