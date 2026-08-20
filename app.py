@@ -359,9 +359,11 @@ query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE (VISIBILE SOLO SUL PC DEL MISTER/ORGANIZZATORE)
+# 1. PANNELLO SUPERIORE ISOLATO IN UN FRAGMENT (ELIMINA IL LAMPEGGIO GLOBALE)
 # ==============================================================================
-if not is_tv_mode:
+@st.fragment
+def render_control_panel():
+    st.session_state.acquisti = load_saved_acquisti()
     c_left, c_right = st.columns([1.2, 3])
 
     with c_left:
@@ -392,10 +394,10 @@ if not is_tv_mode:
             with tab_assegna:
                 f_col1, f_col2 = st.columns([1, 1])
                 with f_col1:
-                    filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0)
+                    filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0, key="ctrl_ruolo")
                 with f_col2:
                     squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
-                    filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0)
+                    filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0, key="ctrl_sa")
 
                 df_filtrati = df_disponibili.copy()
                 if filtro_ruolo != "Tutti":
@@ -419,14 +421,15 @@ if not is_tv_mode:
                     sq_dest = st.selectbox(
                         "Aggiudicato a", 
                         options=FANTASQUADRE, 
-                        label_visibility="collapsed"
+                        label_visibility="collapsed",
+                        key="ctrl_dest"
                     )
 
                 with col_costo:
-                    costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed")
+                    costo_asta = st.number_input("Costo", min_value=1, value=1, step=1, label_visibility="collapsed", key="ctrl_costo")
 
                 with col_btn:
-                    btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary")
+                    btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary", key="ctrl_btn_conf")
 
                 if giocatore_selezionato and btn_conferma:
                     info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
@@ -474,14 +477,17 @@ if not is_tv_mode:
                     col_del_g, col_del_btn = st.columns([3, 1])
                     with col_del_g:
                         lista_acquistati = sorted([a["Giocatore"] for a in st.session_state.acquisti])
-                        g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed")
+                        g_da_eliminare = st.selectbox("Seleziona Calciatore da rimuovere", options=lista_acquistati, label_visibility="collapsed", key="ctrl_del_box")
                     with col_del_btn:
-                        if st.button("❌ RIMUOVI", type="primary", use_container_width=True):
+                        if st.button("❌ RIMUOVI", type="primary", use_container_width=True, key="ctrl_btn_del"):
                             st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
                             save_acquisti()
                             st.success(f"Rimosso con successo.")
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
+
+if not is_tv_mode:
+    render_control_panel()
 
 # ==============================================================================
 # 2. TABELLONE FRAGMENT (AGGIORNAMENTO SILENZIOSO AUTOMATICO OGNI 3 SECONDI)
