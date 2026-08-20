@@ -83,6 +83,29 @@ if "acquisti" not in st.session_state:
 # ==============================================================================
 # 🎨 STILE CSS COMPATTO (SCALATO IN BASSO PER TV)
 # ==============================================================================
+# ==============================================================================
+# 🧼 PULIZIA INTERFACCIA E ANTISFARFALLIO CSS
+# ==============================================================================
+hide_st_style = """
+    <style>
+    [data-testid="stHeader"] {visibility: hidden;}
+    [data-testid="stToolbar"] {visibility: hidden;}
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    .stApp {padding-top: 0px !important;}
+    
+    /* Rimuove la coroncina e il profilo GitHub in basso a destra */
+    div[class*="viewerBadge"] {
+        display: none !important;
+    }
+    
+    [data-testid="stStatusWidget"] {
+        display: none !important;
+    }
+    </style>
+"""
+st.markdown(hide_st_style, unsafe_allow_html=True)
+
 st.markdown(
     """
     <style>
