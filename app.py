@@ -150,17 +150,17 @@ st.markdown(
     }
 
     /* RIDUZIONE SPAZIATURA TRA PULSANTI FILTRO */
-    div[data-testid="stHorizontalBlock"]:has(.role-btn-container) {
-        gap: 4px !important;
+    div[data-testid="stHorizontalBlock"]:has(.role-circle-btn) {
+        gap: 6px !important;
     }
 
-    /* BOTTONI CIRCOLARI E STRETTI */
-    .role-btn-container button {
+    /* BOTTONI CIRCOLARI (P, D, C, A) */
+    .role-circle-btn button {
         border-radius: 50% !important;
-        width: 38px !important;
-        height: 38px !important;
-        min-width: 38px !important;
-        max-width: 38px !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        max-width: 36px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
         font-size: 11px !important;
@@ -173,15 +173,33 @@ st.markdown(
         margin: 0 auto !important;
     }
 
+    /* BOTTONE "TUTTI" CON ANGOLI MASSIMAMENTE ARROTONDATI (PILLOLA) */
+    .role-pill-btn button {
+        border-radius: 9999px !important;
+        height: 36px !important;
+        padding: 0 14px !important;
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 800 !important;
+        font-size: 10px !important;
+        transition: all 0.2s ease !important;
+        box-shadow: none !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin: 0 auto !important;
+    }
+
     /* STILE BOTTONI INATTIVI (Secondary) */
-    .role-btn-container button[kind="secondary"] {
+    .role-circle-btn button[kind="secondary"],
+    .role-pill-btn button[kind="secondary"] {
         background-color: #110927 !important;
         border: 1px solid #362d59 !important;
         color: #94a3b8 !important;
     }
 
     /* STILE BOTTONI ATTIVI (Primary - Fucsia/Magenta) */
-    .role-btn-container button[kind="primary"] {
+    .role-circle-btn button[kind="primary"],
+    .role-pill-btn button[kind="primary"] {
         background-color: #d81b60 !important;
         border: 1px solid #d81b60 !important;
         color: #ffffff !important;
@@ -551,22 +569,24 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1.1, 1])
+            f_col1, f_col2 = st.columns([1.3, 1])
             with f_col1:
-                # COLONNE MOLTO STRETTE E COMPATTE PER I BOTTONI CIRCOLARI
-                c_tut, c_p, c_d, c_c, c_a = st.columns([0.6, 0.6, 0.6, 0.6, 0.6])
+                # TUTTI HA UNA COLONNA PIÙ LARGA (PILLOLA), P D C A SONO PICCOLI E CIRCOLARI
+                c_tut, c_p, c_d, c_c, c_a = st.columns([1.2, 0.6, 0.6, 0.6, 0.6])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
+                # BOTTONE TUTTI (Pillola / Massimo Arrotondamento)
                 with c_tut:
-                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="role-pill-btn">', unsafe_allow_html=True)
                     type_tut = "primary" if curr_r == "TUTTI" else "secondary"
-                    if st.button("ALL", key="btn_r_tutti", type=type_tut, use_container_width=True):
+                    if st.button("TUTTI", key="btn_r_tutti", type=type_tut, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "TUTTI"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
+                # BOTTONI RUOLI (Circolari)
                 with c_p:
-                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_p = "primary" if curr_r == "P" else "secondary"
                     if st.button("P", key="btn_r_p", type=type_p, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "P"
@@ -574,7 +594,7 @@ def render_control_panel():
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_d:
-                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_d = "primary" if curr_r == "D" else "secondary"
                     if st.button("D", key="btn_r_d", type=type_d, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "D"
@@ -582,7 +602,7 @@ def render_control_panel():
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_c:
-                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_c = "primary" if curr_r == "C" else "secondary"
                     if st.button("C", key="btn_r_c", type=type_c, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "C"
@@ -590,7 +610,7 @@ def render_control_panel():
                     st.markdown('</div>', unsafe_allow_html=True)
 
                 with c_a:
-                    st.markdown('<div class="role-btn-container">', unsafe_allow_html=True)
+                    st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_a = "primary" if curr_r == "A" else "secondary"
                     if st.button("A", key="btn_r_a", type=type_a, use_container_width=True):
                         st.session_state.filtro_ruolo_selezionato = "A"
@@ -789,7 +809,7 @@ def render_control_panel():
                     item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p2:
-                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 0 else None
+                    item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
                     item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
