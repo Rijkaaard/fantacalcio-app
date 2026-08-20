@@ -166,12 +166,12 @@ st.markdown(
     }
     
     .team-logo-container {
-        width: 38px;
-        height: 38px;
+        width: 40px;
+        height: 40px;
         margin: 0 auto 6px auto;
         background: #151029;
         border: 1px solid #2d2252;
-        border-radius: 4px;
+        border-radius: 0px !important;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -181,6 +181,7 @@ st.markdown(
         width: 100%;
         height: 100%;
         object-fit: cover;
+        border-radius: 0px !important;
     }
 
     .team-header-name {
@@ -266,7 +267,7 @@ st.markdown(
 )
 
 # ==============================================================================
-# CARICAMENTO DATI E CACHING
+# CARICAMENTO DATI
 # ==============================================================================
 @st.cache_data
 def load_data(file_path):
@@ -293,7 +294,6 @@ def load_data(file_path):
     return df
 
 
-@st.cache_data
 def get_logo_path(squadra):
     if not squadra or pd.isna(squadra):
         return None
@@ -313,7 +313,6 @@ def get_logo_path(squadra):
     return None
 
 
-@st.cache_data
 def get_fanta_logo_path(codice):
     if not codice:
         return None
@@ -328,7 +327,6 @@ def get_fanta_logo_path(codice):
     return None
 
 
-@st.cache_data
 def get_logo_base64(path):
     if not path or not os.path.exists(path):
         return ""
@@ -500,8 +498,8 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV
-        logo_fanta_html = '<div class="team-logo-container"></div>'  # Spazio quadrato vuoto di default
+        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV CON TAGLIO QUADRATO
+        logo_fanta_html = '<div class="team-logo-container"></div>'  
         
         if is_tv_mode:
             fanta_logo_p = get_fanta_logo_path(s_info['codice'])
