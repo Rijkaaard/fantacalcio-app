@@ -203,11 +203,23 @@ st.markdown(
     .role-c { background-color: #1d4ed8; }
     .role-a { background-color: #be123c; }
 
-    /* Classi badge ruolo personalizzate per i preview/ricerche */
-    .badge-ruolo-p { background-color: #d97706; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-d { background-color: #15803d; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-c { background-color: #1d4ed8; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-a { background-color: #be123c; color: white; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    /* Classi badge ruolo personalizzate per la preview */
+    .badge-ruolo-p { background-color: #f1c40f; color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-d { background-color: #2ecc71; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-c { background-color: #3498db; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-a { background-color: #e74c3c; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+
+    .player-preview-box {
+        background: #171033;
+        border: 2px solid #3b2c63;
+        border-radius: 10px;
+        padding: 12px 16px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
 
     .player-cell {
         height: 22px;
@@ -441,15 +453,14 @@ def render_control_panel():
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle; margin-right:8px;" />' if logo_path else ""
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:32px; height:32px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
                 
                 st.markdown(
-                    f'<div style="display: flex; align-items: center; gap: 10px; padding: 5px 0; font-size: 15px;">'
+                    f'<div class="player-preview-box">'
                     f'{logo_html}'
-                    f'<strong>{info_g["Giocatore"]}</strong>'
+                    f'<span style="font-size: 18px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
                     f'<span class="{badge_class}">{ruolo_g}</span>'
-                    f'<span style="color: #9ca3af; margin-left: 5px;">| {squadra_serie_a}</span>'
-                    f'<span style="margin-left: auto; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'<span style="margin-left: auto; font-size: 15px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
