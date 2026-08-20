@@ -146,6 +146,46 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
+    /* CUSTOM RUOLI PILLS (STILE SCREENSHOT) */
+    div[data-testid="stSegmentedControl"] {
+        gap: 8px !important;
+        background: transparent !important;
+    }
+
+    div[data-testid="stSegmentedControl"] button {
+        background-color: transparent !important;
+        border: 1px solid #3b3f5c !important;
+        color: #94a3b8 !important;
+        font-weight: 800 !important;
+        font-size: 13px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        border-radius: 50% !important;
+        width: 38px !important;
+        min-width: 38px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: none !important;
+    }
+
+    /* Il primo pulsante (TUTTI) ha forma a pillola */
+    div[data-testid="stSegmentedControl"] button:first-child {
+        width: 80px !important;
+        min-width: 80px !important;
+        border-radius: 20px !important;
+        font-size: 11px !important;
+        letter-spacing: 0.5px !important;
+    }
+
+    /* Stato Selezionato (Attivo) */
+    div[data-testid="stSegmentedControl"] button[aria-selected="true"] {
+        background-color: #d91b5c !important;
+        border-color: #d91b5c !important;
+        color: #ffffff !important;
+    }
+
     .card-title {
         font-size: 11px;
         font-weight: 700;
@@ -560,15 +600,21 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1, 1])
+            f_col1, f_col2 = st.columns([1.2, 1])
             with f_col1:
-                filtro_ruolo = st.selectbox("Filtra per Ruolo", options=["Tutti", "P", "D", "C", "A"], label_visibility="collapsed", index=0, key="ctrl_ruolo")
+                filtro_ruolo = st.segmented_control(
+                    "Filtra per Ruolo",
+                    options=["TUTTI", "P", "D", "C", "A"],
+                    default="TUTTI",
+                    label_visibility="collapsed",
+                    key="ctrl_ruolo"
+                )
             with f_col2:
                 squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
                 filtro_sa = st.selectbox("Filtra per Squadra Serie A", options=["Tutte le squadre"] + squadre_sa_list, label_visibility="collapsed", index=0, key="ctrl_sa")
 
             df_filtrati = df_disponibili.copy()
-            if filtro_ruolo != "Tutti":
+            if filtro_ruolo and filtro_ruolo != "TUTTI":
                 df_filtrati = df_filtrati[df_filtrati["Ruolo"] == filtro_ruolo]
             if filtro_sa != "Tutte le squadre":
                 df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == filtro_sa]
