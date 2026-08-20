@@ -80,11 +80,8 @@ def save_acquisti():
 if "acquisti" not in st.session_state:
     st.session_state.acquisti = load_saved_acquisti()
 
-if "selected_player" not in st.session_state:
-    st.session_state.selected_player = None
-
-if "search_input_val" not in st.session_state:
-    st.session_state.search_input_val = ""
+if "search_version" not in st.session_state:
+    st.session_state.search_version = 0
 
 # ==============================================================================
 # 🎨 STILE CSS
@@ -206,7 +203,7 @@ st.markdown(
     .role-c { background-color: #1d4ed8; }
     .role-a { background-color: #be123c; }
 
-    /* Badge ruolo */
+    /* Badge ruolo per la preview */
     .badge-ruolo-p { background-color: #f1c40f; color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
     .badge-ruolo-d { background-color: #2ecc71; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
     .badge-ruolo-c { background-color: #3498db; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
@@ -375,7 +372,7 @@ def render_control_panel():
     with st.container(border=True):
         st.markdown('<div class="card-title">GESTIONE ASTA LIBERA & FILTRI</div>', unsafe_allow_html=True)
 
-        tab_assegna, tab_svincola = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi"])
+        tab_assegna, tab_svincola, tab_classifica = st.tabs(["➕ Assegna Calciatore", "🗑️ Svincola / Rimuovi", "🏆 Classifica Crediti"])
 
         giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
         df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
@@ -394,15 +391,16 @@ def render_control_panel():
             if filtro_sa != "Tutte le squadre":
                 df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == filtro_sa]
 
-            col_search_input, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
+            col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
-            with col_search_input:
-                search_query = st.text_input(
-                    "Cerca Calciatore (Live)",
-                    value=st.session_state.search_input_val,
-                    placeholder="🔍 Scrivi per cercare...",
+            with col_g:
+                giocatore_selezionato = st.selectbox(
+                    "Cerca Calciatore",
+                    options=sorted(df_filtrati["Giocatore"].tolist()),
+                    index=None,
+                    placeholder="🔍 Cerca calciatore...",
                     label_visibility="collapsed",
-                    key="live_search_box"
+                    key=f"search_box_{st.session_state.search_version}",
                 )
 
             with col_sq:
@@ -419,50 +417,8 @@ def render_control_panel():
             with col_btn:
                 btn_conferma = st.button("✅ CONFERMA", use_container_width=True, type="primary", key="ctrl_btn_conf")
 
-            # Gestione della ricerca live in base a cosa si scrive
-            if search_query:
-                matching_players = df_filtrati[df_filtrati["Giocatore"].str.contains(search_query, case=False, na=False)]
-                
-                if st.session_state.selected_player and st.session_state.selected_player not in matching_players["Giocatore"].values:
-                    st.session_state.selected_player = None
-
-                if not matching_players.empty:
-                    selected_name = st.selectbox(
-                        "Seleziona dai risultati:",
-                        options=matching_players["Giocatore"].tolist(),
-                        index=0 if st.session_state.selected_player is None else matching_players["Giocatore"].tolist().index(st.session_state.selected_player) if st.session_state.selected_player in matching_players["Giocatore"].tolist() else 0,
-                        key="live_results_select"
-                    )
-                    st.session_state.selected_player = selected_name
-                else:
-                    st.warning("Nessun calciatore trovato con questo nome nei filtri attuali.")
-                    st.session_state.selected_player = None
-            else:
-                st.session_state.selected_player = None
-
-            # Visualizzazione del box preview con le caratteristiche richieste
-            if st.session_state.selected_player:
-                info_g = df_listone[df_listone["Giocatore"] == st.session_state.selected_player].iloc[0]
-                squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
-                logo_path = get_logo_path(squadra_serie_a)
-                ruolo_g = info_g["Ruolo"]
-                badge_class = f"badge-ruolo-{ruolo_g.lower()}"
-                
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:32px; height:32px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
-                
-                st.markdown(
-                    f'<div class="player-preview-box">'
-                    f'{logo_html}'
-                    f'<span style="font-size: 18px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
-                    f'<span class="{badge_class}">{ruolo_g}</span>'
-                    f'<span style="margin-left: auto; font-size: 15px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
-                    f'</div>',
-                    unsafe_allow_html=True
-                )
-
-            # Azione di conferma assegnazione
-            if st.session_state.selected_player and btn_conferma:
-                info_g = df_listone[df_listone["Giocatore"] == st.session_state.selected_player].iloc[0]
+            if giocatore_selezionato and btn_conferma:
+                info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
                 ruolo_g = info_g["Ruolo"]
                 squadra_sa = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
 
@@ -487,9 +443,27 @@ def render_control_panel():
                     save_acquisti()
                     st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                     
-                    st.session_state.selected_player = None
-                    st.session_state.search_input_val = ""
+                    st.session_state.search_version += 1
                     st.rerun()
+
+            if giocatore_selezionato and not btn_conferma:
+                info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
+                squadra_serie_a = str(info_g.get("Squadra_SerieA", info_g.get("Squadra", ""))).strip()
+                logo_path = get_logo_path(squadra_serie_a)
+                ruolo_g = info_g["Ruolo"]
+                badge_class = f"badge-ruolo-{ruolo_g.lower()}"
+                
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:32px; height:32px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
+                
+                st.markdown(
+                    f'<div class="player-preview-box">'
+                    f'{logo_html}'
+                    f'<span style="font-size: 18px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
+                    f'<span class="{badge_class}">{ruolo_g}</span>'
+                    f'<span style="margin-left: auto; font-size: 15px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'</div>',
+                    unsafe_allow_html=True
+                )
 
         with tab_svincola:
             if st.session_state.acquisti:
@@ -518,6 +492,32 @@ def render_control_panel():
                             st.error("Devi spuntare la casella di conferma per procedere con il reset totale.")
             else:
                 st.info("Nessun calciatore ancora assegnato.")
+
+        with tab_classifica:
+            # Calcolo e ordinamento delle squadre in base ai crediti residui (dal più alto al più basso)
+            dati_classifica = []
+            for s_info in SQUADRE_INFO:
+                sq_full = f"{s_info['nome']} - {s_info['mister']}"
+                rimasti, tot_giocatori, max_off, acquisti_sq = get_squadra_stats(sq_full)
+                spesi = BUDGET_INIZIALE - rimasti
+                dati_classifica.append({
+                    "Squadra": s_info['nome'],
+                    "Mister": s_info['mister'],
+                    "Crediti Residui": rimasti,
+                    "Crediti Spesi": spesi,
+                    "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}",
+                    "Offerta Max": max_off if max_off > 0 else 0
+                })
+            
+            df_classifica = pd.DataFrame(dati_classifica)
+            df_classifica = df_classifica.sort_values(by="Crediti Residui", ascending=False).reset_index(drop=True)
+            df_classifica.index = df_classifica.index + 1  # Partiamo da 1 per la posizione
+
+            st.dataframe(
+                df_classifica[["Squadra", "Mister", "Crediti Residui", "Crediti Spesi", "Rosa", "Offerta Max"]],
+                use_container_width=True,
+                height=220
+            )
 
 if not is_tv_mode:
     render_control_panel()
