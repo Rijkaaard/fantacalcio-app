@@ -1,33 +1,3 @@
-import base64
-import json
-import os
-import pandas as pd
-import streamlit as st
-
-# ==============================================================================
-# ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
-# ==============================================================================
-SQUADRE_INFO = [
-    {"nome": "INPSWICH DOWN", "mister": "LOLLO", "codice": "INP"},
-    {"nome": "CAZZATHE", "mister": "SIMO", "codice": "CAZ"},
-    {"nome": "JOGA BENITO", "mister": "TAVE", "codice": "JOG"},
-    {"nome": "LAMINCHIADURA", "mister": "FEDE", "codice": "LAM"},
-    {"nome": "LEI3SWEET DREAMS", "mister": "SAMU", "codice": "LEI"},
-    {"nome": "MINORENNI FC", "mister": "VERRA", "codice": "MIN"},
-    {"nome": "REBECCA LAZIALE", "mister": "LUCIO", "codice": "REB"},
-    {"nome": "SALISBURRO", "mister": "STACCHIO", "codice": "SAL"},
-    {"nome": "TEL-AVIV FC", "mister": "JACO", "codice": "TEL"},
-    {"nome": "VILLASBURREAL", "mister": "NICO", "codice": "VIL"},
-]
-
-FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
-SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
-TOTALE_SLOTS = sum(SLOTS.values())
-BUDGET_INIZIALE = 500
-
-MAPPA_CODICI_LOGHI = {
-    "ATALANTA": "ATA", "BOLOGNA": "BOL", "CAGLIARI": "CAG", "COMO": "COM",
-    "EMPOLI": "EMP", "FIORENTINA": "FIO", "GENOA": "GEN", "INTER": "INT",
     "JUVENTUS": "JUV", "LAZIO": "LAZ", "LECCE": "LEC", "MILAN": "MIL",
     "MONZA": "MON", "NAPOLI": "NAP", "PARMA": "PAR", "ROMA": "ROM",
     "SALERNITANA": "SAL", "SAMPDORIA": "SAM", "SASSUOLO": "SAS",
@@ -84,7 +54,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS E ANIMAZIONE POST-POSIZIONAMENTO
+# 🎨 STILE CSS
 # ==============================================================================
 st.markdown(
     """
@@ -203,10 +173,11 @@ st.markdown(
     .role-c { background-color: #1d4ed8; }
     .role-a { background-color: #be123c; }
 
-    .badge-ruolo-p { background-color: #f1c40f; color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
-    .badge-ruolo-d { background-color: #2ecc71; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
-    .badge-ruolo-c { background-color: #3498db; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
-    .badge-ruolo-a { background-color: #e74c3c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
+    /* Badge ruolo per la preview */
+    .badge-ruolo-p { background-color: #f1c40f; color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-d { background-color: #2ecc71; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-c { background-color: #3498db; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-a { background-color: #e74c3c; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
 
     .player-preview-box {
         background: #171033;
@@ -229,21 +200,9 @@ st.markdown(
         justify-content: space-between;
         padding: 0 4px;
         font-size: 9.5px;
-        transition: background-color 0.3s ease;
     }
     .player-cell:nth-child(even) {
         background: #130e26;
-    }
-
-    /* Animazione pulita che parte solo a posizionamento avvenuto */
-    @keyframes pulseNew {
-        0% { background-color: #7c3aed; color: #ffffff; }
-        50% { background-color: #4c1d95; color: #fde047; }
-        100% { background-color: #16102b; color: #e2e8f0; }
-    }
-
-    .player-cell-animated {
-        animation: pulseNew 3s ease-in-out;
     }
 
     .player-cell-left {
@@ -274,6 +233,7 @@ st.markdown(
         justify-content: flex-end;
     }
 
+    /* Stile personalizzato per la classifica crediti */
     .ranking-row {
         background: #171033;
         border: 1px solid #282045;
@@ -387,6 +347,7 @@ if df_listone is None:
     st.error("⚠️ File `fantalab_listone.csv` non trovato!")
     st.stop()
 
+
 def get_squadra_stats(nome_squadra):
     acquisti = [a for a in st.session_state.acquisti if a["Squadra_Fanta"] == nome_squadra]
     spesi = sum(a["Costo"] for a in acquisti)
@@ -397,11 +358,12 @@ def get_squadra_stats(nome_squadra):
     max_offerta = rimasti - (slot_mancanti - 1) if slot_mancanti > 0 else 0
     return rimasti, tot_giocatori, max_offerta, acquisti
 
+
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE A WIDGET SEPARATI (SOLO VISTA NORMALE)
+# 1. PANNELLO SUPERIORE A WIDGET SEPARATI
 # ==============================================================================
 @st.fragment
 def render_control_panel():
@@ -412,7 +374,11 @@ def render_control_panel():
     giocatori_presi = {a["Giocatore"] for a in st.session_state.acquisti}
     df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
+    # Colonna Sinistra: Widget Aggiungi e Widget Rimuovi
     with col_gestione:
+        # ----------------------------------------------------------------------
+        # WIDGET 1: AGGIUNGI CALCIATORE
+        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -479,7 +445,6 @@ def render_control_panel():
                     }
                     st.session_state.acquisti.append(nuovo_acquisto)
                     save_acquisti()
-                    
                     st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                     
                     st.session_state.search_version += 1
@@ -504,6 +469,9 @@ def render_control_panel():
                     unsafe_allow_html=True
                 )
 
+        # ----------------------------------------------------------------------
+        # WIDGET 2: RIMUOCI / SVINCOLA CALCIATORE
+        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">🗑️ SVINCOLA / RIMUOVI CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -532,7 +500,11 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
+    # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
+        # ----------------------------------------------------------------------
+        # WIDGET 3: CLASSIFICA CREDITI
+        # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
 
@@ -547,6 +519,7 @@ def render_control_panel():
                     "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}"
                 })
             
+            # Ordinamento dal più alto al più basso per crediti
             dati_classifica = sorted(dati_classifica, key=lambda x: x["Crediti"], reverse=True)
 
             for idx, item in enumerate(dati_classifica, start=1):
@@ -569,16 +542,12 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT CON ANIMAZIONE RITARDATA DOPO IL POSIZIONAMENTO
+# 2. TABELLONE FRAGMENT (AGGIORNAMENTO AUTOMATICO OGNI 5 SECONDI)
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
     st.session_state.acquisti = load_saved_acquisti()
     
-    ultimo_giocatore_nome = None
-    if st.session_state.acquisti:
-        ultimo_giocatore_nome = st.session_state.acquisti[-1]["Giocatore"]
-
     cols_html = []
 
     for s_info in SQUADRE_INFO:
@@ -588,9 +557,10 @@ def render_board_fragment():
         max_val = max_off if max_off > 0 else 0
         
         logo_fanta_html = ""
-        fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-        if fanta_logo_b64:
-            logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
+        if is_tv_mode:
+            fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+            if fanta_logo_b64:
+                logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
         
         col_content = [
             f'<div class="team-column">'
@@ -607,7 +577,6 @@ def render_board_fragment():
         for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
-            # Ordinamento stabile immediato in base al prezzo medio
             giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
             speso_ruolo = sum(g["Costo"] for g in giocatori_r)
@@ -634,12 +603,8 @@ def render_board_fragment():
                     else:
                         colore_prezzo = "#fbbf24"
 
-                    is_ultimo = (nome_g == ultimo_giocatore_nome)
-                    # Assegniamo un attributo identificativo per permettere allo script JS di trovarlo
-                    data_attr = f'data-ultimo="true"' if is_ultimo else ''
-                    
                     col_content.append(
-                        f'<div class="player-cell" {data_attr}>'
+                        f'<div class="player-cell">'
                         f'<div class="player-cell-left">'
                         f'{logo_html}'
                         f'<span class="player-cell-name">{nome_g}</span>'
@@ -657,19 +622,5 @@ def render_board_fragment():
 
     st.markdown(f'<div class="board-grid">{"".join(cols_html)}</div>', unsafe_allow_html=True)
 
-    # Script JavaScript leggero che attende 50ms (dopo il rendering e posizionamento stabile) prima di avviare l'animazione
-    st.markdown(
-        """
-        <script>
-        setTimeout(function() {
-            const cells = document.querySelectorAll('[data-ultimo="true"]');
-            cells.forEach(cell => {
-                cell.classList.add('player-cell-animated');
-            });
-        }, 50);
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
 
 render_board_fragment()
