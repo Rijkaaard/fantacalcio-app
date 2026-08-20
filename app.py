@@ -101,7 +101,7 @@ st.markdown(
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Sfondo generale impostato su #0f0932 come richiesto */
+    /* Sfondo generale impostato su #0f0932 */
     html, body, [class*="css"], .stApp {
         background-color: #0f0932 !important;
         color: #f8fafc;
@@ -214,6 +214,7 @@ st.markdown(
         justify-content: space-between;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        margin-bottom: 2px;
     }
     .role-p { 
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
@@ -254,11 +255,13 @@ st.markdown(
         margin-bottom: 2px;
     }
 
-    /* Celle calciatore ultra-compatte stile FantaLab */
+    /* Celle calciatore trasparenti con contorno viola chiaro */
     .player-cell {
         height: 22px;
-        background: #0e101d;
-        border-bottom: 1px solid #181b2e;
+        background: transparent !important;
+        border: 1px solid #a78bfa !important;
+        border-radius: 3px;
+        margin: 2px 2px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -266,7 +269,7 @@ st.markdown(
         font-size: 9.5px;
     }
     .player-cell:nth-child(even) {
-        background: #111322;
+        background: transparent !important;
     }
 
     .player-cell-left {
@@ -546,7 +549,7 @@ def render_control_panel():
                 )
 
         # ----------------------------------------------------------------------
-        # WIDGET 2: RIMUOCI / SVINCOLA CALCIATORE
+        # WIDGET 2: RIMUOVI / SVINCOLA CALCIATORE
         # ----------------------------------------------------------------------
         with st.container(border=True):
             st.markdown('<div class="card-title">🗑️ SVINCOLA / RIMUOVI CALCIATORE</div>', unsafe_allow_html=True)
