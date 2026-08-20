@@ -481,7 +481,7 @@ def render_control_panel():
                     else:
                         st.info(f"**Ruolo:** {info_g['Ruolo']} | **Squadra Serie A:** {squadra_serie_a} | **Prezzo Medio:** {int(info_g['Prezzo_Numerico'])}")
 
-            tab_svincola:
+            with tab_svincola:
                 if st.session_state.acquisti:
                     col_del_g, col_del_btn = st.columns([3, 1])
                     with col_del_g:
