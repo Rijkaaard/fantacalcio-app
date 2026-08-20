@@ -84,92 +84,96 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS
+# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB"
 # ==============================================================================
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+    /* Palette e Sfondo Generale stile FantaLab Dashboard */
     html, body, [class*="css"], .stApp {
-        background-color: #0c0919 !important;
-        color: #e2e8f0;
-        font-family: 'Poppins', sans-serif !important;
+        background-color: #0b1120 !important;
+        color: #f1f5f9;
+        font-family: 'Inter', sans-serif !important;
     }
 
     .stMainBlockContainer {
         padding-top: 1rem !important;
-        padding-left: 3rem !important;
-        padding-right: 3rem !important;
+        padding-left: 2rem !important;
+        padding-right: 2rem !important;
         max-width: 100% !important;
     }
 
+    /* Container pannelli stile card flat moderna */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #120d24 !important;
-        border: 1px solid #282045 !important;
-        border-radius: 12px !important;
-        padding: 12px 15px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-        margin-bottom: 6px !important;
+        background: #111827 !important;
+        border: 1px solid #1f2937 !important;
+        border-radius: 10px !important;
+        padding: 14px 18px !important;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1) !important;
+        margin-bottom: 8px !important;
     }
 
+    /* Titoli delle sezioni */
     .card-title {
-        font-size: 11px;
-        font-weight: 800;
-        color: #a78bfa;
-        letter-spacing: 0.5px;
-        margin-bottom: 5px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #38bdf8;
+        letter-spacing: 0.8px;
+        margin-bottom: 8px;
         text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
+    /* Griglia del tabellone */
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(125px, 1fr));
-        gap: 6px;
+        grid-template-columns: repeat(10, minmax(130px, 1fr));
+        gap: 8px;
         width: 100%;
         overflow-x: auto;
-        padding-bottom: 15px;
-        padding-left: 2px;
-        padding-right: 2px;
+        padding-bottom: 20px;
+        padding-top: 5px;
     }
 
+    /* Colonna Squadra */
     .team-column {
-        background: #110d21;
-        border: 1px solid #231b3e;
+        background: #111827;
+        border: 1px solid #1f2937;
         border-radius: 8px;
         overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
     }
 
     .team-header {
-        background: #191233;
-        padding: 6px 4px;
+        background: #1f2937;
+        padding: 8px 6px;
         text-align: center;
-        border-bottom: 1px solid #2d2252;
+        border-bottom: 2px solid #374151;
     }
     
     .team-logo-container {
-        width: 50px;
-        height: 50px;
+        width: 44px;
+        height: 44px;
         margin: 0 auto 4px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
         align-items: center;
         justify-content: center;
-        overflow: hidden;
     }
     .fanta-team-logo {
         width: 100%;
         height: 100%;
         object-fit: contain;
-        border-radius: 0px !important;
-        background: transparent !important;
-        border: none !important;
     }
 
     .team-header-name {
-        font-size: 9px;
-        font-weight: 800;
+        font-size: 10px;
+        font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
@@ -177,42 +181,45 @@ st.markdown(
         margin-bottom: 2px;
     }
     .team-header-budget {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 800;
-        color: #fbbf24;
-        margin: 1px 0;
+        color: #f59e0b;
+        margin: 2px 0;
     }
     .team-header-sub {
         display: flex;
         justify-content: space-between;
-        font-size: 7px;
-        color: #9ca3af;
+        font-size: 8px;
+        color: #94a3b8;
         padding: 0 2px;
+        font-weight: 600;
     }
 
+    /* Barre dei Ruoli stile FantaLab */
     .role-bar {
         font-size: 9px;
-        font-weight: 800;
-        padding: 2px 5px;
+        font-weight: 700;
+        padding: 3px 6px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
+        letter-spacing: 0.5px;
     }
-    .role-p { background-color: #d97706; }
-    .role-d { background-color: #15803d; }
-    .role-c { background-color: #1d4ed8; }
-    .role-a { background-color: #be123c; }
+    .role-p { background-color: #b45309; border-top: 1px solid #d97706; border-bottom: 1px solid #d97706; }
+    .role-d { background-color: #166534; border-top: 1px solid #22c55e; border-bottom: 1px solid #22c55e; }
+    .role-c { background-color: #1e40af; border-top: 1px solid #3b82f6; border-bottom: 1px solid #3b82f6; }
+    .role-a { background-color: #9f1239; border-top: 1px solid #f43f5e; border-bottom: 1px solid #f43f5e; }
 
     /* Badge ruolo per la preview */
-    .badge-ruolo-p { background-color: #f1c40f; color: #000; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
-    .badge-ruolo-d { background-color: #2ecc71; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
-    .badge-ruolo-c { background-color: #3498db; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
-    .badge-ruolo-a { background-color: #e74c3c; color: #fff; padding: 3px 8px; border-radius: 6px; font-weight: 800; font-size: 13px; }
+    .badge-ruolo-p { background-color: #d97706; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 3px 8px; border-radius: 4px; font-weight: 700; font-size: 12px; }
 
     .player-preview-box {
-        background: #171033;
-        border: 2px solid #3b2c63;
-        border-radius: 10px;
+        background: #1f2937;
+        border: 1px solid #374151;
+        border-radius: 8px;
         padding: 10px 14px;
         display: flex;
         align-items: center;
@@ -222,30 +229,30 @@ st.markdown(
     }
 
     .player-cell {
-        height: 22px;
-        background: #16102b;
-        border-bottom: 1px solid #21183c;
+        height: 24px;
+        background: #0f172a;
+        border-bottom: 1px solid #1e293b;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 4px;
-        font-size: 9.5px;
+        padding: 0 5px;
+        font-size: 10px;
     }
     .player-cell:nth-child(even) {
-        background: #130e26;
+        background: #111827;
     }
 
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 3px;
+        gap: 4px;
         overflow: hidden;
-        max-width: 90px;
+        max-width: 92px;
     }
 
     .player-team-logo {
-        width: 12px;
-        height: 12px;
+        width: 13px;
+        height: 13px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -255,42 +262,58 @@ st.markdown(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: 500;
     }
 
     .player-cell-right {
         display: flex;
         align-items: center;
         justify-content: flex-end;
+        font-weight: 700;
     }
 
-    /* Stile personalizzato per la classifica crediti */
+    /* Classifica Crediti stile FantaLab */
     .ranking-row {
-        background: #171033;
-        border: 1px solid #282045;
-        border-radius: 8px;
-        padding: 8px 12px;
+        background: #182232;
+        border: 1px solid #273548;
+        border-radius: 6px;
+        padding: 7px 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: 6px;
-        font-size: 13px;
+        margin-bottom: 5px;
+        font-size: 12px;
     }
     .ranking-info {
-        font-weight: 700;
+        font-weight: 600;
         color: #ffffff;
     }
     .ranking-sub {
-        font-size: 11px;
-        color: #9ca3af;
-        margin-left: 6px;
+        font-size: 10px;
+        color: #94a3b8;
+        margin-left: 5px;
     }
     .ranking-badge {
-        background: #1f173b;
-        color: #fbbf24;
+        background: #111827;
+        color: #f59e0b;
         font-weight: 700;
-        padding: 4px 10px;
-        border-radius: 6px;
-        border: 1px solid #3b2c63;
+        padding: 3px 8px;
+        border-radius: 4px;
+        border: 1px solid #374151;
+    }
+
+    /* Personalizzazione Pulsanti Streamlit per look FantaLab */
+    .stButton button {
+        background-color: #0284c7 !important;
+        color: white !important;
+        font-weight: 600 !important;
+        border-radius: 6px !important;
+        border: none !important;
+        transition: all 0.2s ease;
+    }
+    .stButton button:hover {
+        background-color: #0369a1 !important;
+        border-color: transparent !important;
     }
     </style>
 """,
@@ -487,14 +510,14 @@ def render_control_panel():
                 ruolo_g = info_g["Ruolo"]
                 badge_class = f"badge-ruolo-{ruolo_g.lower()}"
                 
-                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:28px; height:28px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
+                logo_html = f'<img src="data:image/png;base64,{base64.b64encode(open(logo_path, "rb").read()).decode("utf-8")}" style="width:26px; height:26px; object-fit:contain; vertical-align:middle;" />' if logo_path else ""
                 
                 st.markdown(
                     f'<div class="player-preview-box">'
                     f'{logo_html}'
-                    f'<span style="font-size: 15px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
+                    f'<span style="font-size: 14px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
                     f'<span class="{badge_class}">{ruolo_g}</span>'
-                    f'<span style="margin-left: auto; font-size: 13px; color: #fbbf24; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                    f'<span style="margin-left: auto; font-size: 12px; color: #f59e0b; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                     f'</div>',
                     unsafe_allow_html=True
                 )
@@ -556,13 +579,13 @@ def render_control_panel():
                 st.markdown(
                     f'<div class="ranking-row">'
                     f'<div>'
-                    f'<span style="font-weight: 800; color: #a78bfa; margin-right: 8px;">{idx}.</span>'
+                    f'<span style="font-weight: 700; color: #38bdf8; margin-right: 6px;">{idx}.</span>'
                     f'<span class="ranking-info">{item["Squadra"]}</span>'
                     f'<span class="ranking-sub">({item["Mister"]})</span>'
                     f'</div>'
-                    f'<div style="display: flex; align-items: center; gap: 10px;">'
-                    f'<span style="font-size: 11px; color: #9ca3af;">{item["Rosa"]}</span>'
-                    f'<span class="ranking-badge">🟡 {item["Crediti"]} crediti</span>'
+                    f'<div style="display: flex; align-items: center; gap: 8px;">'
+                    f'<span style="font-size: 10px; color: #94a3b8;">{item["Rosa"]}</span>'
+                    f'<span class="ranking-badge">🟡 {item["Crediti"]}</span>'
                     f'</div>'
                     f'</div>',
                     unsafe_allow_html=True
@@ -631,7 +654,7 @@ def render_board_fragment():
                     elif costo > prezzo_medio:
                         colore_prezzo = "#ef4444"
                     else:
-                        colore_prezzo = "#fbbf24"
+                        colore_prezzo = "#f59e0b"
 
                     col_content.append(
                         f'<div class="player-cell">'
@@ -645,7 +668,7 @@ def render_board_fragment():
                         f'</div>'
                     )
                 else:
-                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#374151;">-</span></div>')
+                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#334155;">-</span></div>')
 
         col_content.append("</div>")
         cols_html.append("".join(col_content))
