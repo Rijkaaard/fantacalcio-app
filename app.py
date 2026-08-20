@@ -1,7 +1,6 @@
 import base64
 import json
 import os
-import random
 import pandas as pd
 import streamlit as st
 
@@ -493,78 +492,20 @@ def render_control_panel():
                     
                     st.markdown("---")
                     
-                    with st.expander("⚠️ Area Pericolosa: Reset & Test"):
-                        st.warning("Attenzione: da qui puoi resettare completamente l'asta o riempire tutte le caselle in modo casuale per testare la grafica.")
-                        
-                        col_bt1, col_bt2 = st.columns(2)
-                        with col_bt1:
-                            conferma_reset = st.checkbox("Conferma reset totale", key="chk_reset_totale")
-                            if st.button("🗑️ RIMUOVI TUTTI", type="primary", use_container_width=True, key="btn_reset_totale"):
-                                if conferma_reset:
-                                    st.session_state.acquisti = []
-                                    save_acquisti()
-                                    st.success("Tutti i calciatori rimossi!")
-                                    st.rerun()
-                                else:
-                                    st.error("Spunta la casella di conferma.")
-                        
-                        with col_bt2:
-                            if st.button("🎲 RIEMPI TABELLE A CASO (TEST)", use_container_width=True, key="btn_riempi_test"):
-                                nuovi_acquisti = []
-                                df_random = df_listone.copy().sample(frac=1).reset_index(drop=True)
-                                
-                                for sq in FANTASQUADRE:
-                                    speso_sq = 0
-                                    for ruolo, max_n in SLOTS.items():
-                                        giocatori_ruolo = df_random[df_random["Ruolo"] == ruolo].head(max_n)
-                                        df_random = df_random[~df_random["Giocatore"].isin(giocatori_ruolo["Giocatore"])]
-                                        
-                                        for _, row in giocatori_ruolo.iterrows():
-                                            pm = int(row["Prezzo_Numerico"])
-                                            costo = max(1, pm + random.randint(-2, 3))
-                                            speso_sq += costo
-                                            
-                                            nuovi_acquisti.append({
-                                                "Giocatore": row["Giocatore"],
-                                                "Ruolo": ruolo,
-                                                "Costo": int(costo),
-                                                "Prezzo_Medio": pm,
-                                                "Squadra_SerieA": str(row.get("Squadra_SerieA", "")).strip(),
-                                                "Squadra_Fanta": sq,
-                                            })
-                                
-                                st.session_state.acquisti = nuovi_acquisti
+                    # Pulsante Reset Totale con conferma integrata via checkbox o doppio click
+                    with st.expander("⚠️ Area Pericolosa: Reset Totale"):
+                        st.warning("Attenzione: questo comando cancellerà **tutti** i calciatori acquistati da tutte le squadre, riportando l'asta allo stato iniziale.")
+                        conferma_reset = st.checkbox("Conferma di voler eliminare TUTTI i calciatori", key="chk_reset_totale")
+                        if st.button("🗑️ RIMUOVI TUTTI I CALCIATORI", type="primary", use_container_width=True, key="btn_reset_totale"):
+                            if conferma_reset:
+                                st.session_state.acquisti = []
                                 save_acquisti()
-                                st.success("Tutte le tabelle sono state riempite casualmente!")
+                                st.success("Tutti i calciatori sono stati rimossi con successo!")
                                 st.rerun()
+                            else:
+                                st.error("Devi spuntare la casella di conferma per procedere con il reset totale.")
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
-                    if st.button("🎲 RIEMPI TABELLE A CASO (TEST)", use_container_width=True, key="btn_riempi_test_vuoto"):
-                        nuovi_acquisti = []
-                        df_random = df_listone.copy().sample(frac=1).reset_index(drop=True)
-                        
-                        for sq in FANTASQUADRE:
-                            for ruolo, max_n in SLOTS.items():
-                                giocatori_ruolo = df_random[df_random["Ruolo"] == ruolo].head(max_n)
-                                df_random = df_random[~df_random["Giocatore"].isin(giocatori_ruolo["Giocatore"])]
-                                
-                                for _, row in giocatori_ruolo.iterrows():
-                                    pm = int(row["Prezzo_Numerico"])
-                                    costo = max(1, pm + random.randint(-2, 3))
-                                    
-                                    nuovi_acquisti.append({
-                                        "Giocatore": row["Giocatore"],
-                                        "Ruolo": ruolo,
-                                        "Costo": int(costo),
-                                        "Prezzo_Medio": pm,
-                                        "Squadra_SerieA": str(row.get("Squadra_SerieA", "")).strip(),
-                                        "Squadra_Fanta": sq,
-                                    })
-                        
-                        st.session_state.acquisti = nuovi_acquisti
-                        save_acquisti()
-                        st.success("Tutte le tabelle sono state riempite casualmente!")
-                        st.rerun()
 
 if not is_tv_mode:
     render_control_panel()
