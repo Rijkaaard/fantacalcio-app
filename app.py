@@ -453,7 +453,7 @@ if not is_tv_mode:
                             }
                         )
                         save_acquisti()
-                        st.rerun()
+                        st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
 
                 if giocatore_selezionato:
                     info_g = df_listone[df_listone["Giocatore"] == giocatore_selezionato].iloc[0]
@@ -479,7 +479,7 @@ if not is_tv_mode:
                         if st.button("❌ RIMUOVI", type="primary", use_container_width=True):
                             st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
                             save_acquisti()
-                            st.rerun()
+                            st.success(f"Rimosso con successo.")
                 else:
                     st.info("Nessun calciatore ancora assegnato.")
 
@@ -498,7 +498,6 @@ def render_board_fragment():
         nome_team = s_info['nome']
         max_val = max_off if max_off > 0 else 0
         
-        # Gestione logo fanta squadra: VISIBILE SOLO IN VISTA TV, PIÙ GRANDE E SENZA RIQUADRI
         logo_fanta_html = '<div class="team-logo-container"></div>'  
         
         if is_tv_mode:
