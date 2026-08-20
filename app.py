@@ -1,3 +1,33 @@
+import base64
+import json
+import os
+import pandas as pd
+import streamlit as st
+
+# ==============================================================================
+# ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
+# ==============================================================================
+SQUADRE_INFO = [
+    {"nome": "INPSWICH DOWN", "mister": "LOLLO", "codice": "INP"},
+    {"nome": "CAZZATHE", "mister": "SIMO", "codice": "CAZ"},
+    {"nome": "JOGA BENITO", "mister": "TAVE", "codice": "JOG"},
+    {"nome": "LAMINCHIADURA", "mister": "FEDE", "codice": "LAM"},
+    {"nome": "LEI3SWEET DREAMS", "mister": "SAMU", "codice": "LEI"},
+    {"nome": "MINORENNI FC", "mister": "VERRA", "codice": "MIN"},
+    {"nome": "REBECCA LAZIALE", "mister": "LUCIO", "codice": "REB"},
+    {"nome": "SALISBURRO", "mister": "STACCHIO", "codice": "SAL"},
+    {"nome": "TEL-AVIV FC", "mister": "JACO", "codice": "TEL"},
+    {"nome": "VILLASBURREAL", "mister": "NICO", "codice": "VIL"},
+]
+
+FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
+SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
+TOTALE_SLOTS = sum(SLOTS.values())
+BUDGET_INIZIALE = 500
+
+MAPPA_CODICI_LOGHI = {
+    "ATALANTA": "ATA", "BOLOGNA": "BOL", "CAGLIARI": "CAG", "COMO": "COM",
+    "EMPOLI": "EMP", "FIORENTINA": "FIO", "GENOA": "GEN", "INTER": "INT",
     "JUVENTUS": "JUV", "LAZIO": "LAZ", "LECCE": "LEC", "MILAN": "MIL",
     "MONZA": "MON", "NAPOLI": "NAP", "PARMA": "PAR", "ROMA": "ROM",
     "SALERNITANA": "SAL", "SAMPDORIA": "SAM", "SASSUOLO": "SAS",
