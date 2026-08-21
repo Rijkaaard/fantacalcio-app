@@ -94,7 +94,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (DISTACCO BORDI AUMENTATO)
+# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (BORDI SIMMETRICI + ALTEZZA ORIGINALE)
 # ==============================================================================
 st.markdown(
     """
@@ -108,12 +108,12 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* AUMENTATO DISTACCO DAI BORDI (PADDING LATERALE E SUPERIORE) */
+    /* PADDING LATERALE IDENTICO E SIMMETRICO SUI DUE LATI */
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
-        padding-bottom: 2rem !important;
-        padding-left: 3rem !important;  /* Aumentato a 3rem (circa 48px) per lato */
-        padding-right: 3rem !important;
+        padding-top: 0.8rem !important;
+        padding-bottom: 1rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
         max-width: 100% !important;
     }
 
@@ -121,7 +121,7 @@ st.markdown(
     [data-testid="stHorizontalBlock"] {
         display: flex !important;
         align-items: stretch !important;
-        gap: 1.5rem !important;
+        gap: 1rem !important;
     }
 
     [data-testid="stColumn"] {
@@ -146,7 +146,7 @@ st.markdown(
         background: #110a24 !important;
         border: 1px solid #231342 !important;
         border-radius: 8px !important;
-        padding: 12px 16px 16px 16px !important;
+        padding: 10px 14px 16px 14px !important;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
         margin-bottom: 6px !important;
     }
@@ -203,15 +203,15 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA TABELLONE CON MARGINI INTERNI */
+    /* GRIGLIA SIMMETRICA CON COLONNE PERFETTAMENTE FLUIDE */
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(130px, 1fr));
-        gap: 8px;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 6px;
         width: 100%;
-        overflow-x: auto;
-        padding: 10px 4px 20px 4px; /* Aggiunto respiro attorno alla griglia */
         box-sizing: border-box;
+        padding-bottom: 15px;
+        padding-top: 2px;
     }
 
     .team-column {
@@ -219,6 +219,7 @@ st.markdown(
         border: none !important;
         display: flex;
         flex-direction: column;
+        min-width: 0; /* Previene overflow laterale */
     }
 
     .team-header {
@@ -324,6 +325,7 @@ st.markdown(
         margin-bottom: 4px;
     }
 
+    /* DIMENSIONI E ALTEZZA CELLE ORIGINALI */
     .player-cell {
         height: 22px;
         width: 100%;
@@ -354,7 +356,7 @@ st.markdown(
         align-items: center;
         gap: 3px;
         overflow: hidden;
-        max-width: 100px;
+        max-width: calc(100% - 18px);
     }
 
     .player-team-logo {
