@@ -73,28 +73,48 @@ st.markdown(hide_st_style, unsafe_allow_html=True)
 # 💾 GESTIONE SALVATAGGIO PERSISTENTE
 # ==============================================================================
 DATA_FILE = "fanta_asta_data.json"
+CONFIG_FILE = "fanta_asta_config.json"
 
-def load_saved_acquisti():
+def load_saved_data():
+    acquisti = []
+    vista_corrente = "Generale"
     if os.path.exists(DATA_FILE):
         try:
             with open(DATA_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                if isinstance(data, list):
+                    acquisti = data
+                elif isinstance(data, dict):
+                    acquisti = data.get("acquisti", [])
         except Exception:
-            return []
-    return []
+            pass
+    
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                config = json.load(f)
+                vista_corrente = config.get("vista_corrente", "Generale")
+        except Exception:
+            pass
+            
+    return acquisti, vista_corrente
 
-def save_acquisti():
+def save_data(acquisti, vista_corrente):
     with open(DATA_FILE, "w", encoding="utf-8") as f:
-        json.dump(st.session_state.acquisti, f, ensure_ascii=False, indent=2)
+        json.dump(acquisti, f, ensure_ascii=False, indent=2)
+    with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+        json.dump({"vista_corrente": vista_corrente}, f, ensure_ascii=False, indent=2)
 
-if "acquisti" not in st.session_state:
-    st.session_state.acquisti = load_saved_acquisti()
+if "acquisti" not in st.session_state or "vista_corrente" not in st.session_state:
+    acq, vista = load_saved_data()
+    st.session_state.acquisti = acq
+    st.session_state.vista_corrente = vista
 
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - CELLE A 21PX E HEADER TV MODIFICATO
+# 🎨 STILE CSS
 # ==============================================================================
 st.markdown(
     """
@@ -107,7 +127,6 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* MARGINI LATERALI PER LA TV (SPOSTATO PIÙ VERSO IL BASSO) */
     .stMainBlockContainer {
         padding-top: 2.2rem !important;
         padding-bottom: 1rem !important;
@@ -228,7 +247,6 @@ st.markdown(
         margin-bottom: 5px !important;
     }
     
-    /* LOGO PIÙ IN GRANDE NELL'HEADER */
     .team-logo-container {
         width: 44px;
         height: 44px;
@@ -275,26 +293,10 @@ st.markdown(
         margin-top: 1.5px;
         margin-bottom: 1.5px;
     }
-    .role-p { 
-        background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
-        border-top: 1px solid #fcd34d; 
-        border-bottom: 1px solid #451a03; 
-    }
-    .role-d { 
-        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); 
-        border-top: 1px solid #86efac; 
-        border-bottom: 1px solid #052e16; 
-    }
-    .role-c { 
-        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); 
-        border-top: 1px solid #93c5fd; 
-        border-bottom: 1px solid #172554; 
-    }
-    .role-a { 
-        background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); 
-        border-top: 1px solid #fecdd3; 
-        border-bottom: 1px solid #4c0519; 
-    }
+    .role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
+    .role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
+    .role-c { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; }
+    .role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
@@ -313,7 +315,6 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* CELLE IMPOSTATE ESATTAMENTE A 21PX */
     .player-cell {
         height: 21px;
         width: 100%;
@@ -540,11 +541,33 @@ def get_squadra_stats(nome_squadra):
 
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE A WIDGET SEPARATI
+# 1. PANNELLO SUPERIORE ADMIN
 # ==============================================================================
 @st.fragment
 def render_control_panel():
-    st.session_state.acquisti = load_saved_acquisti()
+    acq, vista_attuale = load_saved_data()
+    st.session_state.acquisti = acq
+    st.session_state.vista_corrente = vista_attuale
+
+    # WIDGET SELETTORE VISUALE TV
+    with st.container(border=True):
+        st.markdown('<div class="card-title">📺 SELETTORE VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
+        opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
+        
+        idx_corrente = opzioni_visuali.index(st.session_state.vista_corrente) if st.session_state.vista_corrente in opzioni_visuali else 0
+        
+        nuova_vista = st.selectbox(
+            "Scegli visuale TV in tempo reale",
+            options=opzioni_visuali,
+            index=idx_corrente,
+            key="selettore_vista_tv",
+            label_visibility="collapsed"
+        )
+        
+        if nuova_vista != st.session_state.vista_corrente:
+            st.session_state.vista_corrente = nuova_vista
+            save_data(st.session_state.acquisti, st.session_state.vista_corrente)
+            st.rerun()
 
     col_gestione, col_classifica = st.columns([1.3, 1])
 
@@ -552,7 +575,6 @@ def render_control_panel():
     df_disponibili = df_listone[~df_listone["Giocatore"].isin(giocatori_presi)]
 
     with col_gestione:
-        # WIDGET 1: AGGIUNGI CALCIATORE
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -632,7 +654,7 @@ def render_control_panel():
                         "Squadra_Fanta": sq_dest,
                     }
                     st.session_state.acquisti.append(nuovo_acquisto)
-                    save_acquisti()
+                    save_data(st.session_state.acquisti, st.session_state.vista_corrente)
                     st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                     
                     st.session_state.search_version += 1
@@ -657,7 +679,6 @@ def render_control_panel():
                     unsafe_allow_html=True
                 )
 
-        # WIDGET 2: RIMUOVI / SVINCOLA CALCIATORE
         with st.container(border=True):
             st.markdown('<div class="card-title">🗑️ SVINCOLA / RIMUOVI CALCIATORE</div>', unsafe_allow_html=True)
 
@@ -669,7 +690,7 @@ def render_control_panel():
                 with col_del_btn:
                     if st.button("❌ RIMUOVI", type="primary", use_container_width=True, key="ctrl_btn_del"):
                         st.session_state.acquisti = [a for a in st.session_state.acquisti if a["Giocatore"] != g_da_eliminare]
-                        save_acquisti()
+                        save_data(st.session_state.acquisti, st.session_state.vista_corrente)
                         st.success(f"Rimosso con successo.")
                 
                 with st.expander("⚠️ Area Pericolosa: Reset Totale"):
@@ -678,7 +699,7 @@ def render_control_panel():
                     if st.button("🗑️ RIMUOVI TUTTI I CALCIATORI", type="primary", use_container_width=True, key="btn_reset_totale"):
                         if conferma_reset:
                             st.session_state.acquisti = []
-                            save_acquisti()
+                            save_data(st.session_state.acquisti, st.session_state.vista_corrente)
                             st.success("Tutti i calciatori sono stati rimossi con successo!")
                             st.rerun()
                         else:
@@ -686,7 +707,6 @@ def render_control_panel():
             else:
                 st.info("Nessun calciatore ancora assegnato.")
 
-        # CALCOLO TOP 3 AFFARI
         acquisti_validi = [
             a for a in st.session_state.acquisti 
             if a.get("Prezzo_Medio", 0) > 0 and a["Costo"] != a["Prezzo_Medio"]
@@ -739,7 +759,6 @@ def render_control_panel():
             </div>
             '''
 
-        # WIDGET 3 & 4: TOP 3 MIGLIORI E PEGGIORI AFFARI
         col_top_best, col_top_worst = st.columns(2)
 
         with col_top_best:
@@ -770,7 +789,6 @@ def render_control_panel():
                     item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
                     st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
-    # Colonna Destra: Widget Classifica Crediti
     with col_classifica:
         st.markdown('<div class="classifica-container">', unsafe_allow_html=True)
         with st.container(border=True):
@@ -810,13 +828,24 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT
+# 2. TABELLONE FRAGMENT CON SUPPORTO MULTI-VISUALE
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
-    st.session_state.acquisti = load_saved_acquisti()
+    acq, vista_corrente = load_saved_data()
+    st.session_state.acquisti = acq
+    st.session_state.vista_corrente = vista_corrente
     
     cols_html = []
+
+    # Mappatura della vista corrente sul singolo ruolo da mostrare in dettaglio
+    ruolo_mappa = {
+        "Portieri": "P",
+        "Difensori": "D",
+        "Centrocampisti": "C",
+        "Attaccanti": "A"
+    }
+    ruolo_filtro = ruolo_mappa.get(st.session_state.vista_corrente, None)
 
     for s_info in SQUADRE_INFO:
         sq = f"{s_info['nome']} - {s_info['mister']}"
@@ -838,7 +867,10 @@ def render_board_fragment():
             f'</div>'
         ]
 
-        for ruolo, num_slots in SLOTS.items():
+        # Seleziona quali ruoli mostrare in base alla visuale scelta
+        slots_da_mostrare = {ruolo_filtro: SLOTS[ruolo_filtro]} if ruolo_filtro else SLOTS
+
+        for ruolo, num_slots in slots_da_mostrare.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
             giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
@@ -878,6 +910,5 @@ def render_board_fragment():
         cols_html.append("".join(col_content))
 
     st.markdown(f'<div class="board-grid">{"".join(cols_html)}</div>', unsafe_allow_html=True)
-
 
 render_board_fragment()
