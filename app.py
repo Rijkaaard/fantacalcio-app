@@ -565,7 +565,7 @@ def get_squadra_stats(nome_squadra):
 
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE ADMIN (SEMPRE GENERALE/NORMALE)
+# 1. PANNELLO SUPERIORE ADMIN (VISIBILE SOLO SE NON IN MODALITÀ TV)
 # ==============================================================================
 @st.fragment
 def render_control_panel():
@@ -573,24 +573,31 @@ def render_control_panel():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_attuale
 
-    with st.container(border=True):
-        st.markdown('<div class="card-title">📺 SELETTORE VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
-        opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
-        
-        idx_corrente = opzioni_visuali.index(st.session_state.vista_corrente) if st.session_state.vista_corrente in opzioni_visuali else 0
-        
-        nuova_vista = st.selectbox(
-            "Scegli visuale TV in tempo reale",
-            options=opzioni_visuali,
-            index=idx_corrente,
-            key="selettore_vista_tv",
-            label_visibility="collapsed"
-        )
-        
-        if nuova_vista != st.session_state.vista_corrente:
-            st.session_state.vista_corrente = nuova_vista
-            save_data(st.session_state.acquisti, st.session_state.vista_corrente)
-            st.rerun()
+    # Il selettore TV compare SOLO se siamo in modalità TV (?vista=tv), altrimenti l'admin vede solo la generale
+    if is_tv_mode:
+        with st.container(border=True):
+            st.markdown('<div class="card-title">📺 SELETTORE VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
+            opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
+            
+            idx_corrente = opzioni_visuali.index(st.session_state.vista_corrente) if st.session_state.vista_corrente in opzioni_visuali else 0
+            
+            nuova_vista = st.selectbox(
+                "Scegli visuale TV in tempo reale",
+                options=opzioni_visuali,
+                index=idx_corrente,
+                key="selettore_vista_tv",
+                label_visibility="collapsed"
+            )
+            
+            if nuova_vista != st.session_state.vista_corrente:
+                st.session_state.vista_corrente = nuova_vista
+                save_data(st.session_state.acquisti, st.session_state.vista_corrente)
+                st.rerun()
+    else:
+        # Per sicurezza forziamo la vista dell'admin a "Generale"
+        if st.session_state.vista_corrente != "Generale":
+            st.session_state.vista_corrente = "Generale"
+            save_data(st.session_state.acquisti, "Generale")
 
     col_gestione, col_classifica = st.columns([1.3, 1])
 
@@ -847,8 +854,7 @@ def render_control_panel():
                 )
         st.markdown('</div>', unsafe_allow_html=True)
 
-if not is_tv_mode:
-    render_control_panel()
+render_control_panel()
 
 # ==============================================================================
 # 2. TABELLONE TV / FRAGMENT DEDICATO ALLE VISUALI
@@ -859,10 +865,13 @@ def render_board_fragment():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_corrente
     
+    # Se non siamo in modalità TV, forziamo la visualizzazione della schermata "Generale"
+    vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
+    
     # --------------------------------------------------------------------------
     # VISUALE PORTIERI DEDICATA (GIGANTE A 2 FILE DA 5 SQUADRE)
     # --------------------------------------------------------------------------
-    if st.session_state.vista_corrente == "Portieri":
+    if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
         squadre_sotto = SQUADRE_INFO[5:]
 
@@ -904,7 +913,7 @@ def render_board_fragment():
                             f'</div>'
                         )
                     else:
-                        slots_html.append('<div class="gk-slot-empty">- Vuoto -</div>')
+                        slots_html.append('<div class="gk-slot-empty">-</div>')
 
                 cards_html.append(
                     f'<div class="gk-team-card">'
