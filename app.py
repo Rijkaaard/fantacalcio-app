@@ -700,7 +700,7 @@ def render_control_panel():
 
         peggiori_affari = sorted(
             [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-            key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
+            key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
         )[:3]
 
         def render_deal_box(deal_data, label_rank, price_color):
@@ -767,7 +767,7 @@ def render_control_panel():
                     item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
-                    item_p3 = peggiori_affari[2] if len(peggiori_affari) > 0 else None
+                    item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
                     st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
     # Colonna Destra: Widget Classifica Crediti
