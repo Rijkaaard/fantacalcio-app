@@ -471,24 +471,24 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (ORIZZONTALE CON NOME MOLTO PIÙ GRANDE)
+       STILE DEDICATO VISUALE DIFENSORI (SPOSTATO PIÙ IN ALTO)
        ========================================================================== */
     .def-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 7px;
-        margin-bottom: 7px;
+        gap: 5px;
+        margin-bottom: 5px;
     }
 
     .def-team-card {
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 8px;
-        padding: 5px 6px;
+        padding: 4px 5px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 3px;
     }
 
     .def-team-header {
@@ -521,7 +521,7 @@ st.markdown(
 
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px; /* Nome squadra ancora più grande */
+        font-size: 11px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -562,7 +562,7 @@ st.markdown(
         background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        height: 37px;
+        height: 35px;
         padding: 0 5px;
         display: flex;
         align-items: center;
@@ -573,7 +573,7 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 4px;
-        height: 37px;
+        height: 35px;
         padding: 0 5px;
         display: flex;
         align-items: center;
@@ -1107,7 +1107,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (ORIZZONTALE CON FONT ANCORA PIÙ GRANDE E HEADER INALTERATO)
+    # VISUALE DIFENSORI DEDICATA (SPOSTATA VERSO L'ALTO)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1169,7 +1169,7 @@ def render_board_fragment():
             return f'<div class="def-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 4px; margin-top: -4px;">'
+            f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
             f'{render_def_row(squadre_sopra)}'
             f'{render_def_row(squadre_sotto)}'
             f'</div>',
