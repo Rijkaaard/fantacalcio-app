@@ -308,40 +308,40 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (AMPIO E PROPORZIONATO IN BASSO)
+       STILE DEDICATO VISUALE PORTIERI (57px SLOT)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        margin-bottom: 16px;
+        gap: 15px;
+        margin-bottom: 15px;
     }
 
     .gk-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
         border-radius: 12px;
-        padding: 16px 16px;
+        padding: 15px 15px;
         box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 14px;
+        gap: 13px;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 14px 14px;
+        padding: 13px 13px;
         border-radius: 8px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 13px;
     }
 
     .gk-team-logo {
-        width: 60px;
-        height: 60px;
+        width: 58px;
+        height: 58px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -355,7 +355,7 @@ st.markdown(
     }
 
     .gk-team-name {
-        font-size: 17px;
+        font-size: 16.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -365,7 +365,7 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 15px;
+        font-size: 14.5px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
@@ -375,9 +375,9 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 15px;
+        font-size: 14.5px;
         font-weight: 800;
-        padding: 10px 14px;
+        padding: 9px 13px;
         color: #ffffff;
         border-radius: 8px;
         letter-spacing: 0.8px;
@@ -391,8 +391,8 @@ st.markdown(
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 8px;
-        height: 58px;
-        padding: 0 14px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -402,32 +402,32 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 8px;
-        height: 58px;
-        padding: 0 14px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 700;
-        font-size: 15px;
+        font-size: 14.5px;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 11px;
         overflow: hidden;
     }
 
     .gk-seriea-logo {
-        width: 32px;
-        height: 32px;
+        width: 31px;
+        height: 31px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
-        font-size: 16px;
+        font-size: 15.5px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -436,47 +436,47 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 19px;
+        font-size: 18.5px;
         font-weight: 800;
         color: #ffffff !important;
         flex-shrink: 0;
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (OTTIMIZZATO IN VERTICALE)
+       STILE DEDICATO VISUALE DIFENSORI (40px SLOT)
        ========================================================================== */
     .def-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        margin-bottom: 8px;
+        gap: 7px;
+        margin-bottom: 7px;
     }
 
     .def-team-card {
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 8px;
-        padding: 6px 8px;
+        padding: 5px 7px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 3.5px;
     }
 
     .def-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 5px 8px;
+        padding: 4.5px 7px;
         border-radius: 5px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
     }
 
     .def-team-logo {
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -490,7 +490,7 @@ st.markdown(
     }
 
     .def-team-name {
-        font-size: 10px;
+        font-size: 9.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -500,7 +500,7 @@ st.markdown(
     }
 
     .def-team-budget {
-        font-size: 9px;
+        font-size: 8.5px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -510,9 +510,9 @@ st.markdown(
         background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
         border-top: 1px solid #86efac;
         border-bottom: 1px solid #052e16;
-        font-size: 9.5px;
+        font-size: 9px;
         font-weight: 800;
-        padding: 3.5px 8px;
+        padding: 3px 7px;
         color: #ffffff;
         border-radius: 4px;
         letter-spacing: 0.4px;
@@ -526,8 +526,8 @@ st.markdown(
         background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        height: 42px;
-        padding: 0 7px;
+        height: 40px;
+        padding: 0 6px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -537,32 +537,32 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 4px;
-        height: 42px;
-        padding: 0 7px;
+        height: 40px;
+        padding: 0 6px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 700;
-        font-size: 10px;
+        font-size: 9.5px;
     }
 
     .def-player-left {
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
         overflow: hidden;
     }
 
     .def-seriea-logo {
-        width: 21px;
-        height: 21px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .def-player-name {
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -571,7 +571,7 @@ st.markdown(
     }
 
     .def-player-cost {
-        font-size: 13.5px;
+        font-size: 12.5px;
         font-weight: 800;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -998,7 +998,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA (ESPANSA VERTICALMENTE)
+    # VISUALE PORTIERI DEDICATA (57px SLOT)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1069,7 +1069,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (REGOLATA VERSO IL BASSO)
+    # VISUALE DIFENSORI DEDICATA (40px SLOT)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
