@@ -94,7 +94,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - MARGINI SIMMETRICI + ASSE INFERIORE BLOCCATO
+# 🎨 STILE CSS - MARGINI ENORMI A DESTRA E SINISTRA PER PROBLEMI DI OVERSCAN TV
 # ==============================================================================
 st.markdown(
     """
@@ -107,12 +107,12 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* PADDING LATERALE SIMMETRICO IDENTICO */
+    /* MARGINI LATERALI ENORMI PER EVITARE IL TAGLIO DEI BORDI DELLA TELEVISIONE */
     .stMainBlockContainer {
         padding-top: 0.8rem !important;
         padding-bottom: 1rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        padding-left: 4.5rem !important;
+        padding-right: 4.5rem !important;
         max-width: 100% !important;
     }
 
@@ -199,11 +199,11 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA TABELLONE */
+    /* GRIGLIA TABELLONE CENTRATA E PROTETTA DAI BORDI TV */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
-        gap: 6px;
+        gap: 5px;
         width: 100%;
         box-sizing: border-box;
         padding-bottom: 15px;
@@ -220,18 +220,18 @@ st.markdown(
 
     .team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 6px 4px;
+        padding: 5px 3px;
         text-align: center;
         border-radius: 6px !important;
         border: 1px solid #3b1660;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-        margin-bottom: 6px !important;
+        margin-bottom: 5px !important;
     }
     
     .team-logo-container {
-        width: 38px;
-        height: 38px;
-        margin: 0 auto 3px auto;
+        width: 34px;
+        height: 34px;
+        margin: 0 auto 2px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
@@ -245,7 +245,7 @@ st.markdown(
     }
 
     .team-header-name {
-        font-size: 9px;
+        font-size: 8.5px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -255,7 +255,7 @@ st.markdown(
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-budget {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
         color: #facc15;
         margin: 1px 0;
@@ -264,7 +264,7 @@ st.markdown(
     .team-header-sub {
         display: flex;
         justify-content: space-between;
-        font-size: 7.5px;
+        font-size: 7px;
         color: #cbd5e1;
         padding: 0 2px;
         font-weight: 600;
@@ -272,16 +272,16 @@ st.markdown(
     }
 
     .role-bar {
-        font-size: 8px;
+        font-size: 7.5px;
         font-weight: 700;
-        padding: 2px 4px;
+        padding: 2px 3px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        margin-top: 1.5px;
-        margin-bottom: 1.5px;
+        margin-top: 1px;
+        margin-bottom: 1px;
     }
     .role-p { 
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
@@ -321,20 +321,20 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* ALTEZZA CELLE OTTIMIZZATA PER MANTENERE L'ASSE INFERIORE BLOCCATO */
+    /* CELLE OTTIMIZZATE */
     .player-cell {
         height: 20px;
         width: 100%;
         background: transparent;
         border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
-        margin: 1.5px 0;
+        margin: 1.2px 0;
         box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 3px;
-        font-size: 8.5px;
+        padding: 0 2px;
+        font-size: 8px;
     }
 
     .player-cell-filled {
@@ -352,14 +352,16 @@ st.markdown(
         align-items: center;
         gap: 2px;
         overflow: hidden;
-        max-width: calc(100% - 16px);
+        max-width: calc(100% - 14px);
+        min-width: 0;
     }
 
     .player-team-logo {
-        width: 10px;
-        height: 10px;
+        width: 11px;
+        height: 11px;
         object-fit: contain;
         flex-shrink: 0;
+        display: inline-block;
     }
 
     .player-cell-name {
@@ -368,7 +370,7 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
-        font-size: 8px;
+        font-size: 7.5px;
     }
 
     .player-cell-right {
@@ -378,8 +380,8 @@ st.markdown(
         font-weight: 700;
         color: #ffffff !important;
         flex-shrink: 0;
-        margin-left: 2px;
-        font-size: 8px;
+        margin-left: 1px;
+        font-size: 7.5px;
     }
 
     .deal-box-single {
@@ -706,7 +708,7 @@ def render_control_panel():
 
         peggiori_affari = sorted(
             [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-            key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
+            key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
         )[:3]
 
         def render_deal_box(deal_data, label_rank, price_color):
