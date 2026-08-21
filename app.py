@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE E VISUALI GIGANTI
+# 🎨 STILE CSS PRINCIPALE E VISUALI
 # ==============================================================================
 st.markdown(
     """
@@ -308,45 +308,45 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALI SPECIALI (5 SOPRA, 5 SOTTO - GIGANTE & SPAZIOSO)
+       STILE DEDICATO VISUALE PORTIERI (ORIGINALE)
        ========================================================================== */
-    .spec-grid-row {
+    .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 16px;
-        margin-bottom: 16px;
+        margin-bottom: 20px;
     }
 
-    .spec-team-card {
+    .gk-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
         border-radius: 12px;
-        padding: 12px 14px;
+        padding: 14px 16px;
         box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
     }
 
-    .spec-team-header {
+    .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 10px 12px;
+        padding: 12px 14px;
         border-radius: 8px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
     }
 
-    .spec-team-logo {
-        width: 50px;
-        height: 50px;
+    .gk-team-logo {
+        width: 55px;
+        height: 55px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .spec-header-texts {
+    .gk-header-texts {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -354,8 +354,8 @@ st.markdown(
         width: 100%;
     }
 
-    .spec-team-name {
-        font-size: 15px;
+    .gk-team-name {
+        font-size: 16px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -364,30 +364,22 @@ st.markdown(
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
-    .spec-team-budget {
-        font-size: 13px;
+    .gk-team-budget {
+        font-size: 14px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
-    .spec-role-title-p {
+    .gk-role-title {
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-    }
-    .spec-role-title-d {
-        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
-        border-top: 1px solid #86efac;
-        border-bottom: 1px solid #052e16;
-    }
-
-    .spec-role-title {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 800;
-        padding: 7px 12px;
+        padding: 8px 14px;
         color: #ffffff;
-        border-radius: 7px;
+        border-radius: 8px;
         letter-spacing: 0.8px;
         display: flex;
         justify-content: space-between;
@@ -395,53 +387,47 @@ st.markdown(
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
-    .spec-slot-row-p {
+    .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
-    }
-    .spec-slot-row-d {
-        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
-    }
-
-    .spec-slot-row {
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 8px;
-        height: 42px;
-        padding: 0 12px;
+        height: 46px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
-    .spec-slot-empty {
+    .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 8px;
-        height: 42px;
-        padding: 0 12px;
+        height: 46px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 700;
-        font-size: 13px;
+        font-size: 14px;
     }
 
-    .spec-player-left {
+    .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         overflow: hidden;
     }
 
-    .spec-seriea-logo {
-        width: 26px;
-        height: 26px;
+    .gk-seriea-logo {
+        width: 28px;
+        height: 28px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .spec-player-name {
-        font-size: 14px;
+    .gk-player-name {
+        font-size: 15px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -449,8 +435,143 @@ st.markdown(
         text-overflow: ellipsis;
     }
 
-    .spec-player-cost {
-        font-size: 15px;
+    .gk-player-cost {
+        font-size: 16px;
+        font-weight: 800;
+        color: #ffffff !important;
+        flex-shrink: 0;
+    }
+
+    /* ==========================================================================
+       STILE DEDICATO VISUALE DIFENSORI (OTTIMIZZATO COMPATTO SENZA SCROLLBAR)
+       ========================================================================== */
+    .def-grid-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+
+    .def-team-card {
+        background: #110a24;
+        border: 1.5px solid #3b1660;
+        border-radius: 8px;
+        padding: 6px 8px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .def-team-header {
+        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
+        padding: 5px 8px;
+        border-radius: 6px;
+        border: 1px solid #581c87;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .def-team-logo {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .def-header-texts {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .def-team-name {
+        font-size: 11px;
+        font-weight: 800;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+
+    .def-team-budget {
+        font-size: 10px;
+        font-weight: 700;
+        color: #ffffff;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+    }
+
+    .def-role-title {
+        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
+        border-top: 1px solid #86efac;
+        border-bottom: 1px solid #052e16;
+        font-size: 10px;
+        font-weight: 800;
+        padding: 4px 8px;
+        color: #ffffff;
+        border-radius: 5px;
+        letter-spacing: 0.5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+    }
+
+    .def-slot-row {
+        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
+        border: 1px solid rgba(0, 0, 0, 0.6);
+        border-radius: 5px;
+        height: 25px;
+        padding: 0 6px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .def-slot-empty {
+        background: #170d30;
+        border: 1px dashed rgba(192, 132, 252, 0.3);
+        border-radius: 5px;
+        height: 25px;
+        padding: 0 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4a287a;
+        font-weight: 700;
+        font-size: 10px;
+    }
+
+    .def-player-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow: hidden;
+    }
+
+    .def-seriea-logo {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .def-player-name {
+        font-size: 10px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .def-player-cost {
+        font-size: 11px;
         font-weight: 800;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -588,7 +709,6 @@ if not is_tv_mode:
         st.session_state.acquisti = acq
         st.session_state.vista_corrente = vista_attuale
 
-        # Pannello comando selettore visuale TV riservato all'admin
         with st.container(border=True):
             st.markdown('<div class="card-title">📺 COMANDO VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
             opzioni_visuali = ["Generale", "Portieri", "Difensori"]
@@ -878,7 +998,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA (GIGANTE A 2 FILE DA 5 SQUADRE)
+    # VISUALE PORTIERI DEDICATA (ORIGINALE RIPRISTINATA)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -893,7 +1013,7 @@ def render_board_fragment():
                 logo_fanta_html = ""
                 fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
                 if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="spec-team-logo" alt="{s_info["codice"]}">'
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gk-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_p = [a for a in acquisti_sq if a["Ruolo"] == "P"]
                 giocatori_p = sorted(giocatori_p, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
@@ -910,34 +1030,34 @@ def render_board_fragment():
                         costo = g["Costo"]
                         sq_sa = g.get("Squadra_SerieA", "")
                         logo_sa_b64 = get_logo_base64_cached(sq_sa)
-                        logo_sa_html = f'<img src="{logo_sa_b64}" class="spec-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="gk-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
                         slots_html.append(
-                            f'<div class="spec-slot-row spec-slot-row-p">'
-                            f'<div class="spec-player-left">'
+                            f'<div class="gk-slot-row">'
+                            f'<div class="gk-player-left">'
                             f'{logo_sa_html}'
-                            f'<span class="spec-player-name">{nome_g}</span>'
+                            f'<span class="gk-player-name">{nome_g}</span>'
                             f'</div>'
-                            f'<div class="spec-player-cost">{costo}</div>'
+                            f'<div class="gk-player-cost">{costo}</div>'
                             f'</div>'
                         )
                     else:
-                        slots_html.append('<div class="spec-slot-empty">-</div>')
+                        slots_html.append('<div class="gk-slot-empty">-</div>')
 
                 cards_html.append(
-                    f'<div class="spec-team-card">'
-                    f'<div class="spec-team-header">'
+                    f'<div class="gk-team-card">'
+                    f'<div class="gk-team-header">'
                     f'{logo_fanta_html}'
-                    f'<div class="spec-header-texts">'
-                    f'<div class="spec-team-name">{s_info["nome"]}</div>'
-                    f'<div class="spec-team-budget">🟡 {rim} Crediti</div>'
+                    f'<div class="gk-header-texts">'
+                    f'<div class="gk-team-name">{s_info["nome"]}</div>'
+                    f'<div class="gk-team-budget">🟡 {rim} Crediti</div>'
                     f'</div>'
                     f'</div>'
-                    f'<div class="spec-role-title spec-role-title-p"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
+                    f'<div class="gk-role-title"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
                     f'{"".join(slots_html)}'
                     f'</div>'
                 )
-            return f'<div class="spec-grid-row">{"".join(cards_html)}</div>'
+            return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
             f'<div style="width: 100%; padding-top: 5px;">'
@@ -949,7 +1069,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (8 DIFENSORI, 2 FILE DA 5 SQUADRE)
+    # VISUALE DIFENSORI DEDICATA (8 DIFENSORI, 2 FILE DA 5 SQUADRE, OTTIMIZZATA SENZA SCROLLBAR)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -964,7 +1084,7 @@ def render_board_fragment():
                 logo_fanta_html = ""
                 fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
                 if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="spec-team-logo" alt="{s_info["codice"]}">'
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="def-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_d = [a for a in acquisti_sq if a["Ruolo"] == "D"]
                 giocatori_d = sorted(giocatori_d, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
@@ -981,37 +1101,37 @@ def render_board_fragment():
                         costo = g["Costo"]
                         sq_sa = g.get("Squadra_SerieA", "")
                         logo_sa_b64 = get_logo_base64_cached(sq_sa)
-                        logo_sa_html = f'<img src="{logo_sa_b64}" class="spec-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="def-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
                         slots_html.append(
-                            f'<div class="spec-slot-row spec-slot-row-d">'
-                            f'<div class="spec-player-left">'
+                            f'<div class="def-slot-row">'
+                            f'<div class="def-player-left">'
                             f'{logo_sa_html}'
-                            f'<span class="spec-player-name">{nome_g}</span>'
+                            f'<span class="def-player-name">{nome_g}</span>'
                             f'</div>'
-                            f'<div class="spec-player-cost">{costo}</div>'
+                            f'<div class="def-player-cost">{costo}</div>'
                             f'</div>'
                         )
                     else:
-                        slots_html.append('<div class="spec-slot-empty">-</div>')
+                        slots_html.append('<div class="def-slot-empty">-</div>')
 
                 cards_html.append(
-                    f'<div class="spec-team-card">'
-                    f'<div class="spec-team-header">'
+                    f'<div class="def-team-card">'
+                    f'<div class="def-team-header">'
                     f'{logo_fanta_html}'
-                    f'<div class="spec-header-texts">'
-                    f'<div class="spec-team-name">{s_info["nome"]}</div>'
-                    f'<div class="spec-team-budget">🟡 {rim} Crediti</div>'
+                    f'<div class="def-header-texts">'
+                    f'<div class="def-team-name">{s_info["nome"]}</div>'
+                    f'<div class="def-team-budget">🟡 {rim} Crediti</div>'
                     f'</div>'
                     f'</div>'
-                    f'<div class="spec-role-title spec-role-title-d"><span>{pct_str}</span><span>DIFENSORI</span><span>{speso_difensori}</span></div>'
+                    f'<div class="def-role-title"><span>{pct_str}</span><span>DIFENSORI</span><span>{speso_difensori}</span></div>'
                     f'{"".join(slots_html)}'
                     f'</div>'
                 )
-            return f'<div class="spec-grid-row">{"".join(cards_html)}</div>'
+            return f'<div class="def-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 5px;">'
+            f'<div style="width: 100%; padding-top: 2px;">'
             f'{render_def_row(squadre_sopra)}'
             f'{render_def_row(squadre_sotto)}'
             f'</div>',
