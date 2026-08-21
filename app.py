@@ -176,7 +176,7 @@ st.markdown(
     }
 
     .team-header {
-        background: linear-gradient(90deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.5) 100%), linear-gradient(174deg, rgba(69, 6, 156, 0.5) 36%, rgba(14, 8, 45, 0.5) 92%) !important;
+        background: url('https://img.freepik.com/free-vector/neon-purple-lights-background-arrow-style_1017-25198.jpg') center/cover no-repeat !important;
         padding: 6px 4px;
         text-align: center;
         border-radius: 6px 6px 0 0;
