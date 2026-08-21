@@ -471,7 +471,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (ALLUNGATO DI +3PX)
+       STILE DEDICATO VISUALE DIFENSORI (FONT NOME GIOCATORE AUMENTATO)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -603,7 +603,7 @@ st.markdown(
 
     .def-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10px;
+        font-size: 12.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -921,7 +921,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -1111,7 +1111,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (ALLUNGATA DI +3PX)
+    # VISUALE DIFENSORI DEDICATA (FONT GIOCATORE MAGGIORE, ALTEZZA CELLE INALTERATA)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
