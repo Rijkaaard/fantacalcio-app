@@ -320,13 +320,13 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE PORTIERI (CON CELLE ALLUNGATE A 57px)
+       STILE PORTIERI (CELLE VERTICALI ALLUNGATE A 110px E CONTENITORI RIDIMENSIONATI)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
         width: 100%;
         box-sizing: border-box;
     }
@@ -335,30 +335,30 @@ st.markdown(
         background: #110a24;
         border: 1px solid #3b1660;
         border-radius: 6px;
-        padding: 6px;
+        padding: 4px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 3px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 6px;
+        padding: 3px 5px;
         border-radius: 4px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 5px;
         box-sizing: border-box;
     }
 
     .gk-team-logo {
-        width: 28px;
-        height: 28px;
+        width: 22px;
+        height: 22px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -373,7 +373,7 @@ st.markdown(
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 9px;
+        font-size: 8px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -384,7 +384,7 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 8.5px;
+        font-size: 7.5px;
         font-weight: 800;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -394,11 +394,11 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 8px;
+        font-size: 7.5px;
         font-weight: 900;
-        padding: 3px 6px;
+        padding: 2px 5px;
         color: #ffffff;
-        border-radius: 4px;
+        border-radius: 3px;
         letter-spacing: 0.8px;
         display: flex;
         justify-content: space-between;
@@ -412,8 +412,8 @@ st.markdown(
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 8px;
-        height: 57px;
-        padding: 0 13px;
+        height: 110px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -424,35 +424,35 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 8px;
-        height: 57px;
-        padding: 0 13px;
+        height: 110px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 14.5px;
+        font-size: 16px;
         box-sizing: border-box;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 10px;
         overflow: hidden;
-        max-width: calc(100% - 30px);
+        max-width: calc(100% - 40px);
     }
 
     .gk-seriea-logo {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px;
+        font-size: 13px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -462,7 +462,7 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 13px;
+        font-size: 15px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -910,7 +910,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -1029,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI (CON CELLE ALLUNGATE A 57px)
+    # VISUALE PORTIERI (CELLE VERTICALI ALLUNGATE A 110px)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
