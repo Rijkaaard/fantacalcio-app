@@ -94,7 +94,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - MARGINI ENORMI A DESTRA E SINISTRA PER PROBLEMI DI OVERSCAN TV
+# 🎨 STILE CSS - TABELLA ALLUNGATA VERSO IL BASSO E PROTETTA DA OVERSCAN TV
 # ==============================================================================
 st.markdown(
     """
@@ -107,7 +107,7 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* MARGINI LATERALI ENORMI PER EVITARE IL TAGLIO DEI BORDI DELLA TELEVISIONE */
+    /* MARGINI LATERALI PER LA TV */
     .stMainBlockContainer {
         padding-top: 0.8rem !important;
         padding-bottom: 1rem !important;
@@ -199,15 +199,15 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA TABELLONE CENTRATA E PROTETTA DAI BORDI TV */
+    /* GRIGLIA TABELLONE */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
-        gap: 5px;
+        gap: 6px;
         width: 100%;
         box-sizing: border-box;
-        padding-bottom: 15px;
-        padding-top: 2px;
+        padding-bottom: 20px;
+        padding-top: 4px;
     }
 
     .team-column {
@@ -220,18 +220,18 @@ st.markdown(
 
     .team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 5px 3px;
+        padding: 8px 4px;
         text-align: center;
         border-radius: 6px !important;
         border: 1px solid #3b1660;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-        margin-bottom: 5px !important;
+        margin-bottom: 6px !important;
     }
     
     .team-logo-container {
-        width: 34px;
-        height: 34px;
-        margin: 0 auto 2px auto;
+        width: 36px;
+        height: 36px;
+        margin: 0 auto 3px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
@@ -245,26 +245,26 @@ st.markdown(
     }
 
     .team-header-name {
-        font-size: 8.5px;
+        font-size: 9px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 1px;
+        margin-bottom: 2px;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-budget {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 800;
         color: #facc15;
-        margin: 1px 0;
+        margin: 2px 0;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-sub {
         display: flex;
         justify-content: space-between;
-        font-size: 7px;
+        font-size: 7.5px;
         color: #cbd5e1;
         padding: 0 2px;
         font-weight: 600;
@@ -272,16 +272,16 @@ st.markdown(
     }
 
     .role-bar {
-        font-size: 7.5px;
+        font-size: 8px;
         font-weight: 700;
-        padding: 2px 3px;
+        padding: 3px 4px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        margin-top: 1px;
-        margin-bottom: 1px;
+        margin-top: 2px;
+        margin-bottom: 2px;
     }
     .role-p { 
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
@@ -321,20 +321,20 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* CELLE OTTIMIZZATE */
+    /* CELLE ALUNGATE VERSO IL BASSO */
     .player-cell {
-        height: 20px;
+        height: 23px;
         width: 100%;
         background: transparent;
         border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
-        margin: 1.2px 0;
+        margin: 1.8px 0;
         box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 2px;
-        font-size: 8px;
+        padding: 0 3px;
+        font-size: 9px;
     }
 
     .player-cell-filled {
@@ -350,15 +350,15 @@ st.markdown(
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 2px;
+        gap: 3px;
         overflow: hidden;
-        max-width: calc(100% - 14px);
+        max-width: calc(100% - 16px);
         min-width: 0;
     }
 
     .player-team-logo {
-        width: 11px;
-        height: 11px;
+        width: 13px;
+        height: 13px;
         object-fit: contain;
         flex-shrink: 0;
         display: inline-block;
@@ -370,7 +370,7 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
-        font-size: 7.5px;
+        font-size: 8.5px;
     }
 
     .player-cell-right {
@@ -380,8 +380,8 @@ st.markdown(
         font-weight: 700;
         color: #ffffff !important;
         flex-shrink: 0;
-        margin-left: 1px;
-        font-size: 7.5px;
+        margin-left: 2px;
+        font-size: 8.5px;
     }
 
     .deal-box-single {
