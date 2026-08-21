@@ -94,61 +94,75 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (COORDINATO ALL'HEADER)
+# 📺 MARGINE PERSONALIZZATO VISTA TV
+# ==============================================================================
+tv_margin_css = """
+    <style>
+    .stMainBlockContainer {
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
+        margin: 0 4% !important;
+        width: auto !important;
+    }
+    </style>
+""" if is_tv_mode else ""
+
+# ==============================================================================
+# 🎨 STILE CSS - VIOLA DARK CYBERPUNK
 # ==============================================================================
 st.markdown(
-    """
+    f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
     /* Sfondo principale: Viola Notte Profondo */
-    html, body, [class*="css"], .stApp {
+    html, body, [class*="css"], .stApp {{
         background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
-    }
+    }}
 
-    .stMainBlockContainer {
+    .stMainBlockContainer {{
         padding-top: 0.8rem !important;
         padding-left: 1.5rem !important;
         padding-right: 1.5rem !important;
         max-width: 100% !important;
-    }
+    }}
 
     /* Allineamento colonne e contenitore flessibile */
-    [data-testid="stHorizontalBlock"] {
+    [data-testid="stHorizontalBlock"] {{
         display: flex !important;
         align-items: stretch !important;
-    }
+    }}
 
-    [data-testid="stColumn"] {
+    [data-testid="stColumn"] {{
         display: flex !important;
         flex-direction: column !important;
-    }
+    }}
 
-    [data-testid="stColumn"] > div {
+    [data-testid="stColumn"] > div {{
         flex: 1 !important;
         display: flex !important;
         flex-direction: column !important;
-    }
+    }}
 
-    .classifica-container [data-testid="stVerticalBlockBorderWrapper"] {
+    .classifica-container [data-testid="stVerticalBlockBorderWrapper"] {{
         height: 100% !important;
         display: flex !important;
         flex-direction: column !important;
-    }
+    }}
 
     /* Card/Widget dell'interfaccia */
-    [data-testid="stVerticalBlockBorderWrapper"] {
+    [data-testid="stVerticalBlockBorderWrapper"] {{
         background: #110a24 !important;
         border: 1px solid #231342 !important;
         border-radius: 8px !important;
         padding: 10px 14px 16px 14px !important;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
         margin-bottom: 6px !important;
-    }
+    }}
 
-    .card-title {
+    .card-title {{
         font-size: 11px;
         font-weight: 700;
         color: #c084fc;
@@ -158,75 +172,66 @@ st.markdown(
         display: flex;
         align-items: center;
         gap: 6px;
-    }
+    }}
 
-    /* ==========================================================================
-       🎯 STILIZZAZIONE INPUT (SELECT, MULTISELECT, NUMBER INPUT)
-       Stesso stile delle celle vuote della griglia: trasparente, bordo e angoli 3px
-       ========================================================================== */
-    
-    /* Contenitori principali di BaseWeb (Select, Multiselect, Input) */
+    /* Input (Select, Multiselect, Number Input) */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div,
     [data-testid="stMultiSelect"] div[data-baseweb="select"] > div,
-    [data-testid="stNumberInput"] div[data-baseweb="input"] > div {
+    [data-testid="stNumberInput"] div[data-baseweb="input"] > div {{
         background-color: transparent !important;
         background: transparent !important;
         border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
         color: #ffffff !important;
         box-shadow: none !important;
-    }
+    }}
 
-    /* Input di testo interno */
     div[data-baseweb="select"] input, 
     div[data-baseweb="input"] input,
-    [data-testid="stNumberInput"] input {
+    [data-testid="stNumberInput"] input {{
         background: transparent !important;
         color: #ffffff !important;
-    }
+    }}
 
-    /* Tag/Chip selezionati dentro il Multiselect */
-    [data-baseweb="tag"] {
+    [data-baseweb="tag"] {{
         background-color: rgba(192, 132, 252, 0.2) !important;
         border: 1px solid rgba(192, 132, 252, 0.4) !important;
         border-radius: 3px !important;
-    }
-    [data-baseweb="tag"] span {
+    }}
+    [data-baseweb="tag"] span {{
         color: #ffffff !important;
-    }
+    }}
 
-    /* Bordo attivo al click / focus */
     div[data-baseweb="select"]:focus-within > div,
-    div[data-baseweb="input"]:focus-within > div {
+    div[data-baseweb="input"]:focus-within > div {{
         border-color: #c084fc !important;
-    }
+    }}
 
-    /* Pulsanti + / - del NumberInput */
-    [data-testid="stNumberInput"] button {
+    [data-testid="stNumberInput"] button {{
         background: transparent !important;
         border: none !important;
         color: #c084fc !important;
-    }
+    }}
 
-    .board-grid {
+    .board-grid {{
         display: grid;
-        grid-template-columns: repeat(10, minmax(120px, 1fr));
+        grid-template-columns: repeat(10, minmax(110px, 1fr));
         gap: 6px;
         width: 100%;
         overflow-x: auto;
         padding-bottom: 15px;
         padding-top: 2px;
-    }
+    }}
 
-    .team-column {
+    .team-column {{
         background: transparent !important;
         border: none !important;
         display: flex;
         flex-direction: column;
-    }
+    }}
 
-    .team-header {
+    .team-header {{
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
         padding: 6px 4px;
         text-align: center;
@@ -234,9 +239,9 @@ st.markdown(
         border: 1px solid #3b1660;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
         margin-bottom: 6px !important;
-    }
+    }}
     
-    .team-logo-container {
+    .team-logo-container {{
         width: 38px;
         height: 38px;
         margin: 0 auto 3px auto;
@@ -245,14 +250,14 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: center;
-    }
-    .fanta-team-logo {
+    }}
+    .fanta-team-logo {{
         width: 100%;
         height: 100%;
         object-fit: contain;
-    }
+    }}
 
-    .team-header-name {
+    .team-header-name {{
         font-size: 9px;
         font-weight: 700;
         color: #ffffff;
@@ -261,15 +266,15 @@ st.markdown(
         text-overflow: ellipsis;
         margin-bottom: 1px;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    .team-header-budget {
+    }}
+    .team-header-budget {{
         font-size: 13px;
         font-weight: 800;
         color: #facc15;
         margin: 1px 0;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    .team-header-sub {
+    }}
+    .team-header-sub {{
         display: flex;
         justify-content: space-between;
         font-size: 7.5px;
@@ -277,10 +282,10 @@ st.markdown(
         padding: 0 2px;
         font-weight: 600;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
-    }
+    }}
 
-    /* Barre dei Ruoli FantaLab */
-    .role-bar {
+    /* Barre dei Ruoli */
+    .role-bar {{
         font-size: 8.5px;
         font-weight: 700;
         padding: 3px 5px;
@@ -291,34 +296,34 @@ st.markdown(
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         margin-top: 2px;
         margin-bottom: 2px;
-    }
-    .role-p { 
+    }}
+    .role-p {{ 
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
         border-top: 1px solid #fcd34d; 
         border-bottom: 1px solid #451a03; 
-    }
-    .role-d { 
+    }}
+    .role-d {{ 
         background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); 
         border-top: 1px solid #86efac; 
         border-bottom: 1px solid #052e16; 
-    }
-    .role-c { 
+    }}
+    .role-c {{ 
         background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); 
         border-top: 1px solid #93c5fd; 
         border-bottom: 1px solid #172554; 
-    }
-    .role-a { 
+    }}
+    .role-a {{ 
         background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); 
         border-top: 1px solid #fecdd3; 
         border-bottom: 1px solid #4c0519; 
-    }
+    }}
 
-    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-p {{ background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }}
+    .badge-ruolo-d {{ background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }}
+    .badge-ruolo-c {{ background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }}
+    .badge-ruolo-a {{ background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }}
 
-    .player-preview-box {
+    .player-preview-box {{
         background: #170d30;
         border: 1px solid #321a5c;
         border-radius: 6px;
@@ -328,9 +333,9 @@ st.markdown(
         gap: 10px;
         margin-top: 6px;
         margin-bottom: 4px;
-    }
+    }}
 
-    .player-cell {
+    .player-cell {{
         height: 22px;
         width: 100%;
         background: transparent;
@@ -343,50 +348,50 @@ st.markdown(
         justify-content: space-between;
         padding: 0 4px;
         font-size: 9.5px;
-    }
+    }}
 
-    .player-cell-filled {
+    .player-cell-filled {{
         border: 1px solid rgba(0, 0, 0, 0.5) !important;
         border-radius: 3px !important;
-    }
+    }}
 
-    .player-cell-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
-    .player-cell-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
-    .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
-    .player-cell-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
+    .player-cell-p {{ background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }}
+    .player-cell-d {{ background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }}
+    .player-cell-c {{ background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }}
+    .player-cell-a {{ background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }}
 
-    .player-cell-left {
+    .player-cell-left {{
         display: flex;
         align-items: center;
         gap: 3px;
         overflow: hidden;
         max-width: 88px;
-    }
+    }}
 
-    .player-team-logo {
+    .player-team-logo {{
         width: 12px;
         height: 12px;
         object-fit: contain;
         flex-shrink: 0;
-    }
+    }}
 
-    .player-cell-name {
+    .player-cell-name {{
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
-    }
+    }}
 
-    .player-cell-right {
+    .player-cell-right {{
         display: flex;
         align-items: center;
         justify-content: flex-end;
         font-weight: 700;
         color: #ffffff !important;
-    }
+    }}
 
-    .deal-box-single {
+    .deal-box-single {{
         background: #150b2c;
         border: 1px solid #28144d;
         border-radius: 6px;
@@ -400,14 +405,14 @@ st.markdown(
         justify-content: space-between;
         align-items: center;
         text-align: center;
-    }
-    .deal-rank-title {
+    }}
+    .deal-rank-title {{
         font-size: 9.5px;
         font-weight: 800;
         text-transform: uppercase;
         line-height: 1;
-    }
-    .deal-player-name {
+    }}
+    .deal-player-name {{
         font-size: 11px;
         font-weight: 800;
         color: #ffffff;
@@ -416,31 +421,31 @@ st.markdown(
         text-overflow: ellipsis;
         max-width: 100%;
         line-height: 1.2;
-    }
-    .deal-logos-row {
+    }}
+    .deal-logos-row {{
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 6px;
         height: 22px;
-    }
-    .deal-logo-img {
+    }}
+    .deal-logo-img {{
         width: 22px;
         height: 22px;
         object-fit: contain;
-    }
-    .deal-arrow {
+    }}
+    .deal-arrow {{
         color: #c084fc;
         font-size: 11px;
         font-weight: bold;
-    }
-    .deal-price-info {
+    }}
+    .deal-price-info {{
         font-size: 9px;
         font-weight: 700;
         line-height: 1;
-    }
+    }}
 
-    .ranking-row {
+    .ranking-row {{
         background: #140a2b;
         border: 1px solid #251249;
         border-radius: 5px;
@@ -450,26 +455,27 @@ st.markdown(
         justify-content: space-between;
         margin-bottom: 4px;
         font-size: 11px;
-    }
-    .ranking-info {
+    }}
+    .ranking-info {{
         font-weight: 600;
         color: #ffffff;
-    }
-    .ranking-sub {
+    }}
+    .ranking-sub {{
         font-size: 9.5px;
         color: #a78bfa;
         margin-left: 4px;
-    }
-    .ranking-badge {
+    }}
+    .ranking-badge {{
         background: #0d061c;
         color: #facc15;
         font-weight: 700;
         padding: 2px 7px;
         border-radius: 4px;
         border: 1px solid #2a1452;
-    }
+    }}
     </style>
-""",
+    {tv_margin_css}
+    """,
     unsafe_allow_html=True,
 )
 
