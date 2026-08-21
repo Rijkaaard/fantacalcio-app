@@ -471,7 +471,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (SPOSTATO PIÙ IN ALTO)
+       STILE DEDICATO VISUALE DIFENSORI (ALLUNGATO DI +3PX)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -488,7 +488,7 @@ st.markdown(
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 3.4px;
     }
 
     .def-team-header {
@@ -500,7 +500,7 @@ st.markdown(
         align-items: center;
         justify-content: space-between;
         gap: 6px;
-        height: 35px;
+        height: 37px;
         box-sizing: border-box;
     }
 
@@ -513,15 +513,15 @@ st.markdown(
     }
 
     .def-team-logo {
-        width: 22px;
-        height: 22px;
+        width: 23px;
+        height: 23px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px;
+        font-size: 11.2px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -533,7 +533,7 @@ st.markdown(
     }
 
     .def-team-budget {
-        font-size: 11px;
+        font-size: 11.2px;
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -545,7 +545,7 @@ st.markdown(
         background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
         border-top: 1px solid #86efac;
         border-bottom: 1px solid #052e16;
-        font-size: 8px;
+        font-size: 8.5px;
         font-weight: 900;
         padding: 2px 6px;
         color: #ffffff;
@@ -556,31 +556,35 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        height: 20px;
+        box-sizing: border-box;
     }
 
     .def-slot-row {
         background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        height: 35px;
+        height: 38px;
         padding: 0 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        box-sizing: border-box;
     }
 
     .def-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 4px;
-        height: 35px;
+        height: 38px;
         padding: 0 5px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 8.5px;
+        font-size: 9px;
+        box-sizing: border-box;
     }
 
     .def-player-left {
@@ -591,15 +595,15 @@ st.markdown(
     }
 
     .def-seriea-logo {
-        width: 17px;
-        height: 17px;
+        width: 18px;
+        height: 18px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .def-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 9.5px;
+        font-size: 10px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -609,7 +613,7 @@ st.markdown(
     }
 
     .def-player-cost {
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -917,7 +921,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -1107,7 +1111,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (SPOSTATA VERSO L'ALTO)
+    # VISUALE DIFENSORI DEDICATA (ALLUNGATA DI +3PX)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
