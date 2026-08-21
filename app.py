@@ -130,8 +130,8 @@ st.markdown(
     .stMainBlockContainer {
         padding-top: 2.2rem !important;
         padding-bottom: 1rem !important;
-        padding-left: 3rem !important;
-        padding-right: 3rem !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
         max-width: 100% !important;
     }
 
@@ -195,415 +195,153 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA STANDARD 10 COLONNE (GENERALE) */
-    .board-grid {
+    /* ==========================================================================
+       STILE DEDICATO VISUALE GENERALE (10 SQUADRE IN FILA - STILE CARD)
+       ========================================================================== */
+    .gen-grid-row {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
         gap: 5px;
+        margin-bottom: 5px;
         width: 100%;
         box-sizing: border-box;
-        padding-bottom: 15px;
-        padding-top: 2px;
     }
 
-    .team-column {
-        background: transparent !important;
-        border: none !important;
+    .gen-team-card {
+        background: #110a24;
+        border: 1.5px solid #3b1660;
+        border-radius: 8px;
+        padding: 5px 6px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
+        gap: 4px;
+        box-sizing: border-box;
         min-width: 0;
     }
 
-    .team-header {
+    .gen-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 8px 3px;
-        text-align: center;
-        border-radius: 6px !important;
-        border: 1px solid #3b1660;
-        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
-        margin-bottom: 5px !important;
-    }
-    
-    .team-logo-container {
-        width: 44px;
-        height: 44px;
-        margin: 0 auto 4px auto;
-        background: transparent !important;
-        border: none !important;
+        padding: 0 6px;
+        border-radius: 5px;
+        border: 1px solid #581c87;
         display: flex;
         align-items: center;
-        justify-content: center;
-    }
-    .fanta-team-logo {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
+        justify-content: space-between;
+        gap: 4px;
+        height: 38px;
+        box-sizing: border-box;
     }
 
-    .team-header-name {
+    .gen-header-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        overflow: hidden;
+        flex-grow: 1;
+    }
+
+    .gen-team-logo {
+        width: 21px;
+        height: 21px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8px;
-        font-weight: 800;
+        font-size: 8.5px;
+        font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 2px;
         text-transform: uppercase;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        line-height: 1;
     }
-    .team-header-budget {
-        font-size: 13px;
+
+    .gen-team-budget {
+        font-size: 9.5px;
         font-weight: 900;
         color: #facc15;
-        margin: 2px 0 0 0;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        flex-shrink: 0;
+        line-height: 1;
     }
 
-    .role-bar {
+    .gen-role-title {
         font-size: 7.5px;
-        font-weight: 800;
-        padding: 2.5px 3px;
+        font-weight: 900;
+        padding: 2px 5px;
         color: #ffffff;
+        border-radius: 3px;
+        letter-spacing: 0.4px;
         display: flex;
         justify-content: space-between;
-        letter-spacing: 0.8px;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        margin-top: 1.5px;
-        margin-bottom: 1.5px;
+        align-items: center;
         text-transform: uppercase;
-    }
-    .role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
-    .role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
-    .role-c { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; }
-    .role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
-
-    .player-cell {
-        height: 21px;
-        width: 100%;
-        background: transparent;
-        border: 1px solid rgba(192, 132, 252, 0.2) !important;
-        border-radius: 3px !important;
-        margin: 1.4px 0;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        height: 19px;
         box-sizing: border-box;
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+    .gen-role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
+    .gen-role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
+    .gen-role-c { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; }
+    .gen-role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
+
+    .gen-slot-row {
+        border-radius: 3px;
+        height: 24px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 2.5px;
-        font-size: 8px;
+        box-sizing: border-box;
+        margin: 1px 0;
+        border: 1px solid rgba(0, 0, 0, 0.5);
     }
-    .player-cell-filled { border: 1px solid rgba(0, 0, 0, 0.5) !important; border-radius: 3px !important; }
-    .player-cell-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
-    .player-cell-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
-    .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
-    .player-cell-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
+    .gen-slot-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
+    .gen-slot-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
+    .gen-slot-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
+    .gen-slot-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
 
-    .player-cell-left {
+    .gen-slot-empty {
+        background: #170d30;
+        border: 1px dashed rgba(192, 132, 252, 0.3);
+        border-radius: 3px;
+        height: 24px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
-        gap: 2.5px;
+        justify-content: center;
+        color: #4a287a;
+        font-weight: 800;
+        font-size: 8px;
+        box-sizing: border-box;
+        margin: 1px 0;
+    }
+
+    .gen-player-left {
+        display: flex;
+        align-items: center;
+        gap: 3px;
         overflow: hidden;
         max-width: calc(100% - 15px);
-        min-width: 0;
-    }
-    .player-team-logo { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; display: inline-block; }
-    .player-cell-name { 
-        font-family: 'Montserrat', sans-serif !important;
-        color: #ffffff; 
-        white-space: nowrap; 
-        overflow: hidden; 
-        text-overflow: ellipsis; 
-        font-weight: 700; 
-        font-size: 8px; 
-        text-transform: uppercase;
-    }
-    .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
-
-    /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI
-       ========================================================================== */
-    .gk-grid-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 15px;
-        margin-bottom: 15px;
     }
 
-    .gk-team-card {
-        background: #110a24;
-        border: 2px solid #3b1660;
-        border-radius: 12px;
-        padding: 18px 15px;
-        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        height: 380px;
-        box-sizing: border-box;
-    }
-
-    .gk-team-header {
-        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 12px 14px;
-        border-radius: 8px;
-        border: 1px solid #581c87;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        height: 85px;
-        box-sizing: border-box;
-    }
-
-    .gk-team-logo {
-        width: 50px;
-        height: 50px;
+    .gen-seriea-logo {
+        width: 13px;
+        height: 13px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .gk-header-texts {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        overflow: hidden;
-        width: calc(100% - 62px);
-    }
-
-    .gk-team-name {
+    .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 13.5px;
-        font-weight: 900;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-        width: 100%;
-        text-align: left;
-    }
-
-    .gk-team-budget {
-        font-size: 14px;
-        font-weight: 800;
-        color: #facc15;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
-    }
-
-    .gk-role-title {
-        background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
-        border-top: 1px solid #fcd34d;
-        border-bottom: 1px solid #451a03;
-        font-size: 14px;
-        font-weight: 900;
-        padding: 0 14px;
-        color: #ffffff;
-        border-radius: 6px;
-        letter-spacing: 1px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 42px;
-        box-sizing: border-box;
-    }
-
-    .gk-slot-row {
-        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
-        border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 6px;
-        height: 56px;
-        padding: 0 14px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-
-    .gk-slot-empty {
-        background: #170d30;
-        border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 6px;
-        height: 56px;
-        padding: 0 14px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4a287a;
-        font-weight: 800;
-        font-size: 15px;
-        box-sizing: border-box;
-    }
-
-    .gk-player-left {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        overflow: hidden;
-        max-width: calc(100% - 45px);
-    }
-
-    .gk-seriea-logo {
-        width: 30px;
-        height: 30px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .gk-player-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 15px;
-        font-weight: 800;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-    }
-
-    .gk-player-cost {
-        font-size: 17.5px;
-        font-weight: 900;
-        color: #ffffff !important;
-        flex-shrink: 0;
-    }
-
-    /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI
-       ========================================================================== */
-    .def-grid-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 5px;
-        margin-bottom: 5px;
-    }
-
-    .def-team-card {
-        background: #110a24;
-        border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 4px 5px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-        gap: 3.4px;
-    }
-
-    .def-team-header {
-        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 8px;
-        border-radius: 5px;
-        border: 1px solid #581c87;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 6px;
-        height: 37px;
-        box-sizing: border-box;
-    }
-
-    .def-header-left {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        overflow: hidden;
-        flex-grow: 1;
-    }
-
-    .def-team-logo {
-        width: 23px;
-        height: 23px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .def-team-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 11.2px;
-        font-weight: 900;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        line-height: 1;
-    }
-
-    .def-team-budget {
-        font-size: 11.2px;
-        font-weight: 900;
-        color: #facc15;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        flex-shrink: 0;
-        line-height: 1;
-    }
-
-    .def-role-title {
-        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
-        border-top: 1px solid #86efac;
-        border-bottom: 1px solid #052e16;
-        font-size: 8.5px;
-        font-weight: 900;
-        padding: 2px 6px;
-        color: #ffffff;
-        border-radius: 4px;
-        letter-spacing: 0.6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 20px;
-        box-sizing: border-box;
-    }
-
-    .def-slot-row {
-        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
-        border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-
-    .def-slot-empty {
-        background: #170d30;
-        border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4a287a;
-        font-weight: 800;
-        font-size: 9px;
-        box-sizing: border-box;
-    }
-
-    .def-player-left {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        overflow: hidden;
-    }
-
-    .def-seriea-logo {
-        width: 18px;
-        height: 18px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .def-player-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 12.5px;
+        font-size: 8px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -613,8 +351,8 @@ st.markdown(
         line-height: 1;
     }
 
-    .def-player-cost {
-        font-size: 12.5px;
+    .gen-player-cost {
+        font-size: 8px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -622,306 +360,67 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE CENTROCAMPISTI
+       STILI ALTRE VISUALI (PORTIERI, DIFENSORI, ECC.)
        ========================================================================== */
-    .cent-grid-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 5px;
-        margin-bottom: 5px;
-    }
+    .gk-grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
+    .gk-team-card { background: #110a24; border: 2px solid #3b1660; border-radius: 12px; padding: 18px 15px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 14px; height: 380px; box-sizing: border-box; }
+    .gk-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 12px 14px; border-radius: 8px; border: 1px solid #581c87; text-align: center; display: flex; align-items: center; gap: 12px; height: 85px; box-sizing: border-box; }
+    .gk-team-logo { width: 50px; height: 50px; object-fit: contain; flex-shrink: 0; }
+    .gk-header-texts { display: flex; flex-direction: column; align-items: flex-start; overflow: hidden; width: calc(100% - 62px); }
+    .gk-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); width: 100%; text-align: left; }
+    .gk-team-budget { font-size: 14px; font-weight: 800; color: #facc15; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); }
+    .gk-role-title { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; font-size: 14px; font-weight: 900; padding: 0 14px; color: #ffffff; border-radius: 6px; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 42px; box-sizing: border-box; }
+    .gk-slot-row { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 6px; height: 56px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .gk-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 6px; height: 56px; padding: 0 14px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 15px; box-sizing: border-box; }
+    .gk-player-left { display: flex; align-items: center; gap: 12px; overflow: hidden; max-width: calc(100% - 45px); }
+    .gk-seriea-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
+    .gk-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 15px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; }
+    .gk-player-cost { font-size: 17.5px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; }
 
-    .cent-team-card {
-        background: #110a24;
-        border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 4px 5px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-        gap: 3.4px;
-    }
+    .def-grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 5px; }
+    .def-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 4px 5px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 3.4px; }
+    .def-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 8px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 6px; height: 37px; box-sizing: border-box; }
+    .def-header-left { display: flex; align-items: center; gap: 6px; overflow: hidden; flex-grow: 1; }
+    .def-team-logo { width: 23px; height: 23px; object-fit: contain; flex-shrink: 0; }
+    .def-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 11.2px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
+    .def-team-budget { font-size: 11.2px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
+    .def-role-title { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; font-size: 8.5px; font-weight: 900; padding: 2px 6px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 20px; box-sizing: border-box; }
+    .def-slot-row { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 38px; padding: 0 5px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .def-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 38px; padding: 0 5px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 9px; box-sizing: border-box; }
+    .def-player-left { display: flex; align-items: center; gap: 4px; overflow: hidden; }
+    .def-seriea-logo { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+    .def-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 12.5px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .def-player-cost { font-size: 12.5px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
 
-    .cent-team-header {
-        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 8px;
-        border-radius: 5px;
-        border: 1px solid #581c87;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 6px;
-        height: 37px;
-        box-sizing: border-box;
-    }
+    .cent-grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 5px; }
+    .cent-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 4px 5px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 3.4px; }
+    .cent-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 8px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 6px; height: 37px; box-sizing: border-box; }
+    .cent-header-left { display: flex; align-items: center; gap: 6px; overflow: hidden; flex-grow: 1; }
+    .cent-team-logo { width: 23px; height: 23px; object-fit: contain; flex-shrink: 0; }
+    .cent-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 11.2px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
+    .cent-team-budget { font-size: 11.2px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
+    .cent-role-title { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; font-size: 8.5px; font-weight: 900; padding: 2px 6px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 20px; box-sizing: border-box; }
+    .cent-slot-row { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 38px; padding: 0 5px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .cent-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 38px; padding: 0 5px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 9px; box-sizing: border-box; }
+    .cent-player-left { display: flex; align-items: center; gap: 4px; overflow: hidden; }
+    .cent-seriea-logo { width: 18px; height: 18px; object-fit: contain; flex-shrink: 0; }
+    .cent-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 12.5px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .cent-player-cost { font-size: 12.5px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
 
-    .cent-header-left {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        overflow: hidden;
-        flex-grow: 1;
-    }
-
-    .cent-team-logo {
-        width: 23px;
-        height: 23px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .cent-team-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 11.2px;
-        font-weight: 900;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        line-height: 1;
-    }
-
-    .cent-team-budget {
-        font-size: 11.2px;
-        font-weight: 900;
-        color: #facc15;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        flex-shrink: 0;
-        line-height: 1;
-    }
-
-    .cent-role-title {
-        background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%);
-        border-top: 1px solid #93c5fd;
-        border-bottom: 1px solid #172554;
-        font-size: 8.5px;
-        font-weight: 900;
-        padding: 2px 6px;
-        color: #ffffff;
-        border-radius: 4px;
-        letter-spacing: 0.6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 20px;
-        box-sizing: border-box;
-    }
-
-    .cent-slot-row {
-        background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important;
-        border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-
-    .cent-slot-empty {
-        background: #170d30;
-        border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4a287a;
-        font-weight: 800;
-        font-size: 9px;
-        box-sizing: border-box;
-    }
-
-    .cent-player-left {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        overflow: hidden;
-    }
-
-    .cent-seriea-logo {
-        width: 18px;
-        height: 18px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .cent-player-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 12.5px;
-        font-weight: 800;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        line-height: 1;
-    }
-
-    .cent-player-cost {
-        font-size: 12.5px;
-        font-weight: 900;
-        color: #ffffff !important;
-        flex-shrink: 0;
-        line-height: 1;
-    }
-
-    /* ==========================================================================
-       STILE DEDICATO VISUALE ATTACCANTI (Allargato di ~5px in basso + elementi scalati)
-       ========================================================================== */
-    .att-grid-row {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 5px;
-        margin-bottom: 5px;
-    }
-
-    .att-team-card {
-        background: #110a24;
-        border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 6px 7px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
-        display: flex;
-        flex-direction: column;
-        gap: 6.4px; /* Aumentato leggermente per distribuire i +5px */
-    }
-
-    .att-team-header {
-        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 10px;
-        border-radius: 5px;
-        border: 1px solid #581c87;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 8px;
-        height: 45px; /* +2px */
-        box-sizing: border-box;
-    }
-
-    .att-header-left {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-        overflow: hidden;
-        flex-grow: 1;
-    }
-
-    .att-team-logo {
-        width: 30px; /* Logo ingrandito +2px */
-        height: 30px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .att-team-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 13.2px; /* Font ingrandito */
-        font-weight: 900;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        line-height: 1;
-    }
-
-    .att-team-budget {
-        font-size: 13.2px; /* Font ingrandito */
-        font-weight: 900;
-        color: #facc15;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        flex-shrink: 0;
-        line-height: 1;
-    }
-
-    .att-role-title {
-        background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%);
-        border-top: 1px solid #fecdd3;
-        border-bottom: 1px solid #4c0519;
-        font-size: 10px; /* Font barra ruolo ingrandito */
-        font-weight: 900;
-        padding: 2px 8px;
-        color: #ffffff;
-        border-radius: 4px;
-        letter-spacing: 0.6px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 24.5px; /* Altezza barra ruolo leggermente aumentata */
-        box-sizing: border-box;
-    }
-
-    .att-slot-row {
-        background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
-        border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 4px;
-        height: 45px; /* Celle allungate verticalmente */
-        padding: 0 7px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-
-    .att-slot-empty {
-        background: #170d30;
-        border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 4px;
-        height: 45px; /* Celle vuote allungate verticalmente */
-        padding: 0 7px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4a287a;
-        font-weight: 800;
-        font-size: 10.5px;
-        box-sizing: border-box;
-    }
-
-    .att-player-left {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        overflow: hidden;
-    }
-
-    .att-seriea-logo {
-        width: 23px; /* Logo Serie A ingrandito +2px */
-        height: 23px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
-    .att-player-name {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 14.8px; /* Nome giocatore ingrandito coerentemente */
-        font-weight: 800;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-transform: uppercase;
-        line-height: 1;
-    }
-
-    .att-player-cost {
-        font-size: 14.8px; /* Prezzo ingrandito coerentemente */
-        font-weight: 900;
-        color: #ffffff !important;
-        flex-shrink: 0;
-        line-height: 1;
-    }
+    .att-grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 5px; }
+    .att-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 7px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 6.4px; }
+    .att-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 45px; box-sizing: border-box; }
+    .att-header-left { display: flex; align-items: center; gap: 7px; overflow: hidden; flex-grow: 1; }
+    .att-team-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
+    .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13.2px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
+    .att-team-budget { font-size: 13.2px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
+    .att-role-title { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; font-size: 10px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 24.5px; box-sizing: border-box; }
+    .att-slot-row { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 45px; padding: 0 7px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .att-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 45px; padding: 0 7px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 10.5px; box-sizing: border-box; }
+    .att-player-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+    .att-seriea-logo { width: 23px; height: 23px; object-fit: contain; flex-shrink: 0; }
+    .att-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 14.8px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .att-player-cost { font-size: 14.8px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
 
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
@@ -1225,7 +724,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -1628,30 +1127,23 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE STANDARD
+    # VISUALE GENERALE (10 SQUADRE DI FILA CON LO STILE DELLE ALTRE VISUALI)
     # --------------------------------------------------------------------------
-    cols_html = []
+    cards_html = []
     for s_info in SQUADRE_INFO:
         sq = f"{s_info['nome']} - {s_info['mister']}"
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-        nome_team = s_info['nome']
         
         logo_fanta_html = ""
         fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
         if fanta_logo_b64:
-            logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
-        
-        col_content = [
-            f'<div class="team-column">'
-            f'<div class="team-header">'
-            f'{logo_fanta_html}'
-            f'<div class="team-header-name">{nome_team}</div>'
-            f'<div class="team-header-budget">🟡 {rim}</div>'
-            f'</div>'
-        ]
+            logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
 
+        card_slots_html = []
         for ruolo, num_slots in SLOTS.items():
-            role_css = f"role-{ruolo.lower()}"
+            role_class_css = f"gen-role-{ruolo.lower()}"
+            slot_class_css = f"gen-slot-{ruolo.lower()}"
+            
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
             giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
@@ -1659,36 +1151,47 @@ def render_board_fragment():
             pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
             pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
-            col_content.append(f'<div class="role-bar {role_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
+            card_slots_html.append(f'<div class="gen-role-title {role_class_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
 
             for i in range(num_slots):
                 if i < len(giocatori_r):
                     g = giocatori_r[i]
                     nome_g = g["Giocatore"]
-                    sq_sa = g.get("Squadra_SerieA", "")
-                    logo_b64 = get_logo_base64_cached(sq_sa)
-                    logo_html = f'<img src="{logo_b64}" class="player-team-logo" alt="{sq_sa}">' if logo_b64 else ""
-
                     costo = g["Costo"]
-                    cell_role_class = f"player-cell-{ruolo.lower()}"
+                    sq_sa = g.get("Squadra_SerieA", "")
+                    logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                    logo_sa_html = f'<img src="{logo_sa_b64}" class="gen-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
-                    col_content.append(
-                        f'<div class="player-cell player-cell-filled {cell_role_class}">'
-                        f'<div class="player-cell-left">'
-                        f'{logo_html}'
-                        f'<span class="player-cell-name">{nome_g}</span>'
+                    card_slots_html.append(
+                        f'<div class="gen-slot-row {slot_class_css}">'
+                        f'<div class="gen-player-left">'
+                        f'{logo_sa_html}'
+                        f'<span class="gen-player-name">{nome_g}</span>'
                         f'</div>'
-                        f'<div class="player-cell-right">'
-                        f'<span class="player-cell-cost">{costo}</span>'
-                        f'</div>'
+                        f'<div class="gen-player-cost">{costo}</div>'
                         f'</div>'
                     )
                 else:
-                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#2a1752;">-</span></div>')
+                    card_slots_html.append('<div class="gen-slot-empty">-</div>')
 
-        col_content.append("</div>")
-        cols_html.append("".join(col_content))
+        cards_html.append(
+            f'<div class="gen-team-card">'
+            f'<div class="gen-team-header">'
+            f'<div class="gen-header-left">'
+            f'{logo_fanta_html}'
+            f'<div class="gen-team-name">{s_info["nome"]}</div>'
+            f'</div>'
+            f'<div class="gen-team-budget">🟡 {rim}</div>'
+            f'</div>'
+            f'{"".join(card_slots_html)}'
+            f'</div>'
+        )
 
-    st.markdown(f'<div class="board-grid">{"".join(cols_html)}</div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
+        f'<div class="gen-grid-row">{"".join(cards_html)}</div>'
+        f'</div>',
+        unsafe_allow_html=True
+    )
 
 render_board_fragment()
