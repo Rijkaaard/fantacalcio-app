@@ -460,7 +460,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI
+       STILE DEDICATO VISUALE DIFENSORI (TESTO MAGGIORATO, ALTEZZA INALTERATA)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -583,7 +583,7 @@ st.markdown(
 
     .def-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 9.5px;
+        font-size: 10.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -593,7 +593,7 @@ st.markdown(
     }
 
     .def-player-cost {
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
