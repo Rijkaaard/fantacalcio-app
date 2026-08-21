@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (CARD GENERALI RISTRRETTE DI 2PX E COMPONENTI RIDOTTI)
+# 🎨 STILE CSS PRINCIPALE (CARD GENERALI ALLUNGATE DI +1PX E COMPONENTI INCREMENTATI)
 # ==============================================================================
 st.markdown(
     """
@@ -196,7 +196,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE (RISTRRETTO DI 2PX VERSO IL BASSO E SCALATO)
+       STILE DEDICATO VISUALE GENERALE (CARD ALLUNGATE DI +1PX E COMPONENTI AMPLIATI)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
@@ -211,11 +211,11 @@ st.markdown(
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 6px;
-        padding: 4px 5px; /* Ridotto di 1px sopra/sotto per compensare i 2px totali */
+        padding: 4.5px 5px; /* Aumentato di 0.5px sopra/sotto per un totale di +1px */
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 2.2px; /* Celle leggermente più compattate verticalmente */
+        gap: 2.3px; 
         box-sizing: border-box;
         min-width: 0;
     }
@@ -229,7 +229,7 @@ st.markdown(
         align-items: center;
         justify-content: space-between;
         gap: 3px;
-        height: 33px; /* Ridotto di ~2px */
+        height: 34px; /* Aumentato di ~1px */
         box-sizing: border-box;
     }
 
@@ -242,15 +242,15 @@ st.markdown(
     }
 
     .gen-team-logo {
-        width: 19px; /* Ridotto di ~2px */
-        height: 19px;
+        width: 20px; /* Aumentato leggermente */
+        height: 20px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 7.8px; /* Font ridotto coerentemente */
+        font-size: 8.1px; /* Font incrementato coerentemente */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -262,7 +262,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 8.8px; /* Font ridotto coerentemente */
+        font-size: 9.1px; /* Font incrementato coerentemente */
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -271,7 +271,7 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 7.2px; /* Font ridotto coerentemente */
+        font-size: 7.5px; /* Font incrementato coerentemente */
         font-weight: 900;
         padding: 1px 4px;
         color: #ffffff;
@@ -282,7 +282,7 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 16px; /* Altezza ridotta */
+        height: 16.5px; /* Altezza incrementata */
         box-sizing: border-box;
         margin-top: 1px;
         margin-bottom: 1px;
@@ -294,7 +294,7 @@ st.markdown(
 
     .gen-slot-row {
         border-radius: 2px;
-        height: 21px; /* Ridotto di circa 2px */
+        height: 21.6px; /* Slot allungato coerentemente */
         padding: 0 3px;
         display: flex;
         align-items: center;
@@ -312,14 +312,14 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 2px;
-        height: 21px; /* Ridotto coerentemente */
+        height: 21.6px; /* Slot allungato coerentemente */
         padding: 0 3px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 7.8px;
+        font-size: 8.1px;
         box-sizing: border-box;
         margin: 1px 0;
     }
@@ -333,15 +333,15 @@ st.markdown(
     }
 
     .gen-seriea-logo {
-        width: 11.5px; /* Ridotto coerentemente */
-        height: 11.5px;
+        width: 12px; /* Logo Serie A leggermente aumentato */
+        height: 12px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 7.8px; /* Font ridotto coerentemente */
+        font-size: 8.1px; /* Font calciatore incrementato coerentemente */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -352,7 +352,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 7.8px; /* Font ridotto coerentemente */
+        font-size: 8.1px; /* Font costo incrementato coerentemente */
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -1127,7 +1127,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE (10 SQUADRE DI FILA - RISTRRETTA E SCALATA)
+    # VISUALE GENERALE (10 SQUADRE DI FILA - CARD ALLUNGATA DI +1PX E COMPONENTI AMPLIATI)
     # --------------------------------------------------------------------------
     cards_html = []
     for s_info in SQUADRE_INFO:
