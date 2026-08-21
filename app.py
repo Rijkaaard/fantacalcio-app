@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE PORTIERI (CON CELLE ALLUNGATE A 44px)
+       STILE PORTIERI (CON CELLE ALLUNGATE A 57px)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -411,9 +411,9 @@ st.markdown(
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 6px;
-        height: 44px;
-        padding: 0 10px;
+        border-radius: 8px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -423,15 +423,15 @@ st.markdown(
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 6px;
-        height: 44px;
-        padding: 0 10px;
+        border-radius: 8px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 12px;
+        font-size: 14.5px;
         box-sizing: border-box;
     }
 
@@ -1029,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI (CON CELLE ALLUNGATE)
+    # VISUALE PORTIERI (CON CELLE ALLUNGATE A 57px)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
