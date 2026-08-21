@@ -160,27 +160,53 @@ st.markdown(
         gap: 6px;
     }
 
-    /* Uniformazione caselle dei form allo stile delle celle vuote */
+    /* ==========================================================================
+       🎯 STILIZZAZIONE INPUT (SELECT, MULTISELECT, NUMBER INPUT)
+       Stesso stile delle celle vuote della griglia: trasparente, bordo e angoli 3px
+       ========================================================================== */
+    
+    /* Contenitori principali di BaseWeb (Select, Multiselect, Input) */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div,
-    [data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
+    [data-testid="stMultiSelect"] div[data-baseweb="select"] > div,
+    [data-testid="stNumberInput"] div[data-baseweb="input"] > div {
+        background-color: transparent !important;
         background: transparent !important;
         border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
         color: #ffffff !important;
-        box-sizing: border-box !important;
+        box-shadow: none !important;
     }
 
+    /* Input di testo interno */
     div[data-baseweb="select"] input, 
-    div[data-baseweb="input"] input {
+    div[data-baseweb="input"] input,
+    [data-testid="stNumberInput"] input {
+        background: transparent !important;
         color: #ffffff !important;
     }
 
-    /* Bordo attivo quando si seleziona il campo */
+    /* Tag/Chip selezionati dentro il Multiselect */
+    [data-baseweb="tag"] {
+        background-color: rgba(192, 132, 252, 0.2) !important;
+        border: 1px solid rgba(192, 132, 252, 0.4) !important;
+        border-radius: 3px !important;
+    }
+    [data-baseweb="tag"] span {
+        color: #ffffff !important;
+    }
+
+    /* Bordo attivo al click / focus */
     div[data-baseweb="select"]:focus-within > div,
     div[data-baseweb="input"]:focus-within > div {
         border-color: #c084fc !important;
-        box-shadow: none !important;
+    }
+
+    /* Pulsanti + / - del NumberInput */
+    [data-testid="stNumberInput"] button {
+        background: transparent !important;
+        border: none !important;
+        color: #c084fc !important;
     }
 
     .board-grid {
