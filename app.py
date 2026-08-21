@@ -308,40 +308,40 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (5 SOPRA, 5 SOTTO - GIGANTE)
+       STILE DEDICATO VISUALE PORTIERI (5 SOPRA, 5 SOTTO - GIGANTE & SPAZIOSO)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 16px;
-        margin-bottom: 18px;
+        gap: 20px;
+        margin-bottom: 22px;
     }
 
     .gk-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
-        border-radius: 12px;
-        padding: 12px 14px;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        border-radius: 14px;
+        padding: 14px 16px;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 12px;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 10px 12px;
-        border-radius: 8px;
+        padding: 12px 14px;
+        border-radius: 10px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
     }
 
     .gk-team-logo {
-        width: 54px;
-        height: 54px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -355,7 +355,7 @@ st.markdown(
     }
 
     .gk-team-name {
-        font-size: 16px;
+        font-size: 17px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -365,7 +365,7 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
@@ -375,11 +375,11 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 13px;
+        font-size: 14px;
         font-weight: 800;
-        padding: 7px 12px;
+        padding: 8px 14px;
         color: #ffffff;
-        border-radius: 6px;
+        border-radius: 8px;
         letter-spacing: 0.8px;
         display: flex;
         justify-content: space-between;
@@ -390,9 +390,9 @@ st.markdown(
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-        height: 48px;
-        padding: 0 14px;
+        border-radius: 10px;
+        height: 56px;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -401,9 +401,9 @@ st.markdown(
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 8px;
-        height: 48px;
-        padding: 0 14px;
+        border-radius: 10px;
+        height: 56px;
+        padding: 0 16px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -415,19 +415,19 @@ st.markdown(
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 12px;
+        gap: 14px;
         overflow: hidden;
     }
 
     .gk-seriea-logo {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -436,9 +436,9 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 800;
-        color: #facc15;
+        color: #ffffff !important;
         flex-shrink: 0;
     }
 
