@@ -320,45 +320,45 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE CORRETTO VISUALE PORTIERI (GRIGLIA STABILE A 5 COLONNE)
+       STILE RIPRISTINATO E PULITO VISUALE PORTIERI (ALTEZZE ORIGINALI)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 12px;
-        margin-bottom: 12px;
+        gap: 8px;
+        margin-bottom: 8px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gk-team-card {
         background: #110a24;
-        border: 2px solid #3b1660;
-        border-radius: 10px;
-        padding: 12px;
-        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
+        border: 1px solid #3b1660;
+        border-radius: 6px;
+        padding: 6px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
         display: flex;
         flex-direction: column;
-        gap: 10px;
+        gap: 4px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 10px;
-        border-radius: 6px;
+        padding: 6px;
+        border-radius: 4px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 6px;
         box-sizing: border-box;
     }
 
     .gk-team-logo {
-        width: 48px;
-        height: 48px;
+        width: 28px;
+        height: 28px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -373,33 +373,33 @@ st.markdown(
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 13px;
+        font-size: 9px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: uppercase;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
     }
 
     .gk-team-budget {
-        font-size: 12px;
+        font-size: 8.5px;
         font-weight: 800;
         color: #facc15;
-        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
     }
 
     .gk-role-title {
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 11px;
+        font-size: 8px;
         font-weight: 900;
-        padding: 6px 10px;
+        padding: 3px 6px;
         color: #ffffff;
-        border-radius: 6px;
-        letter-spacing: 1px;
+        border-radius: 4px;
+        letter-spacing: 0.8px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -411,9 +411,9 @@ st.markdown(
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 6px;
-        height: 44px;
-        padding: 0 10px;
+        border-radius: 3px;
+        height: 24px;
+        padding: 0 5px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -423,36 +423,36 @@ st.markdown(
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 6px;
-        height: 44px;
-        padding: 0 10px;
+        border-radius: 3px;
+        height: 24px;
+        padding: 0 5px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 12px;
+        font-size: 9px;
         box-sizing: border-box;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 5px;
         overflow: hidden;
-        max-width: calc(100% - 35px);
+        max-width: calc(100% - 20px);
     }
 
     .gk-seriea-logo {
-        width: 24px;
-        height: 24px;
+        width: 14px;
+        height: 14px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 12px;
+        font-size: 8.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -462,7 +462,7 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 14px;
+        font-size: 9px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -1029,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI CORRETTA (GRIGLIA PULITA A 5 COLONNE)
+    # VISUALE PORTIERI RIPRISTINATA (ALTEZZE COMPATTE ORIGINARIE)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1091,7 +1091,7 @@ def render_board_fragment():
             return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 5px;">'
+            f'<div style="width: 100%; padding-top: 2px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
             f'</div>',
