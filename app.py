@@ -176,7 +176,7 @@ st.markdown(
     }
 
     .team-header {
-        background: url('https://img.freepik.com/free-vector/neon-purple-lights-background-arrow-style_1017-25198.jpg') center/cover no-repeat !important;
+        background: url('https://img.magnific.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
         padding: 6px 4px;
         text-align: center;
         border-radius: 6px 6px 0 0;
