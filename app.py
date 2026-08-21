@@ -773,7 +773,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE ATTACCANTI (Allargato di ulteriori ~10px in altezza + elementi scalati)
+       STILE DEDICATO VISUALE ATTACCANTI (Allargato di ~5px in basso + elementi scalati)
        ========================================================================== */
     .att-grid-row {
         display: grid;
@@ -790,7 +790,7 @@ st.markdown(
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 5.6px;
+        gap: 6.4px; /* Aumentato leggermente per distribuire i +5px */
     }
 
     .att-team-header {
@@ -802,7 +802,7 @@ st.markdown(
         align-items: center;
         justify-content: space-between;
         gap: 8px;
-        height: 43px;
+        height: 45px; /* +2px */
         box-sizing: border-box;
     }
 
@@ -815,15 +815,15 @@ st.markdown(
     }
 
     .att-team-logo {
-        width: 28px;
-        height: 28px;
+        width: 30px; /* Logo ingrandito +2px */
+        height: 30px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .att-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 12.5px;
+        font-size: 13.2px; /* Font ingrandito */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -835,7 +835,7 @@ st.markdown(
     }
 
     .att-team-budget {
-        font-size: 12.5px;
+        font-size: 13.2px; /* Font ingrandito */
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -847,7 +847,7 @@ st.markdown(
         background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%);
         border-top: 1px solid #fecdd3;
         border-bottom: 1px solid #4c0519;
-        font-size: 9.5px;
+        font-size: 10px; /* Font barra ruolo ingrandito */
         font-weight: 900;
         padding: 2px 8px;
         color: #ffffff;
@@ -858,7 +858,7 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 23px;
+        height: 24.5px; /* Altezza barra ruolo leggermente aumentata */
         box-sizing: border-box;
     }
 
@@ -866,7 +866,7 @@ st.markdown(
         background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        height: 42.5px;
+        height: 45px; /* Celle allungate verticalmente */
         padding: 0 7px;
         display: flex;
         align-items: center;
@@ -878,14 +878,14 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 4px;
-        height: 42.5px;
+        height: 45px; /* Celle vuote allungate verticalmente */
         padding: 0 7px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 10px;
+        font-size: 10.5px;
         box-sizing: border-box;
     }
 
@@ -897,15 +897,15 @@ st.markdown(
     }
 
     .att-seriea-logo {
-        width: 21px;
-        height: 21px;
+        width: 23px; /* Logo Serie A ingrandito +2px */
+        height: 23px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .att-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 14px;
+        font-size: 14.8px; /* Nome giocatore ingrandito coerentemente */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -916,7 +916,7 @@ st.markdown(
     }
 
     .att-player-cost {
-        font-size: 14px;
+        font-size: 14.8px; /* Prezzo ingrandito coerentemente */
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
