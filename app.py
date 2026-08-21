@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS
+# 🎨 STILE CSS PRINCIPALE E PORTIERI GIGANTI
 # ==============================================================================
 st.markdown(
     """
@@ -130,32 +130,9 @@ st.markdown(
     .stMainBlockContainer {
         padding-top: 2.2rem !important;
         padding-bottom: 1rem !important;
-        padding-left: 4.5rem !important;
-        padding-right: 4.5rem !important;
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
         max-width: 100% !important;
-    }
-
-    [data-testid="stHorizontalBlock"] {
-        display: flex !important;
-        align-items: stretch !important;
-        gap: 1rem !important;
-    }
-
-    [data-testid="stColumn"] {
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    [data-testid="stColumn"] > div {
-        flex: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-    }
-
-    .classifica-container [data-testid="stVerticalBlockBorderWrapper"] {
-        height: 100% !important;
-        display: flex !important;
-        flex-direction: column !important;
     }
 
     [data-testid="stVerticalBlockBorderWrapper"] {
@@ -218,7 +195,7 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA TABELLONE */
+    /* GRIGLIA STANDARD 10 COLONNE (GENERALE) */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
@@ -298,23 +275,6 @@ st.markdown(
     .role-c { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; }
     .role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
-    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-
-    .player-preview-box {
-        background: #170d30;
-        border: 1px solid #321a5c;
-        border-radius: 6px;
-        padding: 8px 12px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 6px;
-        margin-bottom: 4px;
-    }
-
     .player-cell {
         height: 21px;
         width: 100%;
@@ -329,12 +289,7 @@ st.markdown(
         padding: 0 2.5px;
         font-size: 8px;
     }
-
-    .player-cell-filled {
-        border: 1px solid rgba(0, 0, 0, 0.5) !important;
-        border-radius: 3px !important;
-    }
-
+    .player-cell-filled { border: 1px solid rgba(0, 0, 0, 0.5) !important; border-radius: 3px !important; }
     .player-cell-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
     .player-cell-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
     .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
@@ -348,34 +303,145 @@ st.markdown(
         max-width: calc(100% - 15px);
         min-width: 0;
     }
+    .player-team-logo { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; display: inline-block; }
+    .player-cell-name { color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; font-size: 8px; }
+    .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
-    .player-team-logo {
-        width: 12px;
-        height: 12px;
-        object-fit: contain;
-        flex-shrink: 0;
-        display: inline-block;
+    /* ==========================================================================
+       STILE DEDICATO VISUALE PORTIERI (5 SOPRA, 5 SOTTO - GIGANTE)
+       ========================================================================== */
+    .gk-grid-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 20px;
     }
 
-    .player-cell-name {
+    .gk-team-card {
+        background: #110a24;
+        border: 2px solid #3b1660;
+        border-radius: 12px;
+        padding: 14px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .gk-team-header {
+        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #581c87;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .gk-team-logo {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .gk-header-texts {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        overflow: hidden;
+    }
+
+    .gk-team-name {
+        font-size: 15px;
+        font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        font-weight: 600;
-        font-size: 8px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
-    .player-cell-right {
+    .gk-team-budget {
+        font-size: 14px;
+        font-weight: 800;
+        color: #facc15;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+    }
+
+    .gk-role-title {
+        background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
+        border-top: 1px solid #fcd34d;
+        border-bottom: 1px solid #451a03;
+        font-size: 12px;
+        font-weight: 800;
+        padding: 6px 10px;
+        color: #ffffff;
+        border-radius: 6px;
+        letter-spacing: 1px;
+        text-align: center;
+    }
+
+    .gk-slot-row {
+        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%);
+        border: 1px solid rgba(0, 0, 0, 0.6);
+        border-radius: 8px;
+        height: 44px;
+        padding: 0 12px;
         display: flex;
         align-items: center;
-        justify-content: flex-end;
-        font-weight: 700;
-        color: #ffffff !important;
-        flex-shrink: 0;
-        margin-left: 1px;
-        font-size: 8px;
+        justify-content: space-between;
     }
+
+    .gk-slot-empty {
+        background: #170d30;
+        border: 1px dashed rgba(192, 132, 252, 0.3);
+        border-radius: 8px;
+        height: 44px;
+        padding: 0 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4a287a;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    .gk-player-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        overflow: hidden;
+    }
+
+    .gk-seriea-logo {
+        width: 26px;
+        height: 26px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .gk-player-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .gk-player-cost {
+        font-size: 15px;
+        font-weight: 800;
+        color: #facc15;
+        flex-shrink: 0;
+    }
+
+    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
 
     .deal-box-single {
         background: #150b2c;
@@ -392,44 +458,12 @@ st.markdown(
         align-items: center;
         text-align: center;
     }
-    .deal-rank-title {
-        font-size: 9.5px;
-        font-weight: 800;
-        text-transform: uppercase;
-        line-height: 1;
-    }
-    .deal-player-name {
-        font-size: 11px;
-        font-weight: 800;
-        color: #ffffff;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        line-height: 1.2;
-    }
-    .deal-logos-row {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 6px;
-        height: 22px;
-    }
-    .deal-logo-img {
-        width: 22px;
-        height: 22px;
-        object-fit: contain;
-    }
-    .deal-arrow {
-        color: #c084fc;
-        font-size: 11px;
-        font-weight: bold;
-    }
-    .deal-price-info {
-        font-size: 9px;
-        font-weight: 700;
-        line-height: 1;
-    }
+    .deal-rank-title { font-size: 9.5px; font-weight: 800; text-transform: uppercase; line-height: 1; }
+    .deal-player-name { font-size: 11px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1.2; }
+    .deal-logos-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 22px; }
+    .deal-logo-img { width: 22px; height: 22px; object-fit: contain; }
+    .deal-arrow { color: #c084fc; font-size: 11px; font-weight: bold; }
+    .deal-price-info { font-size: 9px; font-weight: 700; line-height: 1; }
 
     .ranking-row {
         background: #140a2b;
@@ -442,23 +476,9 @@ st.markdown(
         margin-bottom: 4px;
         font-size: 11px;
     }
-    .ranking-info {
-        font-weight: 600;
-        color: #ffffff;
-    }
-    .ranking-sub {
-        font-size: 9.5px;
-        color: #a78bfa;
-        margin-left: 4px;
-    }
-    .ranking-badge {
-        background: #0d061c;
-        color: #facc15;
-        font-weight: 700;
-        padding: 2px 7px;
-        border-radius: 4px;
-        border: 1px solid #2a1452;
-    }
+    .ranking-info { font-weight: 600; color: #ffffff; }
+    .ranking-sub { font-size: 9.5px; color: #a78bfa; margin-left: 4px; }
+    .ranking-badge { background: #0d061c; color: #facc15; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid #2a1452; }
     </style>
 """,
     unsafe_allow_html=True,
@@ -541,7 +561,7 @@ def get_squadra_stats(nome_squadra):
 
 
 # ==============================================================================
-# 1. PANNELLO SUPERIORE ADMIN
+# 1. PANNELLO SUPERIORE ADMIN (SEMPRE GENERALE/NORMALE)
 # ==============================================================================
 @st.fragment
 def render_control_panel():
@@ -549,7 +569,7 @@ def render_control_panel():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_attuale
 
-    # WIDGET SELETTORE VISUALE TV
+    # WIDGET SELETTORE VISUALE TV (Così l'Admin decide cosa proiettare sulla TV)
     with st.container(border=True):
         st.markdown('<div class="card-title">📺 SELETTORE VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
         opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
@@ -670,7 +690,7 @@ def render_control_panel():
                 logo_html = f'<img src="{logo_b64}" style="width:24px; height:24px; object-fit:contain; vertical-align:middle;" />' if logo_b64 else ""
                 
                 st.markdown(
-                    f'<div class="player-preview-box">'
+                    f'<div style="background: #170d30; border: 1px solid #321a5c; border-radius: 6px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; margin-top: 6px; margin-bottom: 4px;">'
                     f'{logo_html}'
                     f'<span style="font-size: 13px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
                     f'<span class="{badge_class}">{ruolo_g}</span>'
@@ -790,7 +810,7 @@ def render_control_panel():
                     st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
     with col_classifica:
-        st.markdown('<div class="classifica-container">', unsafe_allow_html=True)
+        st.markdown('<div style="height: 100%;">', unsafe_allow_html=True)
         with st.container(border=True):
             st.markdown('<div class="card-title">🏆 CLASSIFICA CREDITI</div>', unsafe_allow_html=True)
 
@@ -828,7 +848,7 @@ if not is_tv_mode:
     render_control_panel()
 
 # ==============================================================================
-# 2. TABELLONE FRAGMENT CON SUPPORTO MULTI-VISUALE
+# 2. TABELLONE TV / FRAGMENT DEDICATO ALLE VISUALI
 # ==============================================================================
 @st.fragment(run_every=5)
 def render_board_fragment():
@@ -836,27 +856,86 @@ def render_board_fragment():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_corrente
     
+    # --------------------------------------------------------------------------
+    # VISUALE PORTIERI DEDICATA (GIGANTE A 2 FILE DA 5 SQUADRE)
+    # --------------------------------------------------------------------------
+    if st.session_state.vista_corrente == "Portieri":
+        squadre_sopra = SQUADRE_INFO[:5]
+        squadre_sotto = SQUADRE_INFO[5:]
+
+        def render_gk_row(subset_squadre):
+            cards_html = []
+            for s_info in subset_squadre:
+                sq = f"{s_info['nome']} - {s_info['mister']}"
+                rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+                
+                logo_fanta_html = ""
+                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+                if fanta_logo_b64:
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gk-team-logo" alt="{s_info["codice"]}">'
+
+                giocatori_p = [a for a in acquisti_sq if a["Ruolo"] == "P"]
+                giocatori_p = sorted(giocatori_p, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
+
+                slots_html = []
+                for i in range(3): # 3 portieri
+                    if i < len(giocatori_p):
+                        g = giocatori_p[i]
+                        nome_g = g["Giocatore"]
+                        costo = g["Costo"]
+                        sq_sa = g.get("Squadra_SerieA", "")
+                        logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="gk-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+
+                        slots_html.append(
+                            f'<div class="gk-slot-row">'
+                            f'<div class="gk-player-left">'
+                            f'{logo_sa_html}'
+                            f'<span class="gk-player-name">{nome_g}</span>'
+                            f'</div>'
+                            f'<div class="gk-player-cost">{costo} FM</div>'
+                            f'</div>'
+                        )
+                    else:
+                        slots_html.append('<div class="gk-slot-empty">- Vuoto -</div>')
+
+                cards_html.append(
+                    f'<div class="gk-team-card">'
+                    f'<div class="gk-team-header">'
+                    f'{logo_fanta_html}'
+                    f'<div class="gk-header-texts">'
+                    f'<div class="gk-team-name">{s_info["nome"]}</div>'
+                    f'<div class="gk-team-budget">🟡 {rim} Crediti</div>'
+                    f'</div>'
+                    f'</div>'
+                    f'<div class="gk-role-title">PORTIERI (3 SLOT)</div>'
+                    f'{"".join(slots_html)}'
+                    f'</div>'
+                )
+            return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
+
+        st.markdown(
+            f'<div style="width: 100%; padding-top: 10px;">'
+            f'{render_gk_row(squadre_sopra)}'
+            f'{render_gk_row(squadre_sotto)}'
+            f'</div>',
+            unsafe_allow_html=True
+        )
+        return
+
+    # --------------------------------------------------------------------------
+    # VISUALE GENERALE STANDARD (TUTTE LE SQUADRE A 10 COLONNE)
+    # --------------------------------------------------------------------------
     cols_html = []
-
-    # Mappatura della vista corrente sul singolo ruolo da mostrare in dettaglio
-    ruolo_mappa = {
-        "Portieri": "P",
-        "Difensori": "D",
-        "Centrocampisti": "C",
-        "Attaccanti": "A"
-    }
-    ruolo_filtro = ruolo_mappa.get(st.session_state.vista_corrente, None)
-
     for s_info in SQUADRE_INFO:
         sq = f"{s_info['nome']} - {s_info['mister']}"
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
         nome_team = s_info['nome']
         
         logo_fanta_html = ""
-        if is_tv_mode:
-            fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-            if fanta_logo_b64:
-                logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
+        fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+        if fanta_logo_b64:
+            logo_fanta_html = f'<div class="team-logo-container"><img src="{fanta_logo_b64}" class="fanta-team-logo" alt="{s_info["codice"]}"></div>'
         
         col_content = [
             f'<div class="team-column">'
@@ -867,10 +946,7 @@ def render_board_fragment():
             f'</div>'
         ]
 
-        # Seleziona quali ruoli mostrare in base alla visuale scelta
-        slots_da_mostrare = {ruolo_filtro: SLOTS[ruolo_filtro]} if ruolo_filtro else SLOTS
-
-        for ruolo, num_slots in slots_da_mostrare.items():
+        for ruolo, num_slots in SLOTS.items():
             role_css = f"role-{ruolo.lower()}"
             giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
             giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
