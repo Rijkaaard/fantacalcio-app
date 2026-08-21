@@ -93,12 +93,6 @@ if "acquisti" not in st.session_state:
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
-if "filtro_ruolo_selezionato" not in st.session_state:
-    st.session_state.filtro_ruolo_selezionato = "TUTTI"
-
-if "filtro_squadra_sa_selezionata" not in st.session_state:
-    st.session_state.filtro_squadra_sa_selezionata = "TUTTE"
-
 # ==============================================================================
 # 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" CON SFONDO #0f0932
 # ==============================================================================
@@ -150,139 +144,6 @@ st.markdown(
         padding: 10px 14px 16px 14px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
         margin-bottom: 6px !important;
-    }
-
-    /* CONTENITORE COMPATTO FILTRI E CAROSELLO SULLA STESSA RIGA */
-    .filter-bar-container {
-        display: flex !important;
-        align-items: center !important;
-        gap: 12px !important;
-        width: 100% !important;
-        margin-bottom: 10px !important;
-    }
-
-    .roles-group {
-        display: flex !important;
-        align-items: center !important;
-        gap: 3px !important;
-        flex-shrink: 0 !important;
-    }
-
-    .teams-scroll-container {
-        display: flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        overflow-x: auto !important;
-        white-space: nowrap !important;
-        padding-bottom: 4px !important;
-        border-left: 1px solid #282c4a !important;
-        padding-left: 10px !important;
-        flex-grow: 1 !important;
-    }
-
-    /* Custom Scrollbar per la barra dei loghi */
-    .teams-scroll-container::-webkit-scrollbar {
-        height: 4px;
-    }
-    .teams-scroll-container::-webkit-scrollbar-track {
-        background: #131525;
-        border-radius: 4px;
-    }
-    .teams-scroll-container::-webkit-scrollbar-thumb {
-        background: #362d59;
-        border-radius: 4px;
-    }
-    .teams-scroll-container::-webkit-scrollbar-thumb:hover {
-        background: #d81b60;
-    }
-
-    /* BOTTONI LOGHI SQUADRE SERIE A (50x50 CIRCOLARI SENZA BORDO) */
-    .team-logo-btn button {
-        width: 50px !important;
-        height: 50px !important;
-        min-width: 50px !important;
-        max-width: 50px !important;
-        border: none !important;
-        border-radius: 50% !important;
-        background-color: #110927 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: all 0.2s ease !important;
-        cursor: pointer !important;
-    }
-
-    /* Effetto Hover sui loghi */
-    .team-logo-btn button:hover {
-        background-color: #1f0d3d !important;
-        transform: scale(1.05);
-    }
-
-    /* Stato Selezionato (Attivo) */
-    .team-logo-btn button[kind="primary"] {
-        background-color: #2e0d3e !important;
-        box-shadow: 0 0 10px rgba(216, 27, 96, 0.7) !important;
-        outline: 2px solid #d81b60 !important;
-    }
-
-    /* Immagine del logo all'interno del bottone circolare */
-    .team-logo-btn img {
-        width: 32px !important;
-        height: 32px !important;
-        object-fit: contain !important;
-    }
-
-    /* BOTTONI CIRCOLARI ULTRA STRETTI (P, D, C, A) */
-    .role-circle-btn button {
-        border-radius: 50% !important;
-        width: 28px !important;
-        height: 28px !important;
-        min-width: 28px !important;
-        max-width: 28px !important;
-        font-family: 'Inter', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 10px !important;
-        transition: all 0.2s ease !important;
-        box-shadow: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-
-    /* BOTTONE "TUTTI" ULTRA COMPATTO (PILLOLA) */
-    .role-pill-btn button {
-        border-radius: 9999px !important;
-        height: 28px !important;
-        padding: 0 10px !important;
-        font-family: 'Inter', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 9.5px !important;
-        transition: all 0.2s ease !important;
-        box-shadow: none !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
-    }
-
-    /* STILE BOTTONI INATTIVI (Secondary) */
-    .role-circle-btn button[kind="secondary"],
-    .role-pill-btn button[kind="secondary"] {
-        background-color: #110927 !important;
-        border: 1px solid #362d59 !important;
-        color: #94a3b8 !important;
-    }
-
-    /* STILE BOTTONI ATTIVI (Primary - Fucsia/Magenta) */
-    .role-circle-btn button[kind="primary"],
-    .role-pill-btn button[kind="primary"] {
-        background-color: #d81b60 !important;
-        border: 1px solid #d81b60 !important;
-        color: #ffffff !important;
     }
 
     .card-title {
@@ -649,57 +510,32 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            # BARRA UNICA: RUOLI (FISSI) + LOGHI SERIE A (SCORREVOLI)
-            squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
-            curr_r = st.session_state.filtro_ruolo_selezionato
-            curr_sa = st.session_state.filtro_squadra_sa_selezionata
-
-            # Calcolo colonne: 5 per i Ruoli + N per le squadre
-            tot_cols = 5 + len(squadre_sa_list)
+            # 2 MENU A TENDINA DEDICATI PER IL FILTRAGGIO
+            col_f_ruolo, col_f_sa = st.columns(2)
             
-            # Rendering dinamico a colonne compattate
-            cols = st.columns([0.8]*5 + [1]*len(squadre_sa_list))
+            with col_f_ruolo:
+                ruolo_scelto = st.selectbox(
+                    "Filtra per Ruolo",
+                    options=["TUTTI", "P", "D", "C", "A"],
+                    index=0,
+                    key="sel_filtro_ruolo"
+                )
             
-            # 1. BOTTONI RUOLO (P, D, C, A, TUTTI)
-            with cols[0]:
-                st.markdown('<div class="role-pill-btn">', unsafe_allow_html=True)
-                if st.button("TUTTI", key="btn_r_tutti", type="primary" if curr_r == "TUTTI" else "secondary"):
-                    st.session_state.filtro_ruolo_selezionato = "TUTTI"
-                    st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
+            with col_f_sa:
+                squadre_sa_list = ["TUTTE"] + sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else ["TUTTE"]
+                squadra_sa_scelta = st.selectbox(
+                    "Filtra per Squadra Serie A",
+                    options=squadre_sa_list,
+                    index=0,
+                    key="sel_filtro_sa"
+                )
 
-            for idx, r_code in enumerate(["P", "D", "C", "A"], start=1):
-                with cols[idx]:
-                    st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
-                    if st.button(r_code, key=f"btn_r_{r_code.lower()}", type="primary" if curr_r == r_code else "secondary"):
-                        st.session_state.filtro_ruolo_selezionato = r_code
-                        st.rerun()
-                    st.markdown('</div>', unsafe_allow_html=True)
-
-            # 2. BOTTONI LOGHI SQUADRE SERIE A (SCORREVOLI HORIZONTALLY)
-            for idx, sq_sa in enumerate(squadre_sa_list, start=5):
-                with cols[idx]:
-                    st.markdown('<div class="team-logo-btn">', unsafe_allow_html=True)
-                    logo_b64 = get_logo_base64_cached(sq_sa)
-                    codice_sq = MAPPA_CODICI_LOGHI.get(sq_sa.upper(), sq_sa[:3].upper())
-                    
-                    label_btn = f"![{codice_sq}]({logo_b64})" if logo_b64 else codice_sq
-                    is_selected = "primary" if curr_sa == sq_sa else "secondary"
-                    
-                    if st.button(label_btn, key=f"btn_sa_{sq_sa}", type=is_selected):
-                        st.session_state.filtro_squadra_sa_selezionata = "TUTTE" if curr_sa == sq_sa else sq_sa
-                        st.rerun()
-                    st.markdown('</div>', unsafe_allow_html=True)
-
-            # FILTRAGGIO DATI
+            # FILTRAGGIO DATI IN BASE AI 2 MENU A TENDINA
             df_filtrati = df_disponibili.copy()
-            filtro_ruolo = st.session_state.filtro_ruolo_selezionato
-            filtro_sa = st.session_state.filtro_squadra_sa_selezionata
-
-            if filtro_ruolo and filtro_ruolo != "TUTTI":
-                df_filtrati = df_filtrati[df_filtrati["Ruolo"] == filtro_ruolo]
-            if filtro_sa and filtro_sa != "TUTTE":
-                df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == filtro_sa]
+            if ruolo_scelto != "TUTTI":
+                df_filtrati = df_filtrati[df_filtrati["Ruolo"] == ruolo_scelto]
+            if squadra_sa_scelta != "TUTTE":
+                df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == squadra_sa_scelta]
 
             col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
