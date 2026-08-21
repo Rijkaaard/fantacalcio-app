@@ -471,7 +471,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (AGGIORNATO)
+       STILE DEDICATO VISUALE DIFENSORI (ALLINEATO IN ORIZZONTALE)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -497,28 +497,31 @@ st.markdown(
         border-radius: 5px;
         border: 1px solid #581c87;
         display: flex;
-        flex-direction: column;
-        gap: 4px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        height: 35px;
+        box-sizing: border-box;
     }
 
-    .def-header-top {
+    .def-header-left {
         display: flex;
         align-items: center;
-        gap: 7px;
+        gap: 6px;
         overflow: hidden;
-        width: 100%;
+        flex-grow: 1;
     }
 
     .def-team-logo {
-        width: 24px;
-        height: 24px;
+        width: 22px;
+        height: 22px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px; /* AUMENTATO NOTEVOLMENTE COME RICHIESTO */
+        font-size: 10px; /* Font ingrandito ma compatto */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -526,18 +529,14 @@ st.markdown(
         text-overflow: ellipsis;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        width: 100%;
-        text-align: left;
     }
 
     .def-team-budget {
-        font-size: 10px;
-        font-weight: 800;
+        font-size: 11px;
+        font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
-        text-align: left;
-        padding-left: 31px; /* Allineato sotto il nome */
-        line-height: 1;
+        flex-shrink: 0;
     }
 
     .def-role-title {
@@ -1106,7 +1105,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (AGGIORNATA CON LOGO, NOME GRANDE E CREDITI SOTTO)
+    # VISUALE DIFENSORI DEDICATA (ORIZZONTALE CON FONT MAGGIORE E SENZA MODIFICARE ALTEZZA)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1155,7 +1154,7 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="def-team-card">'
                     f'<div class="def-team-header">'
-                    f'<div class="def-header-top">'
+                    f'<div class="def-header-left">'
                     f'{logo_fanta_html}'
                     f'<div class="def-team-name">{s_info["nome"]}</div>'
                     f'</div>'
