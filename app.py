@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (CARD GENERALI ALLUNGATE DI +5PX E COMPONENTI AMPLIATI)
+# 🎨 STILE CSS PRINCIPALE (CARD GENERALI RISTRRETTE DI 2PX E COMPONENTI RIDOTTI)
 # ==============================================================================
 st.markdown(
     """
@@ -196,7 +196,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE (10 SQUADRE IN FILA - INGRANDITO E +5PX)
+       STILE DEDICATO VISUALE GENERALE (RISTRRETTO DI 2PX VERSO IL BASSO E SCALATO)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
@@ -211,46 +211,46 @@ st.markdown(
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 6px;
-        padding: 5px 6px;
+        padding: 4px 5px; /* Ridotto di 1px sopra/sotto per compensare i 2px totali */
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 2.2px; /* Celle leggermente più compattate verticalmente */
         box-sizing: border-box;
         min-width: 0;
     }
 
     .gen-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 6px;
+        padding: 0 5px;
         border-radius: 4px;
         border: 1px solid #581c87;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 4px;
-        height: 36px;
+        gap: 3px;
+        height: 33px; /* Ridotto di ~2px */
         box-sizing: border-box;
     }
 
     .gen-header-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
         flex-grow: 1;
     }
 
     .gen-team-logo {
-        width: 21px;
-        height: 21px;
+        width: 19px; /* Ridotto di ~2px */
+        height: 19px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 7.8px; /* Font ridotto coerentemente */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -262,7 +262,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 9.5px;
+        font-size: 8.8px; /* Font ridotto coerentemente */
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -271,9 +271,9 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 8px;
+        font-size: 7.2px; /* Font ridotto coerentemente */
         font-weight: 900;
-        padding: 1px 5px;
+        padding: 1px 4px;
         color: #ffffff;
         border-radius: 2px;
         letter-spacing: 0.3px;
@@ -282,10 +282,10 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 18px;
+        height: 16px; /* Altezza ridotta */
         box-sizing: border-box;
-        margin-top: 1.5px;
-        margin-bottom: 1.5px;
+        margin-top: 1px;
+        margin-bottom: 1px;
     }
     .gen-role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
     .gen-role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
@@ -294,13 +294,13 @@ st.markdown(
 
     .gen-slot-row {
         border-radius: 2px;
-        height: 23px;
-        padding: 0 4px;
+        height: 21px; /* Ridotto di circa 2px */
+        padding: 0 3px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        margin: 1.2px 0;
+        margin: 1px 0;
         border: 1px solid rgba(0, 0, 0, 0.5);
     }
     .gen-slot-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
@@ -312,36 +312,36 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 2px;
-        height: 23px;
-        padding: 0 4px;
+        height: 21px; /* Ridotto coerentemente */
+        padding: 0 3px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 8.5px;
+        font-size: 7.8px;
         box-sizing: border-box;
-        margin: 1.2px 0;
+        margin: 1px 0;
     }
 
     .gen-player-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
-        max-width: calc(100% - 16px);
+        max-width: calc(100% - 14px);
     }
 
     .gen-seriea-logo {
-        width: 13px;
-        height: 13px;
+        width: 11.5px; /* Ridotto coerentemente */
+        height: 11.5px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 7.8px; /* Font ridotto coerentemente */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -352,7 +352,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 8.5px;
+        font-size: 7.8px; /* Font ridotto coerentemente */
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -1127,7 +1127,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE (10 SQUADRE DI FILA - INGRANDITO E ALLUNGATO)
+    # VISUALE GENERALE (10 SQUADRE DI FILA - RISTRRETTA E SCALATA)
     # --------------------------------------------------------------------------
     cards_html = []
     for s_info in SQUADRE_INFO:
