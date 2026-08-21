@@ -773,7 +773,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE ATTACCANTI
+       STILE DEDICATO VISUALE ATTACCANTI (Allargato di ~5px in altezza + elementi scalati)
        ========================================================================== */
     .att-grid-row {
         display: grid;
@@ -786,23 +786,23 @@ st.markdown(
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 8px;
-        padding: 4px 5px;
+        padding: 5px 6px; /* Leggermente aumentato il padding */
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 3.4px;
+        gap: 4.2px; /* Aumentato lo spazio tra gli elementi per coprire ~5px in più */
     }
 
     .att-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 8px;
+        padding: 0 9px;
         border-radius: 5px;
         border: 1px solid #581c87;
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: 6px;
-        height: 37px;
+        height: 39px; /* Aumentato da 37px */
         box-sizing: border-box;
     }
 
@@ -815,15 +815,15 @@ st.markdown(
     }
 
     .att-team-logo {
-        width: 23px;
-        height: 23px;
+        width: 25px; /* Aumentato da 23px */
+        height: 25px; /* Aumentato da 23px */
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .att-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11.2px;
+        font-size: 11.8px; /* Font leggermente aumentato da 11.2px */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -835,7 +835,7 @@ st.markdown(
     }
 
     .att-team-budget {
-        font-size: 11.2px;
+        font-size: 11.8px; /* Font leggermente aumentato da 11.2px */
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -847,9 +847,9 @@ st.markdown(
         background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%);
         border-top: 1px solid #fecdd3;
         border-bottom: 1px solid #4c0519;
-        font-size: 8.5px;
+        font-size: 9px; /* Aumentato da 8.5px */
         font-weight: 900;
-        padding: 2px 6px;
+        padding: 2px 7px;
         color: #ffffff;
         border-radius: 4px;
         letter-spacing: 0.6px;
@@ -858,7 +858,7 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 20px;
+        height: 21.5px; /* Aumentato da 20px */
         box-sizing: border-box;
     }
 
@@ -866,8 +866,8 @@ st.markdown(
         background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
+        height: 40px; /* Aumentato da 38px */
+        padding: 0 6px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -878,34 +878,34 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 4px;
-        height: 38px;
-        padding: 0 5px;
+        height: 40px; /* Aumentato da 38px */
+        padding: 0 6px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 9px;
+        font-size: 9.5px; /* Aumentato da 9px */
         box-sizing: border-box;
     }
 
     .att-player-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 5px; /* Leggermente aumentato */
         overflow: hidden;
     }
 
     .att-seriea-logo {
-        width: 18px;
-        height: 18px;
+        width: 19.5px; /* Aumentato da 18px */
+        height: 19.5px; /* Aumentato da 18px */
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .att-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 12.5px;
+        font-size: 13.2px; /* Aumentato da 12.5px */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -916,7 +916,7 @@ st.markdown(
     }
 
     .att-player-cost {
-        font-size: 12.5px;
+        font-size: 13.2px; /* Aumentato da 12.5px */
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
