@@ -610,17 +610,19 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: uppercase;
+        line-height: 1;
     }
 
     .def-player-cost {
-        font-size: 11.5px;
+        font-size: 12.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
+        line-height: 1;
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE CENTROCAMPISTI (MODELLO DIFENSORI ADATTATO)
+       STILE DEDICATO VISUALE CENTROCAMPISTI
        ========================================================================== */
     .cent-grid-row {
         display: grid;
@@ -759,13 +761,15 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: uppercase;
+        line-height: 1;
     }
 
     .cent-player-cost {
-        font-size: 11.5px;
+        font-size: 12.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
+        line-height: 1;
     }
 
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
@@ -1331,7 +1335,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE CENTROCAMPISTI DEDICATA (MODELLO DIFENSORI)
+    # VISUALE CENTROCAMPISTI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Centrocampisti":
         squadre_sopra = SQUADRE_INFO[:5]
