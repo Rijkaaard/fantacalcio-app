@@ -94,7 +94,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - CELLE A 21PX E MARGINI TV
+# 🎨 STILE CSS - CELLE A 21PX E HEADER TV MODIFICATO
 # ==============================================================================
 st.markdown(
     """
@@ -107,9 +107,9 @@ st.markdown(
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* MARGINI LATERALI PER LA TV */
+    /* MARGINI LATERALI PER LA TV (SPOSTATO PIÙ VERSO IL BASSO) */
     .stMainBlockContainer {
-        padding-top: 0.8rem !important;
+        padding-top: 2.2rem !important;
         padding-bottom: 1rem !important;
         padding-left: 4.5rem !important;
         padding-right: 4.5rem !important;
@@ -220,7 +220,7 @@ st.markdown(
 
     .team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 6px 3px;
+        padding: 8px 3px;
         text-align: center;
         border-radius: 6px !important;
         border: 1px solid #3b1660;
@@ -228,10 +228,11 @@ st.markdown(
         margin-bottom: 5px !important;
     }
     
+    /* LOGO PIÙ IN GRANDE NELL'HEADER */
     .team-logo-container {
-        width: 34px;
-        height: 34px;
-        margin: 0 auto 2px auto;
+        width: 44px;
+        height: 44px;
+        margin: 0 auto 4px auto;
         background: transparent !important;
         border: none !important;
         display: flex;
@@ -251,24 +252,15 @@ st.markdown(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        margin-bottom: 1px;
+        margin-bottom: 2px;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-budget {
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 800;
         color: #facc15;
-        margin: 1px 0;
+        margin: 2px 0 0 0;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
-    }
-    .team-header-sub {
-        display: flex;
-        justify-content: space-between;
-        font-size: 7px;
-        color: #cbd5e1;
-        padding: 0 2px;
-        font-weight: 600;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     }
 
     .role-bar {
@@ -830,7 +822,6 @@ def render_board_fragment():
         sq = f"{s_info['nome']} - {s_info['mister']}"
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
         nome_team = s_info['nome']
-        max_val = max_off if max_off > 0 else 0
         
         logo_fanta_html = ""
         if is_tv_mode:
@@ -844,10 +835,7 @@ def render_board_fragment():
             f'{logo_fanta_html}'
             f'<div class="team-header-name">{nome_team}</div>'
             f'<div class="team-header-budget">🟡 {rim}</div>'
-            f'<div class="team-header-sub">'
-            f'<span>MAX: {max_val}</span>'
-            f'<span>{tot}/25</span>'
-            f'</div></div>'
+            f'</div>'
         ]
 
         for ruolo, num_slots in SLOTS.items():
