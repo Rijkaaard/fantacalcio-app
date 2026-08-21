@@ -94,15 +94,16 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - IDENTITÀ VISUALE "FANTALAB" CON SFONDO #0f0932
+# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (COORDINATO ALL'HEADER)
 # ==============================================================================
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+    /* Sfondo principale: Viola Notte Profondo */
     html, body, [class*="css"], .stApp {
-        background-color: #0f0932 !important;
+        background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
     }
@@ -137,19 +138,20 @@ st.markdown(
         flex-direction: column !important;
     }
 
+    /* Card/Widget dell'interfaccia */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #131525 !important;
-        border: 1px solid #23263b !important;
+        background: #110a24 !important;
+        border: 1px solid #231342 !important;
         border-radius: 8px !important;
         padding: 10px 14px 16px 14px !important;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
         margin-bottom: 6px !important;
     }
 
     .card-title {
         font-size: 11px;
         font-weight: 700;
-        color: #38bdf8;
+        color: #c084fc;
         letter-spacing: 0.5px;
         margin-bottom: 8px;
         text-transform: uppercase;
@@ -176,11 +178,12 @@ st.markdown(
     }
 
     .team-header {
-        background: url('https://img.magnific.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
+        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
         padding: 6px 4px;
         text-align: center;
         border-radius: 6px 6px 0 0;
-        border-bottom: 2px solid #282c4a;
+        border-bottom: 2px solid #3b1660;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
     }
     
     .team-logo-container {
@@ -207,20 +210,23 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         margin-bottom: 1px;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-budget {
         font-size: 13px;
         font-weight: 800;
         color: #facc15;
         margin: 1px 0;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-sub {
         display: flex;
         justify-content: space-between;
         font-size: 7.5px;
-        color: #94a3b8;
+        color: #cbd5e1;
         padding: 0 2px;
         font-weight: 600;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     }
 
     /* Barre dei Ruoli FantaLab */
@@ -263,8 +269,8 @@ st.markdown(
     .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
 
     .player-preview-box {
-        background: #1a1d33;
-        border: 1px solid #2e3352;
+        background: #170d30;
+        border: 1px solid #321a5c;
         border-radius: 6px;
         padding: 8px 12px;
         display: flex;
@@ -278,7 +284,7 @@ st.markdown(
         height: 22px;
         width: 100%;
         background: transparent;
-        border: 1px solid rgba(167, 139, 250, 0.25) !important;
+        border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
         margin: 2px 0;
         box-sizing: border-box;
@@ -331,8 +337,8 @@ st.markdown(
     }
 
     .deal-box-single {
-        background: #1a1d33;
-        border: 1px solid #282c4a;
+        background: #150b2c;
+        border: 1px solid #28144d;
         border-radius: 6px;
         padding: 10px 6px;
         height: 105px;
@@ -374,7 +380,7 @@ st.markdown(
         object-fit: contain;
     }
     .deal-arrow {
-        color: #38bdf8;
+        color: #c084fc;
         font-size: 11px;
         font-weight: bold;
     }
@@ -385,8 +391,8 @@ st.markdown(
     }
 
     .ranking-row {
-        background: #15182b;
-        border: 1px solid #232740;
+        background: #140a2b;
+        border: 1px solid #251249;
         border-radius: 5px;
         padding: 6px 10px;
         display: flex;
@@ -401,16 +407,16 @@ st.markdown(
     }
     .ranking-sub {
         font-size: 9.5px;
-        color: #94a3b8;
+        color: #a78bfa;
         margin-left: 4px;
     }
     .ranking-badge {
-        background: #0f111e;
+        background: #0d061c;
         color: #facc15;
         font-weight: 700;
         padding: 2px 7px;
         border-radius: 4px;
-        border: 1px solid #282c4a;
+        border: 1px solid #2a1452;
     }
     </style>
 """,
@@ -510,7 +516,6 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            # SELEZIONE MULTIPLA PER RUOLI E SQUADRE
             col_f_ruolo, col_f_sa = st.columns(2)
             
             with col_f_ruolo:
@@ -532,7 +537,6 @@ def render_control_panel():
                     key="sel_filtro_sa"
                 )
 
-            # FILTRAGGIO MULTIPLO DEI DATI
             df_filtrati = df_disponibili.copy()
             if ruoli_scelti:
                 df_filtrati = df_filtrati[df_filtrati["Ruolo"].isin(ruoli_scelti)]
@@ -749,7 +753,7 @@ def render_control_panel():
                 st.markdown(
                     f'<div class="ranking-row">'
                     f'<div>'
-                    f'<span style="font-weight: 700; color: #38bdf8; margin-right: 6px;">{idx}.</span>'
+                    f'<span style="font-weight: 700; color: #c084fc; margin-right: 6px;">{idx}.</span>'
                     f'<span class="ranking-info">{item["Squadra"]}</span>'
                     f'<span class="ranking-sub">({item["Mister"]})</span>'
                     f'</div>'
@@ -832,7 +836,7 @@ def render_board_fragment():
                         f'</div>'
                     )
                 else:
-                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#282c4a;">-</span></div>')
+                    col_content.append('<div class="player-cell"><span class="player-cell-name" style="color:#2a1752;">-</span></div>')
 
         col_content.append("</div>")
         cols_html.append("".join(col_content))
