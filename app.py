@@ -181,9 +181,10 @@ st.markdown(
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
         padding: 6px 4px;
         text-align: center;
-        border-radius: 6px 6px 0 0;
-        border-bottom: 2px solid #3b1660;
+        border-radius: 6px !important;
+        border: 1px solid #3b1660;
         box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.4);
+        margin-bottom: 6px !important;
     }
     
     .team-logo-container {
