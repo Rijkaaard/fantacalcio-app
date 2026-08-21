@@ -772,6 +772,157 @@ st.markdown(
         line-height: 1;
     }
 
+    /* ==========================================================================
+       STILE DEDICATO VISUALE ATTACCANTI
+       ========================================================================== */
+    .att-grid-row {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 5px;
+        margin-bottom: 5px;
+    }
+
+    .att-team-card {
+        background: #110a24;
+        border: 1.5px solid #3b1660;
+        border-radius: 8px;
+        padding: 4px 5px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+        display: flex;
+        flex-direction: column;
+        gap: 3.4px;
+    }
+
+    .att-team-header {
+        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
+        padding: 0 8px;
+        border-radius: 5px;
+        border: 1px solid #581c87;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6px;
+        height: 37px;
+        box-sizing: border-box;
+    }
+
+    .att-header-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        overflow: hidden;
+        flex-grow: 1;
+    }
+
+    .att-team-logo {
+        width: 23px;
+        height: 23px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .att-team-name {
+        font-family: 'Montserrat', sans-serif !important;
+        font-size: 11.2px;
+        font-weight: 900;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        line-height: 1;
+    }
+
+    .att-team-budget {
+        font-size: 11.2px;
+        font-weight: 900;
+        color: #facc15;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
+    .att-role-title {
+        background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%);
+        border-top: 1px solid #fecdd3;
+        border-bottom: 1px solid #4c0519;
+        font-size: 8.5px;
+        font-weight: 900;
+        padding: 2px 6px;
+        color: #ffffff;
+        border-radius: 4px;
+        letter-spacing: 0.6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-transform: uppercase;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        height: 20px;
+        box-sizing: border-box;
+    }
+
+    .att-slot-row {
+        background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important;
+        border: 1px solid rgba(0, 0, 0, 0.6);
+        border-radius: 4px;
+        height: 38px;
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-sizing: border-box;
+    }
+
+    .att-slot-empty {
+        background: #170d30;
+        border: 1px dashed rgba(192, 132, 252, 0.3);
+        border-radius: 4px;
+        height: 38px;
+        padding: 0 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #4a287a;
+        font-weight: 800;
+        font-size: 9px;
+        box-sizing: border-box;
+    }
+
+    .att-player-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        overflow: hidden;
+    }
+
+    .att-seriea-logo {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+
+    .att-player-name {
+        font-family: 'Montserrat', sans-serif !important;
+        font-size: 12.5px;
+        font-weight: 800;
+        color: #ffffff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+
+    .att-player-cost {
+        font-size: 12.5px;
+        font-weight: 900;
+        color: #ffffff !important;
+        flex-shrink: 0;
+        line-height: 1;
+    }
+
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
@@ -906,7 +1057,7 @@ if not is_tv_mode:
 
         with st.container(border=True):
             st.markdown('<div class="card-title">📺 COMANDO VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
-            opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti"]
+            opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
             
             idx_corrente = opzioni_visuali.index(st.session_state.vista_corrente) if st.session_state.vista_corrente in opzioni_visuali else 0
             
@@ -1400,6 +1551,77 @@ def render_board_fragment():
             f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
             f'{render_cent_row(squadre_sopra)}'
             f'{render_cent_row(squadre_sotto)}'
+            f'</div>',
+            unsafe_allow_html=True
+        )
+        return
+
+    # --------------------------------------------------------------------------
+    # VISUALE ATTACCANTI DEDICATA
+    # --------------------------------------------------------------------------
+    if vista_effettiva == "Attaccanti":
+        squadre_sopra = SQUADRE_INFO[:5]
+        squadre_sotto = SQUADRE_INFO[5:]
+
+        def render_att_row(subset_squadre):
+            cards_html = []
+            for s_info in subset_squadre:
+                sq = f"{s_info['nome']} - {s_info['mister']}"
+                rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+                
+                logo_fanta_html = ""
+                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+                if fanta_logo_b64:
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="att-team-logo" alt="{s_info["codice"]}">'
+
+                giocatori_a = [a for a in acquisti_sq if a["Ruolo"] == "A"]
+                giocatori_a = sorted(giocatori_a, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
+
+                speso_attaccanti = sum(g["Costo"] for g in giocatori_a)
+                pct_budget = round((speso_attaccanti / BUDGET_INIZIALE) * 100, 1)
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+
+                slots_html = []
+                for i in range(6):
+                    if i < len(giocatori_a):
+                        g = giocatori_a[i]
+                        nome_g = g["Giocatore"]
+                        costo = g["Costo"]
+                        sq_sa = g.get("Squadra_SerieA", "")
+                        logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="att-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+
+                        slots_html.append(
+                            f'<div class="att-slot-row">'
+                            f'<div class="att-player-left">'
+                            f'{logo_sa_html}'
+                            f'<span class="att-player-name">{nome_g}</span>'
+                            f'</div>'
+                            f'<div class="att-player-cost">{costo}</div>'
+                            f'</div>'
+                        )
+                    else:
+                        slots_html.append('<div class="att-slot-empty">-</div>')
+
+                cards_html.append(
+                    f'<div class="att-team-card">'
+                    f'<div class="att-team-header">'
+                    f'<div class="att-header-left">'
+                    f'{logo_fanta_html}'
+                    f'<div class="att-team-name">{s_info["nome"]}</div>'
+                    f'</div>'
+                    f'<div class="att-team-budget">🟡 {rim}</div>'
+                    f'</div>'
+                    f'<div class="att-role-title"><span>{pct_str}</span><span>ATTACCANTI</span><span>{speso_attaccanti}</span></div>'
+                    f'{"".join(slots_html)}'
+                    f'</div>'
+                )
+            return f'<div class="att-grid-row">{"".join(cards_html)}</div>'
+
+        st.markdown(
+            f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
+            f'{render_att_row(squadre_sopra)}'
+            f'{render_att_row(squadre_sotto)}'
             f'</div>',
             unsafe_allow_html=True
         )
