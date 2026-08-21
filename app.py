@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE
+# 🎨 STILE CSS PRINCIPALE (CON MARGINI LATERALI AMPI E GRIGLIA COMPATTA)
 # ==============================================================================
 st.markdown(
     """
@@ -128,10 +128,10 @@ st.markdown(
     }
 
     .stMainBlockContainer {
-        padding-top: 2.2rem !important;
+        padding-top: 1.5rem !important;
         padding-bottom: 1rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        padding-left: 3rem !important;
+        padding-right: 3rem !important;
         max-width: 100% !important;
     }
 
@@ -196,12 +196,12 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE (10 SQUADRE IN FILA - STILE CARD)
+       STILE DEDICATO VISUALE GENERALE (10 SQUADRE IN FILA - COMPATTO)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
-        gap: 5px;
+        gap: 4px;
         margin-bottom: 5px;
         width: 100%;
         box-sizing: border-box;
@@ -210,47 +210,47 @@ st.markdown(
     .gen-team-card {
         background: #110a24;
         border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 5px 6px;
+        border-radius: 6px;
+        padding: 4px 5px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2.5px;
         box-sizing: border-box;
         min-width: 0;
     }
 
     .gen-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 6px;
-        border-radius: 5px;
+        padding: 0 5px;
+        border-radius: 4px;
         border: 1px solid #581c87;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 4px;
-        height: 38px;
+        gap: 3px;
+        height: 32px;
         box-sizing: border-box;
     }
 
     .gen-header-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
         flex-grow: 1;
     }
 
     .gen-team-logo {
-        width: 21px;
-        height: 21px;
+        width: 18px;
+        height: 18px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 7.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -262,7 +262,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 9.5px;
+        font-size: 8.5px;
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -271,18 +271,18 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 7.5px;
+        font-size: 7px;
         font-weight: 900;
-        padding: 2px 5px;
+        padding: 1px 4px;
         color: #ffffff;
-        border-radius: 3px;
-        letter-spacing: 0.4px;
+        border-radius: 2px;
+        letter-spacing: 0.3px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 19px;
+        height: 16px;
         box-sizing: border-box;
         margin-top: 1px;
         margin-bottom: 1px;
@@ -293,9 +293,9 @@ st.markdown(
     .gen-role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
     .gen-slot-row {
-        border-radius: 3px;
-        height: 24px;
-        padding: 0 4px;
+        border-radius: 2px;
+        height: 20px;
+        padding: 0 3px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -311,15 +311,15 @@ st.markdown(
     .gen-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 3px;
-        height: 24px;
-        padding: 0 4px;
+        border-radius: 2px;
+        height: 20px;
+        padding: 0 3px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 8px;
+        font-size: 7.5px;
         box-sizing: border-box;
         margin: 1px 0;
     }
@@ -329,19 +329,19 @@ st.markdown(
         align-items: center;
         gap: 3px;
         overflow: hidden;
-        max-width: calc(100% - 15px);
+        max-width: calc(100% - 14px);
     }
 
     .gen-seriea-logo {
-        width: 13px;
-        height: 13px;
+        width: 11px;
+        height: 11px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8px;
+        font-size: 7.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -352,7 +352,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 8px;
+        font-size: 7.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -784,7 +784,7 @@ if not is_tv_mode:
                     st.markdown('<div class="card-title" style="color: #ef4444;">⚠️ TOP 3 PEGGIORI AFFARI</div>', unsafe_allow_html=True)
                     col_p1, col_p2, col_p3 = st.columns(3)
                     with col_p1:
-                        item_p1 = peggiori_affari[0] if len(peggiori_affari) > 0 else None
+                        item_p1 = peggiori_affari[0] if lenpeggiori_affari > 0 else None
                         st.markdown(render_deal_box(item_p1, "🥇 1° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                     with col_p2:
                         item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
@@ -1127,7 +1127,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE (10 SQUADRE DI FILA CON LO STILE DELLE ALTRE VISUALI)
+    # VISUALE GENERALE (10 SQUADRE DI FILA - MARGINI AMPI & COMPATTO)
     # --------------------------------------------------------------------------
     cards_html = []
     for s_info in SQUADRE_INFO:
