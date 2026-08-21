@@ -114,17 +114,17 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE E VISUALI
+# 🎨 STILE CSS PRINCIPALE (CON FONT GEOMETRICO STILE LOVELO / MONTSERRAT)
 # ==============================================================================
 st.markdown(
     """
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap');
 
     html, body, [class*="css"], .stApp {
         background-color: #090514 !important;
         color: #f8fafc;
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
     }
 
     .stMainBlockContainer {
@@ -146,9 +146,9 @@ st.markdown(
 
     .card-title {
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         color: #c084fc;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
         margin-bottom: 8px;
         text-transform: uppercase;
         display: flex;
@@ -241,19 +241,20 @@ st.markdown(
     }
 
     .team-header-name {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         font-size: 8.5px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         margin-bottom: 2px;
+        text-transform: uppercase;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
     }
     .team-header-budget {
         font-size: 13px;
-        font-weight: 800;
+        font-weight: 900;
         color: #facc15;
         margin: 2px 0 0 0;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8);
@@ -261,15 +262,16 @@ st.markdown(
 
     .role-bar {
         font-size: 7.5px;
-        font-weight: 700;
+        font-weight: 800;
         padding: 2.5px 3px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.8px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
         margin-top: 1.5px;
         margin-bottom: 1.5px;
+        text-transform: uppercase;
     }
     .role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
     .role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
@@ -306,19 +308,19 @@ st.markdown(
     }
     .player-team-logo { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; display: inline-block; }
     .player-cell-name { 
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         color: #ffffff; 
         white-space: nowrap; 
         overflow: hidden; 
         text-overflow: ellipsis; 
-        font-weight: 600; 
+        font-weight: 700; 
         font-size: 8px; 
         text-transform: uppercase;
     }
-    .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
+    .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (57px SLOT - SPOSTATO ULTERIORMENTE 1PX IN ALTO: -5px)
+       STILE DEDICATO VISUALE PORTIERI
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -365,19 +367,20 @@ st.markdown(
     }
 
     .gk-team-name {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         font-size: 16.5px;
-        font-weight: 800;
+        font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-transform: uppercase;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
     .gk-team-budget {
         font-size: 14.5px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
@@ -387,14 +390,15 @@ st.markdown(
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
         font-size: 14.5px;
-        font-weight: 800;
+        font-weight: 900;
         padding: 9px 13px;
         color: #ffffff;
         border-radius: 8px;
-        letter-spacing: 0.8px;
+        letter-spacing: 1px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
@@ -419,7 +423,7 @@ st.markdown(
         align-items: center;
         justify-content: center;
         color: #4a287a;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 14.5px;
     }
 
@@ -438,9 +442,9 @@ st.markdown(
     }
 
     .gk-player-name {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         font-size: 15.5px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
@@ -450,13 +454,13 @@ st.markdown(
 
     .gk-player-cost {
         font-size: 18.5px;
-        font-weight: 800;
+        font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (37px SLOT - RIDIMENSIONATO)
+       STILE DEDICATO VISUALE DIFENSORI
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -503,19 +507,20 @@ st.markdown(
     }
 
     .def-team-name {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         font-size: 8.5px;
-        font-weight: 800;
+        font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
     }
 
     .def-team-budget {
         font-size: 7.5px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
     }
@@ -525,14 +530,15 @@ st.markdown(
         border-top: 1px solid #86efac;
         border-bottom: 1px solid #052e16;
         font-size: 8px;
-        font-weight: 800;
+        font-weight: 900;
         padding: 2px 6px;
         color: #ffffff;
         border-radius: 4px;
-        letter-spacing: 0.4px;
+        letter-spacing: 0.6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
@@ -557,7 +563,7 @@ st.markdown(
         align-items: center;
         justify-content: center;
         color: #4a287a;
-        font-weight: 700;
+        font-weight: 800;
         font-size: 8.5px;
     }
 
@@ -576,9 +582,9 @@ st.markdown(
     }
 
     .def-player-name {
-        font-family: 'Inter', sans-serif !important;
+        font-family: 'Montserrat', sans-serif !important;
         font-size: 9.5px;
-        font-weight: 700;
+        font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
@@ -588,15 +594,15 @@ st.markdown(
 
     .def-player-cost {
         font-size: 11px;
-        font-weight: 800;
+        font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
     }
 
-    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
-    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 700; font-size: 11px; }
+    .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
+    .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
+    .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
+    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
 
     .deal-box-single {
         background: #150b2c;
@@ -613,12 +619,12 @@ st.markdown(
         align-items: center;
         text-align: center;
     }
-    .deal-rank-title { font-size: 9.5px; font-weight: 800; text-transform: uppercase; line-height: 1; }
-    .deal-player-name { font-size: 11px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1.2; text-transform: uppercase; }
+    .deal-rank-title { font-size: 9.5px; font-weight: 900; text-transform: uppercase; line-height: 1; }
+    .deal-player-name { font-size: 11px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1.2; text-transform: uppercase; }
     .deal-logos-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 22px; }
     .deal-logo-img { width: 22px; height: 22px; object-fit: contain; }
     .deal-arrow { color: #c084fc; font-size: 11px; font-weight: bold; }
-    .deal-price-info { font-size: 9px; font-weight: 700; line-height: 1; }
+    .deal-price-info { font-size: 9px; font-weight: 800; line-height: 1; }
 
     .ranking-row {
         background: #140a2b;
@@ -631,9 +637,9 @@ st.markdown(
         margin-bottom: 4px;
         font-size: 11px;
     }
-    .ranking-info { font-weight: 600; color: #ffffff; text-transform: uppercase; }
+    .ranking-info { font-weight: 700; color: #ffffff; text-transform: uppercase; }
     .ranking-sub { font-size: 9.5px; color: #a78bfa; margin-left: 4px; }
-    .ranking-badge { background: #0d061c; color: #facc15; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid #2a1452; }
+    .ranking-badge { background: #0d061c; color: #facc15; font-weight: 800; padding: 2px 7px; border-radius: 4px; border: 1px solid #2a1452; }
     </style>
 """,
     unsafe_allow_html=True,
@@ -847,9 +853,9 @@ if not is_tv_mode:
                     st.markdown(
                         f'<div style="background: #170d30; border: 1px solid #321a5c; border-radius: 6px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; margin-top: 6px; margin-bottom: 4px;">'
                         f'{logo_html}'
-                        f'<span style="font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase;">{info_g["Giocatore"]}</span>'
+                        f'<span style="font-size: 13px; font-weight: 800; color: #ffffff; text-transform: uppercase;">{info_g["Giocatore"]}</span>'
                         f'<span class="{badge_class}">{ruolo_g}</span>'
-                        f'<span style="margin-left: auto; font-size: 11px; color: #facc15; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
+                        f'<span style="margin-left: auto; font-size: 11px; color: #facc15; font-weight: 800;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                         f'</div>',
                         unsafe_allow_html=True
                     )
@@ -895,7 +901,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -928,7 +934,7 @@ if not is_tv_mode:
                 return f'''
                 <div class="deal-box-single">
                     <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
-                    <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:600;">{ruolo_str}</span></div>
+                    <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:700;">{ruolo_str}</span></div>
                     <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
                     <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8px; font-weight:normal;">(Medio: {p_medio})</span></div>
                 </div>
@@ -986,12 +992,12 @@ if not is_tv_mode:
                     st.markdown(
                         f'<div class="ranking-row">'
                         f'<div>'
-                        f'<span style="font-weight: 700; color: #c084fc; margin-right: 6px;">{idx}.</span>'
+                        f'<span style="font-weight: 800; color: #c084fc; margin-right: 6px;">{idx}.</span>'
                         f'<span class="ranking-info">{item["Squadra"]}</span>'
                         f'<span class="ranking-sub">({item["Mister"]})</span>'
                         f'</div>'
                         f'<div style="display: flex; align-items: center; gap: 8px;">'
-                        f'<span style="font-size: 9.5px; color: #94a3b8;">{item["Rosa"]}</span>'
+                        f'<span style="font-size: 9.5px; color: #94a3b8; font-weight: 700;">{item["Rosa"]}</span>'
                         f'<span class="ranking-badge">🟡 {item["Crediti"]}</span>'
                         f'</div>'
                         f'</div>',
@@ -1014,7 +1020,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA (57px SLOT - SPOSTATO 1PX IN ALTO: -5px)
+    # VISUALE PORTIERI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1085,7 +1091,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (37px SLOT - RIDIMENSIONATO)
+    # VISUALE DIFENSORI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1110,7 +1116,7 @@ def render_board_fragment():
                 pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
                 slots_html = []
-                for i in range(8): # 8 difensori
+                for i in range(8):
                     if i < len(giocatori_d):
                         g = giocatori_d[i]
                         nome_g = g["Giocatore"]
@@ -1156,7 +1162,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE STANDARD (TUTTE LE SQUADRE A 10 COLONNE)
+    # VISUALE GENERALE STANDARD
     # --------------------------------------------------------------------------
     cols_html = []
     for s_info in SQUADRE_INFO:
