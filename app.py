@@ -149,21 +149,22 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* RIDUZIONE SPAZIATURA TRA PULSANTI FILTRO */
-    div[data-testid="stHorizontalBlock"]:has(.role-circle-btn) {
-        gap: 6px !important;
+    /* FORZA CONTENITORE PULSANTI FILTRO COMPATTO */
+    div[data-testid="stButton"] {
+        display: flex !important;
+        justify-content: center !important;
     }
 
-    /* BOTTONI CIRCOLARI (P, D, C, A) */
+    /* BOTTONI CIRCOLARI STRETTI (P, D, C, A) */
     .role-circle-btn button {
         border-radius: 50% !important;
-        width: 36px !important;
-        height: 36px !important;
-        min-width: 36px !important;
-        max-width: 36px !important;
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        max-width: 28px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 11px !important;
+        font-size: 10px !important;
         transition: all 0.2s ease !important;
         box-shadow: none !important;
         display: flex !important;
@@ -173,14 +174,14 @@ st.markdown(
         margin: 0 auto !important;
     }
 
-    /* BOTTONE "TUTTI" CON ANGOLI MASSIMAMENTE ARROTONDATI (PILLOLA) */
+    /* BOTTONE "TUTTI" COMPATTO CON ANGOLI ARROTONDATI (PILLOLA) */
     .role-pill-btn button {
         border-radius: 9999px !important;
-        height: 36px !important;
-        padding: 0 14px !important;
+        height: 28px !important;
+        padding: 0 10px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 10px !important;
+        font-size: 9.5px !important;
         transition: all 0.2s ease !important;
         box-shadow: none !important;
         display: flex !important;
@@ -569,13 +570,13 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1.3, 1])
+            f_col1, f_col2 = st.columns([1.1, 1])
             with f_col1:
-                # TUTTI HA UNA COLONNA PIÙ LARGA (PILLOLA), P D C A SONO PICCOLI E CIRCOLARI
-                c_tut, c_p, c_d, c_c, c_a = st.columns([1.2, 0.6, 0.6, 0.6, 0.6])
+                # LARGHEZZA RIDOTTA E COMPATTA PER I FILTRI RUOLO
+                c_tut, c_p, c_d, c_c, c_a = st.columns([0.8, 0.4, 0.4, 0.4, 0.4])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
-                # BOTTONE TUTTI (Pillola / Massimo Arrotondamento)
+                # BOTTONE TUTTI (Pillola)
                 with c_tut:
                     st.markdown('<div class="role-pill-btn">', unsafe_allow_html=True)
                     type_tut = "primary" if curr_r == "TUTTI" else "secondary"
@@ -584,7 +585,7 @@ def render_control_panel():
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
-                # BOTTONI RUOLI (Circolari)
+                # BOTTONI RUOLI (Circolari Stretti)
                 with c_p:
                     st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_p = "primary" if curr_r == "P" else "secondary"
