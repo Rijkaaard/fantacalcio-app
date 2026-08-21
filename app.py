@@ -162,10 +162,8 @@ st.markdown(
 
     /* ==========================================================================
        🎯 STILIZZAZIONE INPUT (SELECT, MULTISELECT, NUMBER INPUT)
-       Stesso stile delle celle vuote della griglia: trasparente, bordo e angoli 3px
        ========================================================================== */
     
-    /* Contenitori principali di BaseWeb (Select, Multiselect, Input) */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div,
     [data-testid="stMultiSelect"] div[data-baseweb="select"] > div,
@@ -178,7 +176,6 @@ st.markdown(
         box-shadow: none !important;
     }
 
-    /* Input di testo interno */
     div[data-baseweb="select"] input, 
     div[data-baseweb="input"] input,
     [data-testid="stNumberInput"] input {
@@ -186,7 +183,6 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Tag/Chip selezionati dentro il Multiselect */
     [data-baseweb="tag"] {
         background-color: rgba(192, 132, 252, 0.2) !important;
         border: 1px solid rgba(192, 132, 252, 0.4) !important;
@@ -196,22 +192,21 @@ st.markdown(
         color: #ffffff !important;
     }
 
-    /* Bordo attivo al click / focus */
     div[data-baseweb="select"]:focus-within > div,
     div[data-baseweb="input"]:focus-within > div {
         border-color: #c084fc !important;
     }
 
-    /* Pulsanti + / - del NumberInput */
     [data-testid="stNumberInput"] button {
         background: transparent !important;
         border: none !important;
         color: #c084fc !important;
     }
 
+    /* Aumentata leggermente la larghezza minima delle colonne da 120px a 125px */
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(120px, 1fr));
+        grid-template-columns: repeat(10, minmax(125px, 1fr));
         gap: 6px;
         width: 100%;
         overflow-x: auto;
@@ -279,7 +274,6 @@ st.markdown(
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
     }
 
-    /* Barre dei Ruoli FantaLab */
     .role-bar {
         font-size: 8.5px;
         font-weight: 700;
@@ -330,6 +324,7 @@ st.markdown(
         margin-bottom: 4px;
     }
 
+    /* Aumentato il padding laterale da 0 4px a 0 6px per dare respiro al logo */
     .player-cell {
         height: 22px;
         width: 100%;
@@ -341,7 +336,7 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 4px;
+        padding: 0 6px !important;
         font-size: 9.5px;
     }
 
@@ -355,12 +350,13 @@ st.markdown(
     .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
     .player-cell-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
 
+    /* Aumentato max-width e ridotto il gap per evitare sovrapposizioni o tagli del logo */
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 3px;
+        gap: 4px;
         overflow: hidden;
-        max-width: 88px;
+        max-width: 92px;
     }
 
     .player-team-logo {
