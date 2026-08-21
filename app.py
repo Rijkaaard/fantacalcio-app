@@ -176,7 +176,22 @@ st.markdown(
     }
 
     .team-header {
-        background: #1a1d33;
+        background: 
+            repeating-linear-gradient(
+                -45deg,
+                rgba(255, 255, 255, 0.03) 0px,
+                rgba(255, 255, 255, 0.03) 10px,
+                transparent 10px,
+                transparent 20px
+            ),
+            repeating-linear-gradient(
+                45deg,
+                rgba(255, 255, 255, 0.03) 0px,
+                rgba(255, 255, 255, 0.03) 10px,
+                transparent 10px,
+                transparent 20px
+            ),
+            linear-gradient(180deg, #181136 0%, #0d0922 100%) !important;
         padding: 6px 4px;
         text-align: center;
         border-radius: 6px 6px 0 0;
