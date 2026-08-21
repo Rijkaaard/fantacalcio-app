@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (PORTIERI ALLUNGATI E PROPORZIONATI)
+# 🎨 STILE CSS PRINCIPALE
 # ==============================================================================
 st.markdown(
     """
@@ -242,7 +242,7 @@ st.markdown(
 
     .team-header-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 8px; /* RIDOTTO LEGGERMENTE PER SICUREZZA */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (ALLUNGATO E PROPORZIONATO)
+       STILE DEDICATO VISUALE PORTIERI (PROPORZIONATO E CORRETTO)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -338,7 +338,7 @@ st.markdown(
         display: flex;
         flex-direction: column;
         gap: 14px;
-        height: 380px; /* ALTEZZA FISSA AUMENTATA E PROPORZIONATA */
+        height: 380px;
         box-sizing: border-box;
     }
 
@@ -350,14 +350,14 @@ st.markdown(
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 14px;
-        height: 85px; /* HEADER PROPORZIONATO */
+        gap: 12px;
+        height: 85px;
         box-sizing: border-box;
     }
 
     .gk-team-logo {
-        width: 54px;
-        height: 54px;
+        width: 50px;
+        height: 50px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -367,12 +367,12 @@ st.markdown(
         flex-direction: column;
         align-items: flex-start;
         overflow: hidden;
-        width: 100%;
+        width: calc(100% - 62px); /* RISOLVE IL PROBLEMA DI SBOARDO PER NOMI LUNGHI */
     }
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 16px;
+        font-size: 13.5px; /* RIDOTTO LEGGERMENTE DA 16px A 13.5px PER EVITARE ROTTURE SU NOMI LUNGHI */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -385,7 +385,7 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 14.5px;
+        font-size: 14px;
         font-weight: 800;
         color: #facc15;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
@@ -406,7 +406,7 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 42px; /* BARRA RUOLO PROPORZIONATA */
+        height: 42px;
         box-sizing: border-box;
     }
 
@@ -414,7 +414,7 @@ st.markdown(
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 6px;
-        height: 56px; /* SLOT OCCUPATO PROPORZIONATO */
+        height: 56px;
         padding: 0 14px;
         display: flex;
         align-items: center;
@@ -426,7 +426,7 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 6px;
-        height: 56px; /* SLOT VUOTO PROPORZIONATO E IDENTICO */
+        height: 56px;
         padding: 0 14px;
         display: flex;
         align-items: center;
@@ -514,12 +514,12 @@ st.markdown(
         flex-direction: column;
         align-items: flex-start;
         overflow: hidden;
-        width: 100%;
+        width: calc(100% - 26px);
     }
 
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 8px; /* RIDOTTO LEGGERMENTE PER SICUREZZA */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -527,6 +527,8 @@ st.markdown(
         text-overflow: ellipsis;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        width: 100%;
+        text-align: left;
     }
 
     .def-team-budget {
@@ -1031,7 +1033,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA (ALLUNGATA E PROPORZIONATA)
+    # VISUALE PORTIERI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
