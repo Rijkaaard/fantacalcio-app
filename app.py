@@ -320,13 +320,13 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE PORTIERI (CELLE VERTICALI ALLUNGATE A 110px E CONTENITORI RIDIMENSIONATI)
+       STILE PORTIERI COMPATTATO E RICALIBRATO (CELLE A 125px)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 8px;
-        margin-bottom: 6px;
+        gap: 5px;
+        margin-bottom: 4px;
         width: 100%;
         box-sizing: border-box;
     }
@@ -335,30 +335,30 @@ st.markdown(
         background: #110a24;
         border: 1px solid #3b1660;
         border-radius: 6px;
-        padding: 4px;
+        padding: 2px 3px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 2px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 3px 5px;
-        border-radius: 4px;
+        padding: 2px 4px;
+        border-radius: 3px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 4px;
         box-sizing: border-box;
     }
 
     .gk-team-logo {
-        width: 22px;
-        height: 22px;
+        width: 18px;
+        height: 18px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -373,7 +373,7 @@ st.markdown(
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8px;
+        font-size: 7.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -384,7 +384,7 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 7.5px;
+        font-size: 7px;
         font-weight: 800;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -394,12 +394,12 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 7.5px;
+        font-size: 7px;
         font-weight: 900;
-        padding: 2px 5px;
+        padding: 1.5px 4px;
         color: #ffffff;
-        border-radius: 3px;
-        letter-spacing: 0.8px;
+        border-radius: 2px;
+        letter-spacing: 0.6px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -411,9 +411,9 @@ st.markdown(
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-        height: 110px;
-        padding: 0 14px;
+        border-radius: 6px;
+        height: 125px;
+        padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -423,15 +423,15 @@ st.markdown(
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 8px;
-        height: 110px;
-        padding: 0 14px;
+        border-radius: 6px;
+        height: 125px;
+        padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 16px;
+        font-size: 15px;
         box-sizing: border-box;
     }
 
@@ -1029,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI (CELLE VERTICALI ALLUNGATE A 110px)
+    # VISUALE PORTIERI (COMPATTATA E RICALIBRATA)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1091,7 +1091,7 @@ def render_board_fragment():
             return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 2px;">'
+            f'<div style="width: 100%; padding-top: 1px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
             f'</div>',
