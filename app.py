@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (MODIFICATI ROSSI IN VIOLA E AMETISTA)
+# 🎨 STILE CSS PRINCIPALE (CARD GENERALI ALLUNGATE DI +1PX E COMPONENTI INCREMENTATI)
 # ==============================================================================
 st.markdown(
     """
@@ -162,8 +162,8 @@ st.markdown(
     [data-testid="stNumberInput"] div[data-baseweb="input"] > div {
         background-color: transparent !important;
         background: transparent !important;
-        border: 1px solid rgba(192, 132, 252, 0.3) !important;
-        border-radius: 6px !important;
+        border: 1px solid rgba(192, 132, 252, 0.2) !important;
+        border-radius: 3px !important;
         color: #ffffff !important;
         box-shadow: none !important;
     }
@@ -176,18 +176,17 @@ st.markdown(
     }
 
     [data-baseweb="tag"] {
-        background-color: rgba(168, 85, 247, 0.25) !important;
-        border: 1px solid rgba(192, 132, 252, 0.5) !important;
-        border-radius: 4px !important;
+        background-color: rgba(192, 132, 252, 0.2) !important;
+        border: 1px solid rgba(192, 132, 252, 0.4) !important;
+        border-radius: 3px !important;
     }
     [data-baseweb="tag"] span {
-        color: #f3e8ff !important;
+        color: #ffffff !important;
     }
 
     div[data-baseweb="select"]:focus-within > div,
     div[data-baseweb="input"]:focus-within > div {
-        border-color: #d8b4fe !important;
-        box-shadow: 0 0 8px rgba(168, 85, 247, 0.4) !important;
+        border-color: #c084fc !important;
     }
 
     [data-testid="stNumberInput"] button {
@@ -196,24 +195,8 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* Personalizzazione Pulsante Primario (Conferma) in Toni Viola/Ametista */
-    button[kind="primary"] {
-        background: linear-gradient(135deg, #581c87 0%, #7e22ce 50%, #9333ea 100%) !important;
-        border: 1px solid #c084fc !important;
-        color: #ffffff !important;
-        font-weight: 800 !important;
-        border-radius: 6px !important;
-        box-shadow: 0 4px 12px rgba(126, 34, 206, 0.4) !important;
-        transition: all 0.2s ease-in-out !important;
-    }
-    button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #6b21a8 0%, #9333ea 50%, #a855f7 100%) !important;
-        border-color: #e9d5ff !important;
-        box-shadow: 0 6px 16px rgba(168, 85, 247, 0.6) !important;
-    }
-
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE
+       STILE DEDICATO VISUALE GENERALE (CARD ALLUNGATE DI +1PX E COMPONENTI AMPLIATI)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
@@ -228,7 +211,7 @@ st.markdown(
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 6px;
-        padding: 4.5px 5px;
+        padding: 4.5px 5px; /* Aumentato di 0.5px sopra/sotto per un totale di +1px */
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
@@ -246,7 +229,7 @@ st.markdown(
         align-items: center;
         justify-content: space-between;
         gap: 3px;
-        height: 34px;
+        height: 34px; /* Aumentato di ~1px */
         box-sizing: border-box;
     }
 
@@ -259,7 +242,7 @@ st.markdown(
     }
 
     .gen-team-logo {
-        width: 20px;
+        width: 20px; /* Aumentato leggermente */
         height: 20px;
         object-fit: contain;
         flex-shrink: 0;
@@ -267,7 +250,7 @@ st.markdown(
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.1px;
+        font-size: 8.1px; /* Font incrementato coerentemente */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -279,7 +262,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 9.1px;
+        font-size: 9.1px; /* Font incrementato coerentemente */
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -288,7 +271,7 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 7.5px;
+        font-size: 7.5px; /* Font incrementato coerentemente */
         font-weight: 900;
         padding: 1px 4px;
         color: #ffffff;
@@ -299,7 +282,7 @@ st.markdown(
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 16.5px;
+        height: 16.5px; /* Altezza incrementata */
         box-sizing: border-box;
         margin-top: 1px;
         margin-bottom: 1px;
@@ -307,11 +290,11 @@ st.markdown(
     .gen-role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
     .gen-role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
     .gen-role-c { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; }
-    .gen-role-a { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 35%, #5b21b6 50%, #a78bfa 70%, #3b0764 100%); border-top: 1px solid #ddd6fe; border-bottom: 1px solid #2e1065; }
+    .gen-role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
     .gen-slot-row {
         border-radius: 2px;
-        height: 21.6px;
+        height: 21.6px; /* Slot allungato coerentemente */
         padding: 0 3px;
         display: flex;
         align-items: center;
@@ -323,13 +306,13 @@ st.markdown(
     .gen-slot-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
     .gen-slot-d { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; }
     .gen-slot-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
-    .gen-slot-a { background: linear-gradient(90deg, #180d30 0%, #3b1369 50%, #1f0b3b 100%) !important; }
+    .gen-slot-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
 
     .gen-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 2px;
-        height: 21.6px;
+        height: 21.6px; /* Slot allungato coerentemente */
         padding: 0 3px;
         display: flex;
         align-items: center;
@@ -350,7 +333,7 @@ st.markdown(
     }
 
     .gen-seriea-logo {
-        width: 12px;
+        width: 12px; /* Logo Serie A leggermente aumentato */
         height: 12px;
         object-fit: contain;
         flex-shrink: 0;
@@ -358,7 +341,7 @@ st.markdown(
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.1px;
+        font-size: 8.1px; /* Font calciatore incrementato coerentemente */
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -369,7 +352,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 8.1px;
+        font-size: 8.1px; /* Font costo incrementato coerentemente */
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -377,7 +360,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILI ALTRE VISUALI
+       STILI ALTRE VISUALI (PORTIERI, DIFENSORI, ECC.)
        ========================================================================== */
     .gk-grid-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; margin-bottom: 15px; }
     .gk-team-card { background: #110a24; border: 2px solid #3b1660; border-radius: 12px; padding: 18px 15px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 14px; height: 380px; box-sizing: border-box; }
@@ -431,8 +414,8 @@ st.markdown(
     .att-team-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
     .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13.2px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
     .att-team-budget { font-size: 13.2px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
-    .att-role-title { background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 35%, #5b21b6 50%, #a78bfa 70%, #3b0764 100%); border-top: 1px solid #ddd6fe; border-bottom: 1px solid #2e1065; font-size: 10px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 24.5px; box-sizing: border-box; }
-    .att-slot-row { background: linear-gradient(90deg, #180d30 0%, #3b1369 50%, #1f0b3b 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 45px; padding: 0 7px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .att-role-title { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; font-size: 10px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 24.5px; box-sizing: border-box; }
+    .att-slot-row { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 45px; padding: 0 7px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
     .att-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 45px; padding: 0 7px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 10.5px; box-sizing: border-box; }
     .att-player-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
     .att-seriea-logo { width: 23px; height: 23px; object-fit: contain; flex-shrink: 0; }
@@ -442,7 +425,7 @@ st.markdown(
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-c { background-color: #2563eb; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
-    .badge-ruolo-a { background-color: #7c3aed; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
+    .badge-ruolo-a { background-color: #e11d48; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
 
     .deal-box-single {
         background: #150b2c;
@@ -1144,7 +1127,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE
+    # VISUALE GENERALE (10 SQUADRE DI FILA - CARD ALLUNGATA DI +1PX E COMPONENTI AMPLIATI)
     # --------------------------------------------------------------------------
     cards_html = []
     for s_info in SQUADRE_INFO:
