@@ -241,6 +241,7 @@ st.markdown(
     }
 
     .team-header-name {
+        font-family: 'Inter', sans-serif !important;
         font-size: 8.5px;
         font-weight: 700;
         color: #ffffff;
@@ -304,7 +305,16 @@ st.markdown(
         min-width: 0;
     }
     .player-team-logo { width: 12px; height: 12px; object-fit: contain; flex-shrink: 0; display: inline-block; }
-    .player-cell-name { color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: 600; font-size: 8px; }
+    .player-cell-name { 
+        font-family: 'Inter', sans-serif !important;
+        color: #ffffff; 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        font-weight: 600; 
+        font-size: 8px; 
+        text-transform: uppercase;
+    }
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
@@ -355,6 +365,7 @@ st.markdown(
     }
 
     .gk-team-name {
+        font-family: 'Inter', sans-serif !important;
         font-size: 16.5px;
         font-weight: 800;
         color: #ffffff;
@@ -427,12 +438,14 @@ st.markdown(
     }
 
     .gk-player-name {
+        font-family: 'Inter', sans-serif !important;
         font-size: 15.5px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-transform: uppercase;
     }
 
     .gk-player-cost {
@@ -490,6 +503,7 @@ st.markdown(
     }
 
     .def-team-name {
+        font-family: 'Inter', sans-serif !important;
         font-size: 8.5px;
         font-weight: 800;
         color: #ffffff;
@@ -562,12 +576,14 @@ st.markdown(
     }
 
     .def-player-name {
+        font-family: 'Inter', sans-serif !important;
         font-size: 9.5px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        text-transform: uppercase;
     }
 
     .def-player-cost {
@@ -598,7 +614,7 @@ st.markdown(
         text-align: center;
     }
     .deal-rank-title { font-size: 9.5px; font-weight: 800; text-transform: uppercase; line-height: 1; }
-    .deal-player-name { font-size: 11px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1.2; }
+    .deal-player-name { font-size: 11px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; line-height: 1.2; text-transform: uppercase; }
     .deal-logos-row { display: flex; align-items: center; justify-content: center; gap: 6px; height: 22px; }
     .deal-logo-img { width: 22px; height: 22px; object-fit: contain; }
     .deal-arrow { color: #c084fc; font-size: 11px; font-weight: bold; }
@@ -615,7 +631,7 @@ st.markdown(
         margin-bottom: 4px;
         font-size: 11px;
     }
-    .ranking-info { font-weight: 600; color: #ffffff; }
+    .ranking-info { font-weight: 600; color: #ffffff; text-transform: uppercase; }
     .ranking-sub { font-size: 9.5px; color: #a78bfa; margin-left: 4px; }
     .ranking-badge { background: #0d061c; color: #facc15; font-weight: 700; padding: 2px 7px; border-radius: 4px; border: 1px solid #2a1452; }
     </style>
@@ -831,7 +847,7 @@ if not is_tv_mode:
                     st.markdown(
                         f'<div style="background: #170d30; border: 1px solid #321a5c; border-radius: 6px; padding: 8px 12px; display: flex; align-items: center; gap: 10px; margin-top: 6px; margin-bottom: 4px;">'
                         f'{logo_html}'
-                        f'<span style="font-size: 13px; font-weight: 700; color: #ffffff;">{info_g["Giocatore"]}</span>'
+                        f'<span style="font-size: 13px; font-weight: 700; color: #ffffff; text-transform: uppercase;">{info_g["Giocatore"]}</span>'
                         f'<span class="{badge_class}">{ruolo_g}</span>'
                         f'<span style="margin-left: auto; font-size: 11px; color: #facc15; font-weight: 700;">Prezzo Medio: {int(info_g["Prezzo_Numerico"])} FM</span>'
                         f'</div>',
