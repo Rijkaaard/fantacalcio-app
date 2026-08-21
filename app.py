@@ -510,32 +510,34 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            # 2 MENU A TENDINA DEDICATI PER IL FILTRAGGIO
+            # SELEZIONE MULTIPLA PER RUOLI E SQUADRE
             col_f_ruolo, col_f_sa = st.columns(2)
             
             with col_f_ruolo:
-                ruolo_scelto = st.selectbox(
-                    "Filtra per Ruolo",
-                    options=["TUTTI", "P", "D", "C", "A"],
-                    index=0,
+                ruoli_scelti = st.multiselect(
+                    "Filtra per Ruoli",
+                    options=["P", "D", "C", "A"],
+                    default=[],
+                    placeholder="Tutti i ruoli",
                     key="sel_filtro_ruolo"
                 )
             
             with col_f_sa:
-                squadre_sa_list = ["TUTTE"] + sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else ["TUTTE"]
-                squadra_sa_scelta = st.selectbox(
-                    "Filtra per Squadra Serie A",
+                squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
+                squadre_sa_scelte = st.multiselect(
+                    "Filtra per Squadre Serie A",
                     options=squadre_sa_list,
-                    index=0,
+                    default=[],
+                    placeholder="Tutte le squadre",
                     key="sel_filtro_sa"
                 )
 
-            # FILTRAGGIO DATI IN BASE AI 2 MENU A TENDINA
+            # FILTRAGGIO MULTIPLO DEI DATI
             df_filtrati = df_disponibili.copy()
-            if ruolo_scelto != "TUTTI":
-                df_filtrati = df_filtrati[df_filtrati["Ruolo"] == ruolo_scelto]
-            if squadra_sa_scelta != "TUTTE":
-                df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"] == squadra_sa_scelta]
+            if ruoli_scelti:
+                df_filtrati = df_filtrati[df_filtrati["Ruolo"].isin(ruoli_scelti)]
+            if squadre_sa_scelte:
+                df_filtrati = df_filtrati[df_filtrati["Squadra_SerieA"].isin(squadre_sa_scelte)]
 
             col_g, col_sq, col_costo, col_btn = st.columns([2.5, 2, 1, 1.2])
 
