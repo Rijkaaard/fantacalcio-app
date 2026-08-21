@@ -196,33 +196,42 @@ st.markdown(
         background: #d81b60;
     }
 
-    /* BOTTONI LOGHI SQUADRE SERIE A */
+    /* BOTTONI LOGHI SQUADRE SERIE A (50x50 CIRCOLARI SENZA BORDO) */
     .team-logo-btn button {
+        width: 50px !important;
+        height: 50px !important;
+        min-width: 50px !important;
+        max-width: 50px !important;
+        border: none !important;
         border-radius: 50% !important;
-        width: 34px !important;
-        height: 34px !important;
-        min-width: 34px !important;
-        max-width: 34px !important;
+        background-color: #110927 !important;
         padding: 0 !important;
         margin: 0 !important;
-        border: 1px solid #362d59 !important;
-        background-color: #110927 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         transition: all 0.2s ease !important;
+        cursor: pointer !important;
     }
 
-    .team-logo-btn button[kind="primary"] {
-        border: 2px solid #d81b60 !important;
+    /* Effetto Hover sui loghi */
+    .team-logo-btn button:hover {
         background-color: #1f0d3d !important;
-        box-shadow: 0 0 8px rgba(216, 27, 96, 0.5) !important;
+        transform: scale(1.05);
     }
 
-    .team-logo-img-btn {
-        width: 22px;
-        height: 22px;
-        object-fit: contain;
+    /* Stato Selezionato (Attivo) */
+    .team-logo-btn button[kind="primary"] {
+        background-color: #2e0d3e !important;
+        box-shadow: 0 0 10px rgba(216, 27, 96, 0.7) !important;
+        outline: 2px solid #d81b60 !important;
+    }
+
+    /* Immagine del logo all'interno del bottone circolare */
+    .team-logo-btn img {
+        width: 32px !important;
+        height: 32px !important;
+        object-fit: contain !important;
     }
 
     /* BOTTONI CIRCOLARI ULTRA STRETTI (P, D, C, A) */
