@@ -471,7 +471,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (ALLINEATO IN ORIZZONTALE)
+       STILE DEDICATO VISUALE DIFENSORI (ORIZZONTALE CON NOME MOLTO PIÙ GRANDE)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -493,7 +493,7 @@ st.markdown(
 
     .def-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 6px 8px;
+        padding: 0 8px;
         border-radius: 5px;
         border: 1px solid #581c87;
         display: flex;
@@ -521,7 +521,7 @@ st.markdown(
 
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10px; /* Font ingrandito ma compatto */
+        font-size: 11px; /* Nome squadra ancora più grande */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -529,6 +529,7 @@ st.markdown(
         text-overflow: ellipsis;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        line-height: 1;
     }
 
     .def-team-budget {
@@ -537,6 +538,7 @@ st.markdown(
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
         flex-shrink: 0;
+        line-height: 1;
     }
 
     .def-role-title {
@@ -1105,7 +1107,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (ORIZZONTALE CON FONT MAGGIORE E SENZA MODIFICARE ALTEZZA)
+    # VISUALE DIFENSORI DEDICATA (ORIZZONTALE CON FONT ANCORA PIÙ GRANDE E HEADER INALTERATO)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
