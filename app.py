@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI
+       STILE DEDICATO VISUALE PORTIERI ( SPOSTATO 1px IN ALTO )
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -338,6 +338,7 @@ st.markdown(
         display: flex;
         flex-direction: column;
         gap: 13px;
+        transform: translateY(-1px);
     }
 
     .gk-team-header {
@@ -570,20 +571,20 @@ st.markdown(
     .def-player-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 5px;
         overflow: hidden;
     }
 
     .def-seriea-logo {
-        width: 17px;
-        height: 17px;
+        width: 18px;
+        height: 18px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .def-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10.5px;
+        font-size: 11.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -593,7 +594,7 @@ st.markdown(
     }
 
     .def-player-cost {
-        font-size: 12px;
+        font-size: 13.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
