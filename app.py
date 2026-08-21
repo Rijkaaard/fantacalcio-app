@@ -94,14 +94,14 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 📺 MARGINE PERSONALIZZATO VISTA TV
+# 📺 MARGINE PERSONALIZZATO VISTA TV (LEGGERO)
 # ==============================================================================
 tv_margin_css = """
     <style>
     .stMainBlockContainer {
-        padding-left: 3rem !important;
-        padding-right: 3rem !important;
-        margin: 0 4% !important;
+        padding-left: 1.5rem !important;
+        padding-right: 1.5rem !important;
+        margin: 0 1.5% !important;
         width: auto !important;
     }
     </style>
