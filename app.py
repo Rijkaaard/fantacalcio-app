@@ -94,21 +94,20 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (BORDI SIMMETRICI + ALTEZZA ORIGINALE)
+# 🎨 STILE CSS - MARGINI SIMMETRICI + ASSE INFERIORE BLOCCATO
 # ==============================================================================
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Sfondo principale */
     html, body, [class*="css"], .stApp {
         background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
     }
 
-    /* PADDING LATERALE IDENTICO E SIMMETRICO SUI DUE LATI */
+    /* PADDING LATERALE SIMMETRICO IDENTICO */
     .stMainBlockContainer {
         padding-top: 0.8rem !important;
         padding-bottom: 1rem !important;
@@ -117,7 +116,6 @@ st.markdown(
         max-width: 100% !important;
     }
 
-    /* Allineamento colonne e contenitore flessibile */
     [data-testid="stHorizontalBlock"] {
         display: flex !important;
         align-items: stretch !important;
@@ -141,7 +139,6 @@ st.markdown(
         flex-direction: column !important;
     }
 
-    /* Card/Widget dell'interfaccia */
     [data-testid="stVerticalBlockBorderWrapper"] {
         background: #110a24 !important;
         border: 1px solid #231342 !important;
@@ -163,7 +160,6 @@ st.markdown(
         gap: 6px;
     }
 
-    /* Contenitori principali di BaseWeb */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div,
     [data-testid="stMultiSelect"] div[data-baseweb="select"] > div,
@@ -203,7 +199,7 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* GRIGLIA SIMMETRICA CON COLONNE PERFETTAMENTE FLUIDE */
+    /* GRIGLIA TABELLONE */
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, 1fr);
@@ -219,7 +215,7 @@ st.markdown(
         border: none !important;
         display: flex;
         flex-direction: column;
-        min-width: 0; /* Previene overflow laterale */
+        min-width: 0;
     }
 
     .team-header {
@@ -276,16 +272,16 @@ st.markdown(
     }
 
     .role-bar {
-        font-size: 8.5px;
+        font-size: 8px;
         font-weight: 700;
-        padding: 3px 5px;
+        padding: 2px 4px;
         color: #ffffff;
         display: flex;
         justify-content: space-between;
         letter-spacing: 0.5px;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        margin-top: 2px;
-        margin-bottom: 2px;
+        margin-top: 1.5px;
+        margin-bottom: 1.5px;
     }
     .role-p { 
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); 
@@ -325,20 +321,20 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* DIMENSIONI E ALTEZZA CELLE ORIGINALI */
+    /* ALTEZZA CELLE OTTIMIZZATA PER MANTENERE L'ASSE INFERIORE BLOCCATO */
     .player-cell {
-        height: 22px;
+        height: 20px;
         width: 100%;
         background: transparent;
         border: 1px solid rgba(192, 132, 252, 0.2) !important;
         border-radius: 3px !important;
-        margin: 2px 0;
+        margin: 1.5px 0;
         box-sizing: border-box;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 4px;
-        font-size: 9px;
+        padding: 0 3px;
+        font-size: 8.5px;
     }
 
     .player-cell-filled {
@@ -354,14 +350,14 @@ st.markdown(
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 3px;
+        gap: 2px;
         overflow: hidden;
-        max-width: calc(100% - 18px);
+        max-width: calc(100% - 16px);
     }
 
     .player-team-logo {
-        width: 11px;
-        height: 11px;
+        width: 10px;
+        height: 10px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -372,7 +368,7 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
-        font-size: 8.5px;
+        font-size: 8px;
     }
 
     .player-cell-right {
@@ -383,6 +379,7 @@ st.markdown(
         color: #ffffff !important;
         flex-shrink: 0;
         margin-left: 2px;
+        font-size: 8px;
     }
 
     .deal-box-single {
