@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE RIPRISTINATO E PULITO VISUALE PORTIERI (ALTEZZE ORIGINALI)
+       STILE PORTIERI (CON CELLE ALLUNGATE A 44px)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -411,9 +411,9 @@ st.markdown(
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 3px;
-        height: 24px;
-        padding: 0 5px;
+        border-radius: 6px;
+        height: 44px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -423,36 +423,36 @@ st.markdown(
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 3px;
-        height: 24px;
-        padding: 0 5px;
+        border-radius: 6px;
+        height: 44px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 9px;
+        font-size: 12px;
         box-sizing: border-box;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 8px;
         overflow: hidden;
-        max-width: calc(100% - 20px);
+        max-width: calc(100% - 30px);
     }
 
     .gk-seriea-logo {
-        width: 14px;
-        height: 14px;
+        width: 20px;
+        height: 20px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8.5px;
+        font-size: 11px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -462,7 +462,7 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 9px;
+        font-size: 13px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -1029,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI RIPRISTINATA (ALTEZZE COMPATTE ORIGINARIE)
+    # VISUALE PORTIERI (CON CELLE ALLUNGATE)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
