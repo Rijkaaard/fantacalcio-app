@@ -242,7 +242,7 @@ st.markdown(
 
     .team-header-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8px; /* RIDOTTO LEGGERMENTE PER SICUREZZA */
+        font-size: 8px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (PROPORZIONATO E CORRETTO)
+       STILE DEDICATO VISUALE PORTIERI
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -367,12 +367,12 @@ st.markdown(
         flex-direction: column;
         align-items: flex-start;
         overflow: hidden;
-        width: calc(100% - 62px); /* RISOLVE IL PROBLEMA DI SBOARDO PER NOMI LUNGHI */
+        width: calc(100% - 62px);
     }
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 13.5px; /* RIDOTTO LEGGERMENTE DA 16px A 13.5px PER EVITARE ROTTURE SU NOMI LUNGHI */
+        font-size: 13.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -471,7 +471,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI
+       STILE DEDICATO VISUALE DIFENSORI (AGGIORNATO)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -484,42 +484,41 @@ st.markdown(
         background: #110a24;
         border: 1.5px solid #3b1660;
         border-radius: 8px;
-        padding: 4px 6px;
+        padding: 5px 6px;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 3px;
+        gap: 4px;
     }
 
     .def-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 4px 6px;
+        padding: 6px 8px;
         border-radius: 5px;
         border: 1px solid #581c87;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .def-header-top {
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 7px;
+        overflow: hidden;
+        width: 100%;
     }
 
     .def-team-logo {
-        width: 21px;
-        height: 21px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .def-header-texts {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        overflow: hidden;
-        width: calc(100% - 26px);
-    }
-
     .def-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 8px; /* RIDOTTO LEGGERMENTE PER SICUREZZA */
+        font-size: 11px; /* AUMENTATO NOTEVOLMENTE COME RICHIESTO */
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -532,10 +531,13 @@ st.markdown(
     }
 
     .def-team-budget {
-        font-size: 7.5px;
+        font-size: 10px;
         font-weight: 800;
-        color: #ffffff;
+        color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        text-align: left;
+        padding-left: 31px; /* Allineato sotto il nome */
+        line-height: 1;
     }
 
     .def-role-title {
@@ -1085,7 +1087,7 @@ def render_board_fragment():
                     f'{logo_fanta_html}'
                     f'<div class="gk-header-texts">'
                     f'<div class="gk-team-name">{s_info["nome"]}</div>'
-                    f'<div class="gk-team-budget">🟡 {rim} Crediti</div>'
+                    f'<div class="gk-team-budget">🟡 {rim}</div>'
                     f'</div>'
                     f'</div>'
                     f'<div class="gk-role-title"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
@@ -1104,7 +1106,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA
+    # VISUALE DIFENSORI DEDICATA (AGGIORNATA CON LOGO, NOME GRANDE E CREDITI SOTTO)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1153,11 +1155,11 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="def-team-card">'
                     f'<div class="def-team-header">'
+                    f'<div class="def-header-top">'
                     f'{logo_fanta_html}'
-                    f'<div class="def-header-texts">'
                     f'<div class="def-team-name">{s_info["nome"]}</div>'
-                    f'<div class="def-team-budget">🟡 {rim} Crediti</div>'
                     f'</div>'
+                    f'<div class="def-team-budget">🟡 {rim}</div>'
                     f'</div>'
                     f'<div class="def-role-title"><span>{pct_str}</span><span>DIFENSORI</span><span>{speso_difensori}</span></div>'
                     f'{"".join(slots_html)}'
