@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE E PORTIERI GIGANTI
+# 🎨 STILE CSS PRINCIPALE E VISUALI GIGANTI
 # ==============================================================================
 st.markdown(
     """
@@ -308,45 +308,45 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 700; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (5 SOPRA, 5 SOTTO - GIGANTE & SPAZIOSO)
+       STILE DEDICATO VISUALI SPECIALI (5 SOPRA, 5 SOTTO - GIGANTE & SPAZIOSO)
        ========================================================================== */
-    .gk-grid-row {
+    .spec-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 20px;
-        margin-bottom: 22px;
+        gap: 16px;
+        margin-bottom: 16px;
     }
 
-    .gk-team-card {
+    .spec-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
-        border-radius: 14px;
-        padding: 14px 16px;
+        border-radius: 12px;
+        padding: 12px 14px;
         box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
     }
 
-    .gk-team-header {
+    .spec-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 12px 14px;
-        border-radius: 10px;
+        padding: 10px 12px;
+        border-radius: 8px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 12px;
     }
 
-    .gk-team-logo {
-        width: 60px;
-        height: 60px;
+    .spec-team-logo {
+        width: 50px;
+        height: 50px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .gk-header-texts {
+    .spec-header-texts {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
@@ -354,8 +354,8 @@ st.markdown(
         width: 100%;
     }
 
-    .gk-team-name {
-        font-size: 17px;
+    .spec-team-name {
+        font-size: 15px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -364,22 +364,30 @@ st.markdown(
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
-    .gk-team-budget {
-        font-size: 14px;
+    .spec-team-budget {
+        font-size: 13px;
         font-weight: 700;
         color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
-    .gk-role-title {
+    .spec-role-title-p {
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 14px;
+    }
+    .spec-role-title-d {
+        background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%);
+        border-top: 1px solid #86efac;
+        border-bottom: 1px solid #052e16;
+    }
+
+    .spec-role-title {
+        font-size: 13px;
         font-weight: 800;
-        padding: 8px 14px;
+        padding: 7px 12px;
         color: #ffffff;
-        border-radius: 8px;
+        border-radius: 7px;
         letter-spacing: 0.8px;
         display: flex;
         justify-content: space-between;
@@ -387,47 +395,53 @@ st.markdown(
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
-    .gk-slot-row {
+    .spec-slot-row-p {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
+    }
+    .spec-slot-row-d {
+        background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important;
+    }
+
+    .spec-slot-row {
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 10px;
-        height: 56px;
-        padding: 0 16px;
+        border-radius: 8px;
+        height: 42px;
+        padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
 
-    .gk-slot-empty {
+    .spec-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 10px;
-        height: 56px;
-        padding: 0 16px;
+        border-radius: 8px;
+        height: 42px;
+        padding: 0 12px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 700;
-        font-size: 14px;
+        font-size: 13px;
     }
 
-    .gk-player-left {
+    .spec-player-left {
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 10px;
         overflow: hidden;
     }
 
-    .gk-seriea-logo {
-        width: 32px;
-        height: 32px;
+    .spec-seriea-logo {
+        width: 26px;
+        height: 26px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
-    .gk-player-name {
-        font-size: 16px;
+    .spec-player-name {
+        font-size: 14px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -435,8 +449,8 @@ st.markdown(
         text-overflow: ellipsis;
     }
 
-    .gk-player-cost {
-        font-size: 18px;
+    .spec-player-cost {
+        font-size: 15px;
         font-weight: 800;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -577,7 +591,7 @@ if not is_tv_mode:
         # Pannello comando selettore visuale TV riservato all'admin
         with st.container(border=True):
             st.markdown('<div class="card-title">📺 COMANDO VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
-            opzioni_visuali = ["Generale", "Portieri"]
+            opzioni_visuali = ["Generale", "Portieri", "Difensori"]
             
             idx_corrente = opzioni_visuali.index(st.session_state.vista_corrente) if st.session_state.vista_corrente in opzioni_visuali else 0
             
@@ -861,8 +875,6 @@ def render_board_fragment():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_corrente
     
-    # Se siamo in modalità TV, usiamo la vista decisa dall'admin. 
-    # Se siamo sull'admin, forziamo sempre la visualizzazione della schermata "Generale".
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
@@ -881,7 +893,7 @@ def render_board_fragment():
                 logo_fanta_html = ""
                 fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
                 if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gk-team-logo" alt="{s_info["codice"]}">'
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="spec-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_p = [a for a in acquisti_sq if a["Ruolo"] == "P"]
                 giocatori_p = sorted(giocatori_p, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
@@ -891,46 +903,117 @@ def render_board_fragment():
                 pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
                 slots_html = []
-                for i in range(3): # 3 portieri
+                for i in range(3):
                     if i < len(giocatori_p):
                         g = giocatori_p[i]
                         nome_g = g["Giocatore"]
                         costo = g["Costo"]
                         sq_sa = g.get("Squadra_SerieA", "")
                         logo_sa_b64 = get_logo_base64_cached(sq_sa)
-                        logo_sa_html = f'<img src="{logo_sa_b64}" class="gk-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="spec-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
                         slots_html.append(
-                            f'<div class="gk-slot-row">'
-                            f'<div class="gk-player-left">'
+                            f'<div class="spec-slot-row spec-slot-row-p">'
+                            f'<div class="spec-player-left">'
                             f'{logo_sa_html}'
-                            f'<span class="gk-player-name">{nome_g}</span>'
+                            f'<span class="spec-player-name">{nome_g}</span>'
                             f'</div>'
-                            f'<div class="gk-player-cost">{costo}</div>'
+                            f'<div class="spec-player-cost">{costo}</div>'
                             f'</div>'
                         )
                     else:
-                        slots_html.append('<div class="gk-slot-empty">-</div>')
+                        slots_html.append('<div class="spec-slot-empty">-</div>')
 
                 cards_html.append(
-                    f'<div class="gk-team-card">'
-                    f'<div class="gk-team-header">'
+                    f'<div class="spec-team-card">'
+                    f'<div class="spec-team-header">'
                     f'{logo_fanta_html}'
-                    f'<div class="gk-header-texts">'
-                    f'<div class="gk-team-name">{s_info["nome"]}</div>'
-                    f'<div class="gk-team-budget">🟡 {rim} Crediti</div>'
+                    f'<div class="spec-header-texts">'
+                    f'<div class="spec-team-name">{s_info["nome"]}</div>'
+                    f'<div class="spec-team-budget">🟡 {rim} Crediti</div>'
                     f'</div>'
                     f'</div>'
-                    f'<div class="gk-role-title"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
+                    f'<div class="spec-role-title spec-role-title-p"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
                     f'{"".join(slots_html)}'
                     f'</div>'
                 )
-            return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
+            return f'<div class="spec-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
             f'<div style="width: 100%; padding-top: 5px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
+            f'</div>',
+            unsafe_allow_html=True
+        )
+        return
+
+    # --------------------------------------------------------------------------
+    # VISUALE DIFENSORI DEDICATA (8 DIFENSORI, 2 FILE DA 5 SQUADRE)
+    # --------------------------------------------------------------------------
+    if vista_effettiva == "Difensori":
+        squadre_sopra = SQUADRE_INFO[:5]
+        squadre_sotto = SQUADRE_INFO[5:]
+
+        def render_def_row(subset_squadre):
+            cards_html = []
+            for s_info in subset_squadre:
+                sq = f"{s_info['nome']} - {s_info['mister']}"
+                rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+                
+                logo_fanta_html = ""
+                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+                if fanta_logo_b64:
+                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="spec-team-logo" alt="{s_info["codice"]}">'
+
+                giocatori_d = [a for a in acquisti_sq if a["Ruolo"] == "D"]
+                giocatori_d = sorted(giocatori_d, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
+
+                speso_difensori = sum(g["Costo"] for g in giocatori_d)
+                pct_budget = round((speso_difensori / BUDGET_INIZIALE) * 100, 1)
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+
+                slots_html = []
+                for i in range(8): # 8 difensori
+                    if i < len(giocatori_d):
+                        g = giocatori_d[i]
+                        nome_g = g["Giocatore"]
+                        costo = g["Costo"]
+                        sq_sa = g.get("Squadra_SerieA", "")
+                        logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                        logo_sa_html = f'<img src="{logo_sa_b64}" class="spec-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+
+                        slots_html.append(
+                            f'<div class="spec-slot-row spec-slot-row-d">'
+                            f'<div class="spec-player-left">'
+                            f'{logo_sa_html}'
+                            f'<span class="spec-player-name">{nome_g}</span>'
+                            f'</div>'
+                            f'<div class="spec-player-cost">{costo}</div>'
+                            f'</div>'
+                        )
+                    else:
+                        slots_html.append('<div class="spec-slot-empty">-</div>')
+
+                cards_html.append(
+                    f'<div class="spec-team-card">'
+                    f'<div class="spec-team-header">'
+                    f'{logo_fanta_html}'
+                    f'<div class="spec-header-texts">'
+                    f'<div class="spec-team-name">{s_info["nome"]}</div>'
+                    f'<div class="spec-team-budget">🟡 {rim} Crediti</div>'
+                    f'</div>'
+                    f'</div>'
+                    f'<div class="spec-role-title spec-role-title-d"><span>{pct_str}</span><span>DIFENSORI</span><span>{speso_difensori}</span></div>'
+                    f'{"".join(slots_html)}'
+                    f'</div>'
+                )
+            return f'<div class="spec-grid-row">{"".join(cards_html)}</div>'
+
+        st.markdown(
+            f'<div style="width: 100%; padding-top: 5px;">'
+            f'{render_def_row(squadre_sopra)}'
+            f'{render_def_row(squadre_sotto)}'
             f'</div>',
             unsafe_allow_html=True
         )
