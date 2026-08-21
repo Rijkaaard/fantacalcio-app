@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (CON FONT GEOMETRICO STILE LOVELO / MONTSERRAT)
+# 🎨 STILE CSS PRINCIPALE
 # ==============================================================================
 st.markdown(
     """
@@ -320,7 +320,7 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI ( SPOSTATO 2px IN ALTO )
+       STILE DEDICATO VISUALE PORTIERI (SPOSTATO 1px IN ALTO)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
@@ -338,7 +338,7 @@ st.markdown(
         display: flex;
         flex-direction: column;
         gap: 13px;
-        transform: translateY(-2px);
+        transform: translateY(-1px);
     }
 
     .gk-team-header {
@@ -461,7 +461,7 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (NOMI E CREDITI ANCORA PIÙ GRANDI)
+       STILE DEDICATO VISUALE DIFENSORI (NOMI E CREDITI PIÙ GRANDI, CELLE INVARIATE)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -1021,7 +1021,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA
+    # VISUALE PORTIERI DEDICATA (SPOSTATA 1px IN ALTO)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1092,7 +1092,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA
+    # VISUALE DIFENSORI DEDICATA (NOMI E CREDITI MAGGIORI, CELLE INVARIATE)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
