@@ -149,19 +149,25 @@ st.markdown(
         margin-bottom: 6px !important;
     }
 
-    /* FORZA CONTENITORE PULSANTI FILTRO COMPATTO */
-    div[data-testid="stButton"] {
-        display: flex !important;
-        justify-content: center !important;
+    /* CONTENITORE COMPATTO FILTRI - AZZERA GAP TRA COLONNE */
+    .compact-filters [data-testid="stHorizontalBlock"] {
+        gap: 3px !important;
+        justify-content: flex-start !important;
     }
 
-    /* BOTTONI CIRCOLARI STRETTI (P, D, C, A) */
+    .compact-filters [data-testid="stColumn"] {
+        flex: 0 0 auto !important;
+        width: auto !important;
+        min-width: unset !important;
+    }
+
+    /* BOTTONI CIRCOLARI ULTRA STRETTI (P, D, C, A) */
     .role-circle-btn button {
         border-radius: 50% !important;
-        width: 28px !important;
-        height: 28px !important;
-        min-width: 28px !important;
-        max-width: 28px !important;
+        width: 26px !important;
+        height: 26px !important;
+        min-width: 26px !important;
+        max-width: 26px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
         font-size: 10px !important;
@@ -171,23 +177,23 @@ st.markdown(
         align-items: center !important;
         justify-content: center !important;
         padding: 0 !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
     }
 
-    /* BOTTONE "TUTTI" COMPATTO CON ANGOLI ARROTONDATI (PILLOLA) */
+    /* BOTTONE "TUTTI" ULTRA COMPATTO (PILLOLA) */
     .role-pill-btn button {
         border-radius: 9999px !important;
-        height: 28px !important;
-        padding: 0 10px !important;
+        height: 26px !important;
+        padding: 0 8px !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 9.5px !important;
+        font-size: 9px !important;
         transition: all 0.2s ease !important;
         box-shadow: none !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
     }
 
     /* STILE BOTTONI INATTIVI (Secondary) */
@@ -570,26 +576,25 @@ def render_control_panel():
         with st.container(border=True):
             st.markdown('<div class="card-title">➕ AGGIUNGI / ASSEGNA CALCIATORE</div>', unsafe_allow_html=True)
 
-            f_col1, f_col2 = st.columns([1.1, 1])
+            f_col1, f_col2 = st.columns([1, 1])
             with f_col1:
-                # LARGHEZZA RIDOTTA E COMPATTA PER I FILTRI RUOLO
-                c_tut, c_p, c_d, c_c, c_a = st.columns([0.8, 0.4, 0.4, 0.4, 0.4])
+                # BLOCCO WRAPPER COMPATTO CON MARGINI AZZERATI
+                st.markdown('<div class="compact-filters">', unsafe_allow_html=True)
+                c_tut, c_p, c_d, c_c, c_a, _ = st.columns([1, 1, 1, 1, 1, 2])
                 curr_r = st.session_state.filtro_ruolo_selezionato
 
-                # BOTTONE TUTTI (Pillola)
                 with c_tut:
                     st.markdown('<div class="role-pill-btn">', unsafe_allow_html=True)
                     type_tut = "primary" if curr_r == "TUTTI" else "secondary"
-                    if st.button("TUTTI", key="btn_r_tutti", type=type_tut, use_container_width=True):
+                    if st.button("TUTTI", key="btn_r_tutti", type=type_tut):
                         st.session_state.filtro_ruolo_selezionato = "TUTTI"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
 
-                # BOTTONI RUOLI (Circolari Stretti)
                 with c_p:
                     st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_p = "primary" if curr_r == "P" else "secondary"
-                    if st.button("P", key="btn_r_p", type=type_p, use_container_width=True):
+                    if st.button("P", key="btn_r_p", type=type_p):
                         st.session_state.filtro_ruolo_selezionato = "P"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -597,7 +602,7 @@ def render_control_panel():
                 with c_d:
                     st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_d = "primary" if curr_r == "D" else "secondary"
-                    if st.button("D", key="btn_r_d", type=type_d, use_container_width=True):
+                    if st.button("D", key="btn_r_d", type=type_d):
                         st.session_state.filtro_ruolo_selezionato = "D"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -605,7 +610,7 @@ def render_control_panel():
                 with c_c:
                     st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_c = "primary" if curr_r == "C" else "secondary"
-                    if st.button("C", key="btn_r_c", type=type_c, use_container_width=True):
+                    if st.button("C", key="btn_r_c", type=type_c):
                         st.session_state.filtro_ruolo_selezionato = "C"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
@@ -613,10 +618,12 @@ def render_control_panel():
                 with c_a:
                     st.markdown('<div class="role-circle-btn">', unsafe_allow_html=True)
                     type_a = "primary" if curr_r == "A" else "secondary"
-                    if st.button("A", key="btn_r_a", type=type_a, use_container_width=True):
+                    if st.button("A", key="btn_r_a", type=type_a):
                         st.session_state.filtro_ruolo_selezionato = "A"
                         st.rerun()
                     st.markdown('</div>', unsafe_allow_html=True)
+
+                st.markdown('</div>', unsafe_allow_html=True)
 
             with f_col2:
                 squadre_sa_list = sorted(df_disponibili["Squadra_SerieA"].dropna().unique().tolist()) if "Squadra_SerieA" in df_disponibili.columns else []
