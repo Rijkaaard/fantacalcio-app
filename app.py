@@ -94,24 +94,26 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (COORDINATO ALL'HEADER)
+# 🎨 STILE CSS - VIOLA DARK CYBERPUNK (DISTACCO BORDI AUMENTATO)
 # ==============================================================================
 st.markdown(
     """
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    /* Sfondo principale: Viola Notte Profondo */
+    /* Sfondo principale */
     html, body, [class*="css"], .stApp {
         background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Inter', sans-serif !important;
     }
 
+    /* AUMENTATO DISTACCO DAI BORDI (PADDING LATERALE E SUPERIORE) */
     .stMainBlockContainer {
-        padding-top: 0.8rem !important;
-        padding-left: 1.5rem !important;
-        padding-right: 1.5rem !important;
+        padding-top: 1.5rem !important;
+        padding-bottom: 2rem !important;
+        padding-left: 3rem !important;  /* Aumentato a 3rem (circa 48px) per lato */
+        padding-right: 3rem !important;
         max-width: 100% !important;
     }
 
@@ -119,6 +121,7 @@ st.markdown(
     [data-testid="stHorizontalBlock"] {
         display: flex !important;
         align-items: stretch !important;
+        gap: 1.5rem !important;
     }
 
     [data-testid="stColumn"] {
@@ -143,7 +146,7 @@ st.markdown(
         background: #110a24 !important;
         border: 1px solid #231342 !important;
         border-radius: 8px !important;
-        padding: 10px 14px 16px 14px !important;
+        padding: 12px 16px 16px 16px !important;
         box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
         margin-bottom: 6px !important;
     }
@@ -160,10 +163,7 @@ st.markdown(
         gap: 6px;
     }
 
-    /* ==========================================================================
-       🎯 STILIZZAZIONE INPUT (SELECT, MULTISELECT, NUMBER INPUT)
-       ========================================================================== */
-    
+    /* Contenitori principali di BaseWeb */
     div[data-baseweb="select"] > div, 
     div[data-baseweb="input"] > div,
     [data-testid="stMultiSelect"] div[data-baseweb="select"] > div,
@@ -203,15 +203,15 @@ st.markdown(
         color: #c084fc !important;
     }
 
-    /* Aumentata leggermente la larghezza minima delle colonne da 120px a 125px */
+    /* GRIGLIA TABELLONE CON MARGINI INTERNI */
     .board-grid {
         display: grid;
-        grid-template-columns: repeat(10, minmax(125px, 1fr));
-        gap: 6px;
+        grid-template-columns: repeat(10, minmax(130px, 1fr));
+        gap: 8px;
         width: 100%;
         overflow-x: auto;
-        padding-bottom: 15px;
-        padding-top: 2px;
+        padding: 10px 4px 20px 4px; /* Aggiunto respiro attorno alla griglia */
+        box-sizing: border-box;
     }
 
     .team-column {
@@ -324,7 +324,6 @@ st.markdown(
         margin-bottom: 4px;
     }
 
-    /* Aumentato il padding laterale da 0 4px a 0 6px per dare respiro al logo */
     .player-cell {
         height: 22px;
         width: 100%;
@@ -336,8 +335,8 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 6px !important;
-        font-size: 9.5px;
+        padding: 0 4px;
+        font-size: 9px;
     }
 
     .player-cell-filled {
@@ -350,18 +349,17 @@ st.markdown(
     .player-cell-c { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; }
     .player-cell-a { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; }
 
-    /* Aumentato max-width e ridotto il gap per evitare sovrapposizioni o tagli del logo */
     .player-cell-left {
         display: flex;
         align-items: center;
-        gap: 4px;
+        gap: 3px;
         overflow: hidden;
-        max-width: 92px;
+        max-width: 100px;
     }
 
     .player-team-logo {
-        width: 12px;
-        height: 12px;
+        width: 11px;
+        height: 11px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -372,6 +370,7 @@ st.markdown(
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 600;
+        font-size: 8.5px;
     }
 
     .player-cell-right {
@@ -380,6 +379,8 @@ st.markdown(
         justify-content: flex-end;
         font-weight: 700;
         color: #ffffff !important;
+        flex-shrink: 0;
+        margin-left: 2px;
     }
 
     .deal-box-single {
@@ -773,7 +774,7 @@ def render_control_panel():
                     item_p2 = peggiori_affari[1] if len(peggiori_affari) > 1 else None
                     st.markdown(render_deal_box(item_p2, "🥈 2° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
                 with col_p3:
-                    item_p3 = peggiori_affari[2] if len(peggiori_affari) > 2 else None
+                    item_p3 = peggiori_affari[2] if len(peggiori_affari) > 0 else None
                     st.markdown(render_deal_box(item_p3, "🥉 3° PEGGIORE", "#ef4444"), unsafe_allow_html=True)
 
     # Colonna Destra: Widget Classifica Crediti
