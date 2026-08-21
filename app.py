@@ -114,7 +114,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE
+# 🎨 STILE CSS PRINCIPALE (CON FONT GEOMETRICO STILE LOVELO / MONTSERRAT)
 # ==============================================================================
 st.markdown(
     """
@@ -320,45 +320,41 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE PORTIERI COMPATTATO E RICALIBRATO (CELLE A 125px)
+       STILE DEDICATO VISUALE PORTIERI ( SPOSTATO 1px IN ALTO )
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 5px;
-        margin-bottom: 4px;
-        width: 100%;
-        box-sizing: border-box;
+        gap: 15px;
+        margin-bottom: 15px;
     }
 
     .gk-team-card {
         background: #110a24;
-        border: 1px solid #3b1660;
-        border-radius: 6px;
-        padding: 2px 3px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+        border: 2px solid #3b1660;
+        border-radius: 12px;
+        padding: 15px 15px;
+        box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 2px;
-        width: 100%;
-        box-sizing: border-box;
+        gap: 13px;
+        transform: translateY(-1px);
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 2px 4px;
-        border-radius: 3px;
+        padding: 13px 13px;
+        border-radius: 8px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 4px;
-        box-sizing: border-box;
+        gap: 13px;
     }
 
     .gk-team-logo {
-        width: 18px;
-        height: 18px;
+        width: 58px;
+        height: 58px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -373,86 +369,82 @@ st.markdown(
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 7.5px;
+        font-size: 16.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         text-transform: uppercase;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
     .gk-team-budget {
-        font-size: 7px;
+        font-size: 14.5px;
         font-weight: 800;
-        color: #facc15;
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        color: #ffffff;
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
     .gk-role-title {
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 7px;
+        font-size: 14.5px;
         font-weight: 900;
-        padding: 1.5px 4px;
+        padding: 9px 13px;
         color: #ffffff;
-        border-radius: 2px;
-        letter-spacing: 0.6px;
+        border-radius: 8px;
+        letter-spacing: 1px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        box-sizing: border-box;
     }
 
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 6px;
-        height: 125px;
-        padding: 0 12px;
+        border-radius: 8px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-sizing: border-box;
     }
 
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 6px;
-        height: 125px;
-        padding: 0 12px;
+        border-radius: 8px;
+        height: 57px;
+        padding: 0 13px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 15px;
-        box-sizing: border-box;
+        font-size: 14.5px;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 11px;
         overflow: hidden;
-        max-width: calc(100% - 40px);
     }
 
     .gk-seriea-logo {
-        width: 24px;
-        height: 24px;
+        width: 31px;
+        height: 31px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 13px;
+        font-size: 15.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -462,14 +454,14 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 15px;
+        font-size: 18.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI
+       STILE DEDICATO VISUALE DIFENSORI (TESTO MAGGIORATO, ALTEZZA INALTERATA)
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -592,7 +584,7 @@ st.markdown(
 
     .def-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 13px;
+        font-size: 11.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -602,7 +594,7 @@ st.markdown(
     }
 
     .def-player-cost {
-        font-size: 15px;
+        font-size: 13.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -910,7 +902,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
@@ -1029,7 +1021,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI (COMPATTATA E RICALIBRATA)
+    # VISUALE PORTIERI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1091,7 +1083,7 @@ def render_board_fragment():
             return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 1px;">'
+            f'<div style="width: 100%; padding-top: 9px; margin-top: -5px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
             f'</div>',
