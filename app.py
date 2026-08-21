@@ -314,14 +314,14 @@ st.markdown(
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 16px;
-        margin-bottom: 20px;
+        margin-bottom: 18px;
     }
 
     .gk-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
         border-radius: 12px;
-        padding: 14px;
+        padding: 12px 14px;
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
         display: flex;
         flex-direction: column;
@@ -330,7 +330,7 @@ st.markdown(
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 10px;
+        padding: 10px 12px;
         border-radius: 8px;
         border: 1px solid #581c87;
         text-align: center;
@@ -340,8 +340,8 @@ st.markdown(
     }
 
     .gk-team-logo {
-        width: 50px;
-        height: 50px;
+        width: 54px;
+        height: 54px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -351,10 +351,11 @@ st.markdown(
         flex-direction: column;
         align-items: flex-start;
         overflow: hidden;
+        width: 100%;
     }
 
     .gk-team-name {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -364,9 +365,9 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 14px;
-        font-weight: 800;
-        color: #facc15;
+        font-size: 13px;
+        font-weight: 700;
+        color: #ffffff;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
@@ -374,21 +375,24 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 12px;
+        font-size: 13px;
         font-weight: 800;
-        padding: 6px 10px;
+        padding: 7px 12px;
         color: #ffffff;
         border-radius: 6px;
-        letter-spacing: 1px;
-        text-align: center;
+        letter-spacing: 0.8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
     }
 
     .gk-slot-row {
-        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%);
+        background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
         border-radius: 8px;
-        height: 44px;
-        padding: 0 12px;
+        height: 48px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -398,32 +402,32 @@ st.markdown(
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
         border-radius: 8px;
-        height: 44px;
-        padding: 0 12px;
+        height: 48px;
+        padding: 0 14px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 700;
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
         overflow: hidden;
     }
 
     .gk-seriea-logo {
-        width: 26px;
-        height: 26px;
+        width: 30px;
+        height: 30px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
-        font-size: 14px;
+        font-size: 15px;
         font-weight: 700;
         color: #ffffff;
         white-space: nowrap;
@@ -432,7 +436,7 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 800;
         color: #facc15;
         flex-shrink: 0;
@@ -569,7 +573,6 @@ def render_control_panel():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_attuale
 
-    # WIDGET SELETTORE VISUALE TV (Così l'Admin decide cosa proiettare sulla TV)
     with st.container(border=True):
         st.markdown('<div class="card-title">📺 SELETTORE VISUALE SCHERMO TV</div>', unsafe_allow_html=True)
         opzioni_visuali = ["Generale", "Portieri", "Difensori", "Centrocampisti", "Attaccanti"]
@@ -877,6 +880,10 @@ def render_board_fragment():
                 giocatori_p = [a for a in acquisti_sq if a["Ruolo"] == "P"]
                 giocatori_p = sorted(giocatori_p, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
+                speso_portieri = sum(g["Costo"] for g in giocatori_p)
+                pct_budget = round((speso_portieri / BUDGET_INIZIALE) * 100, 1)
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+
                 slots_html = []
                 for i in range(3): # 3 portieri
                     if i < len(giocatori_p):
@@ -893,7 +900,7 @@ def render_board_fragment():
                             f'{logo_sa_html}'
                             f'<span class="gk-player-name">{nome_g}</span>'
                             f'</div>'
-                            f'<div class="gk-player-cost">{costo} FM</div>'
+                            f'<div class="gk-player-cost">{costo}</div>'
                             f'</div>'
                         )
                     else:
@@ -908,14 +915,14 @@ def render_board_fragment():
                     f'<div class="gk-team-budget">🟡 {rim} Crediti</div>'
                     f'</div>'
                     f'</div>'
-                    f'<div class="gk-role-title">PORTIERI (3 SLOT)</div>'
+                    f'<div class="gk-role-title"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
                     f'{"".join(slots_html)}'
                     f'</div>'
                 )
             return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 10px;">'
+            f'<div style="width: 100%; padding-top: 5px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
             f'</div>',
