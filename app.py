@@ -160,6 +160,29 @@ st.markdown(
         gap: 6px;
     }
 
+    /* Uniformazione caselle dei form allo stile delle celle vuote */
+    div[data-baseweb="select"] > div, 
+    div[data-baseweb="input"] > div,
+    [data-testid="stMultiSelect"] div[data-baseweb="select"] > div {
+        background: transparent !important;
+        border: 1px solid rgba(192, 132, 252, 0.2) !important;
+        border-radius: 3px !important;
+        color: #ffffff !important;
+        box-sizing: border-box !important;
+    }
+
+    div[data-baseweb="select"] input, 
+    div[data-baseweb="input"] input {
+        color: #ffffff !important;
+    }
+
+    /* Bordo attivo quando si seleziona il campo */
+    div[data-baseweb="select"]:focus-within > div,
+    div[data-baseweb="input"]:focus-within > div {
+        border-color: #c084fc !important;
+        box-shadow: none !important;
+    }
+
     .board-grid {
         display: grid;
         grid-template-columns: repeat(10, minmax(120px, 1fr));
