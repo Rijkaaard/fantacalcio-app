@@ -320,41 +320,45 @@ st.markdown(
     .player-cell-right { display: flex; align-items: center; justify-content: flex-end; font-weight: 800; color: #ffffff !important; flex-shrink: 0; margin-left: 1px; font-size: 8px; }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE PORTIERI (SPOSTATO 1px IN ALTO)
+       STILE CORRETTO VISUALE PORTIERI (GRIGLIA STABILE A 5 COLONNE)
        ========================================================================== */
     .gk-grid-row {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
-        gap: 15px;
-        margin-bottom: 15px;
+        gap: 12px;
+        margin-bottom: 12px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .gk-team-card {
         background: #110a24;
         border: 2px solid #3b1660;
-        border-radius: 12px;
-        padding: 15px 15px;
+        border-radius: 10px;
+        padding: 12px;
         box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 13px;
-        transform: translateY(-1px);
+        gap: 10px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     .gk-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 13px 13px;
-        border-radius: 8px;
+        padding: 10px;
+        border-radius: 6px;
         border: 1px solid #581c87;
         text-align: center;
         display: flex;
         align-items: center;
-        gap: 13px;
+        gap: 10px;
+        box-sizing: border-box;
     }
 
     .gk-team-logo {
-        width: 58px;
-        height: 58px;
+        width: 48px;
+        height: 48px;
         object-fit: contain;
         flex-shrink: 0;
     }
@@ -369,7 +373,7 @@ st.markdown(
 
     .gk-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 16.5px;
+        font-size: 13px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -380,9 +384,9 @@ st.markdown(
     }
 
     .gk-team-budget {
-        font-size: 14.5px;
+        font-size: 12px;
         font-weight: 800;
-        color: #ffffff;
+        color: #facc15;
         text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
     }
 
@@ -390,61 +394,65 @@ st.markdown(
         background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%);
         border-top: 1px solid #fcd34d;
         border-bottom: 1px solid #451a03;
-        font-size: 14.5px;
+        font-size: 11px;
         font-weight: 900;
-        padding: 9px 13px;
+        padding: 6px 10px;
         color: #ffffff;
-        border-radius: 8px;
+        border-radius: 6px;
         letter-spacing: 1px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+        box-sizing: border-box;
     }
 
     .gk-slot-row {
         background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important;
         border: 1px solid rgba(0, 0, 0, 0.6);
-        border-radius: 8px;
-        height: 57px;
-        padding: 0 13px;
+        border-radius: 6px;
+        height: 44px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
+        box-sizing: border-box;
     }
 
     .gk-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 8px;
-        height: 57px;
-        padding: 0 13px;
+        border-radius: 6px;
+        height: 44px;
+        padding: 0 10px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 14.5px;
+        font-size: 12px;
+        box-sizing: border-box;
     }
 
     .gk-player-left {
         display: flex;
         align-items: center;
-        gap: 11px;
+        gap: 8px;
         overflow: hidden;
+        max-width: calc(100% - 35px);
     }
 
     .gk-seriea-logo {
-        width: 31px;
-        height: 31px;
+        width: 24px;
+        height: 24px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gk-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 15.5px;
+        font-size: 12px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -454,14 +462,14 @@ st.markdown(
     }
 
     .gk-player-cost {
-        font-size: 18.5px;
+        font-size: 14px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE DIFENSORI (NOMI E CREDITI PIÙ GRANDI, CELLE INVARIATE)
+       STILE DEDICATO VISUALE DIFENSORI
        ========================================================================== */
     .def-grid-row {
         display: grid;
@@ -1021,7 +1029,7 @@ def render_board_fragment():
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
-    # VISUALE PORTIERI DEDICATA (SPOSTATA 1px IN ALTO)
+    # VISUALE PORTIERI CORRETTA (GRIGLIA PULITA A 5 COLONNE)
     # --------------------------------------------------------------------------
     if vista_effettiva == "Portieri":
         squadre_sopra = SQUADRE_INFO[:5]
@@ -1083,7 +1091,7 @@ def render_board_fragment():
             return f'<div class="gk-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 9px; margin-top: -5px;">'
+            f'<div style="width: 100%; padding-top: 5px;">'
             f'{render_gk_row(squadre_sopra)}'
             f'{render_gk_row(squadre_sotto)}'
             f'</div>',
@@ -1092,7 +1100,7 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE DIFENSORI DEDICATA (NOMI E CREDITI MAGGIORI, CELLE INVARIATE)
+    # VISUALE DIFENSORI DEDICATA
     # --------------------------------------------------------------------------
     if vista_effettiva == "Difensori":
         squadre_sopra = SQUADRE_INFO[:5]
