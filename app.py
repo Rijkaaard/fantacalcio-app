@@ -724,7 +724,7 @@ if not is_tv_mode:
 
             peggiori_affari = sorted(
                 [a for a in acquisti_validi if (a["Prezzo_Medio"] - a["Costo"]) < 0],
-                key=lambda x: (x["Prezzo_Medio"] - a["Costo"])
+                key=lambda x: (x["Prezzo_Medio"] - x["Costo"])
             )[:3]
 
             def render_deal_box(deal_data, label_rank, price_color):
