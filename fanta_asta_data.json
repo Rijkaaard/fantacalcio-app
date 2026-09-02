@@ -1,0 +1,18 @@
+[
+  {
+    "Giocatore": "Abankwah",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 10,
+    "Squadra_SerieA": "UDI",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Aboukhlal",
+    "Ruolo": "C",
+    "Costo": 1,
+    "Prezzo_Medio": 5,
+    "Squadra_SerieA": "TOR",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  }
+]
