@@ -15,7 +15,7 @@ SQUADRE_INFO = [
     {"nome": "FC NUTELLOSI", "mister": "ALE", "codice": "NUT"},
     {"nome": "KIM JONG UNITED", "mister": "FEDA", "codice": "KIM"},
     {"nome": "PD - PERDENTI DEMOCRATICI", "mister": "LALLI", "codice": "PD"},
-    {"nome": "COMABBIO CAPITALE FC", "mister": "ANNU", "codice": "COM"},
+    {"nome": "COMABBIO CAPITALE FC", "mister": "ANNU", "codice": "CO"},
 ]
 
 FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
