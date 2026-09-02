@@ -158,5 +158,461 @@
     "Prezzo_Medio": 5,
     "Squadra_SerieA": "NAP",
     "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Pompei",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 1,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Stones",
+    "Ruolo": "D",
+    "Costo": 13,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Di Lorenzo",
+    "Ruolo": "D",
+    "Costo": 25,
+    "Prezzo_Medio": 39,
+    "Squadra_SerieA": "NAP",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Valeri",
+    "Ruolo": "D",
+    "Costo": 20,
+    "Prezzo_Medio": 22,
+    "Squadra_SerieA": "PAR",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Dimarco",
+    "Ruolo": "D",
+    "Costo": 100,
+    "Prezzo_Medio": 240,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Wesley",
+    "Ruolo": "D",
+    "Costo": 90,
+    "Prezzo_Medio": 87,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Akanji",
+    "Ruolo": "D",
+    "Costo": 36,
+    "Prezzo_Medio": 47,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Mancini",
+    "Ruolo": "D",
+    "Costo": 47,
+    "Prezzo_Medio": 50,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Bastoni",
+    "Ruolo": "D",
+    "Costo": 39,
+    "Prezzo_Medio": 43,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Zappacosta",
+    "Ruolo": "D",
+    "Costo": 21,
+    "Prezzo_Medio": 19,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Kalulu",
+    "Ruolo": "D",
+    "Costo": 20,
+    "Prezzo_Medio": 47,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Bremer",
+    "Ruolo": "D",
+    "Costo": 33,
+    "Prezzo_Medio": 60,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "N'Dicka",
+    "Ruolo": "D",
+    "Costo": 30,
+    "Prezzo_Medio": 42,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Bisseck",
+    "Ruolo": "D",
+    "Costo": 31,
+    "Prezzo_Medio": 36,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Doig",
+    "Ruolo": "D",
+    "Costo": 18,
+    "Prezzo_Medio": 10,
+    "Squadra_SerieA": "SAS",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Dodò",
+    "Ruolo": "D",
+    "Costo": 13,
+    "Prezzo_Medio": 20,
+    "Squadra_SerieA": "FIO",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Cambiaso",
+    "Ruolo": "D",
+    "Costo": 7,
+    "Prezzo_Medio": 18,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Mangas",
+    "Ruolo": "D",
+    "Costo": 6,
+    "Prezzo_Medio": 15,
+    "Squadra_SerieA": "MON",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Floriani Mussolini",
+    "Ruolo": "D",
+    "Costo": 2,
+    "Prezzo_Medio": 10,
+    "Squadra_SerieA": "LAZ",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Rrahmani",
+    "Ruolo": "D",
+    "Costo": 12,
+    "Prezzo_Medio": 51,
+    "Squadra_SerieA": "NAP",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Obrador",
+    "Ruolo": "D",
+    "Costo": 10,
+    "Prezzo_Medio": 13,
+    "Squadra_SerieA": "SAS",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Jimenez A.",
+    "Ruolo": "D",
+    "Costo": 8,
+    "Prezzo_Medio": 18,
+    "Squadra_SerieA": "FIO",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Couto",
+    "Ruolo": "D",
+    "Costo": 9,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Molina N.",
+    "Ruolo": "D",
+    "Costo": 35,
+    "Prezzo_Medio": 78,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Ostigard",
+    "Ruolo": "D",
+    "Costo": 21,
+    "Prezzo_Medio": 41,
+    "Squadra_SerieA": "GEN",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Comuzzo",
+    "Ruolo": "D",
+    "Costo": 12,
+    "Prezzo_Medio": 13,
+    "Squadra_SerieA": "TOR",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Gila",
+    "Ruolo": "D",
+    "Costo": 47,
+    "Prezzo_Medio": 31,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Bartesaghi",
+    "Ruolo": "D",
+    "Costo": 14,
+    "Prezzo_Medio": 22,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Lucumì",
+    "Ruolo": "D",
+    "Costo": 5,
+    "Prezzo_Medio": 17,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Celik",
+    "Ruolo": "D",
+    "Costo": 9,
+    "Prezzo_Medio": 16,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Spinazzola",
+    "Ruolo": "D",
+    "Costo": 10,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "NAP",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Scalvini",
+    "Ruolo": "D",
+    "Costo": 9,
+    "Prezzo_Medio": 28,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Spence",
+    "Ruolo": "D",
+    "Costo": 6,
+    "Prezzo_Medio": 37,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Pavlovic",
+    "Ruolo": "D",
+    "Costo": 39,
+    "Prezzo_Medio": 49,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Ramon",
+    "Ruolo": "D",
+    "Costo": 20,
+    "Prezzo_Medio": 31,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Kelly L.",
+    "Ruolo": "D",
+    "Costo": 5,
+    "Prezzo_Medio": 12,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Bernasconi",
+    "Ruolo": "D",
+    "Costo": 7,
+    "Prezzo_Medio": 18,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Solet",
+    "Ruolo": "D",
+    "Costo": 41,
+    "Prezzo_Medio": 46,
+    "Squadra_SerieA": "UDI",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Miranda J.",
+    "Ruolo": "D",
+    "Costo": 4,
+    "Prezzo_Medio": 23,
+    "Squadra_SerieA": "BOL",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Tavares N.",
+    "Ruolo": "D",
+    "Costo": 15,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "LAZ",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Gatti",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 10,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Kempf",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 13,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Chalobah T.",
+    "Ruolo": "D",
+    "Costo": 20,
+    "Prezzo_Medio": 32,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Vojvoda",
+    "Ruolo": "D",
+    "Costo": 9,
+    "Prezzo_Medio": 19,
+    "Squadra_SerieA": "UDI",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Dragusin",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 20,
+    "Squadra_SerieA": "FIO",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Kamara H.",
+    "Ruolo": "D",
+    "Costo": 6,
+    "Prezzo_Medio": 12,
+    "Squadra_SerieA": "UDI",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Bellanova",
+    "Ruolo": "D",
+    "Costo": 3,
+    "Prezzo_Medio": 17,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Bracaglia",
+    "Ruolo": "D",
+    "Costo": 5,
+    "Prezzo_Medio": 15,
+    "Squadra_SerieA": "FRO",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Gabbia",
+    "Ruolo": "D",
+    "Costo": 5,
+    "Prezzo_Medio": 15,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Hermoso",
+    "Ruolo": "D",
+    "Costo": 11,
+    "Prezzo_Medio": 26,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Koulierakis",
+    "Ruolo": "D",
+    "Costo": 3,
+    "Prezzo_Medio": 15,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Belghali",
+    "Ruolo": "D",
+    "Costo": 5,
+    "Prezzo_Medio": 20,
+    "Squadra_SerieA": "TOR",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Correia T.",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 12,
+    "Squadra_SerieA": "VEN",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "De Winter",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 20,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Valdepenas",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 16,
+    "Squadra_SerieA": "FIO",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Tiago Gabriel",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 20,
+    "Squadra_SerieA": "LEC",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Holm",
+    "Ruolo": "D",
+    "Costo": 1,
+    "Prezzo_Medio": 13,
+    "Squadra_SerieA": "BOL",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
   }
 ]
