@@ -116,7 +116,7 @@ if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 8 SQUADRE)
+# 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 8 SQUADRE IN STESSA RIGA + NO SCROLL)
 # ==============================================================================
 st.markdown(
     """
@@ -127,13 +127,15 @@ st.markdown(
         background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Montserrat', sans-serif !important;
+        overflow: hidden !important;
+        height: 100vh !important;
     }
 
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         max-width: 100% !important;
     }
 
@@ -198,61 +200,60 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE (8 COLONNE)
+       STILE DEDICATO VISUALE GENERALE (8 COLONNE SULLA STESSA RIGA)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 10px;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 6px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gen-team-card {
         background: #110a24;
-        border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 8px 10px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+        border: 1px solid #3b1660;
+        border-radius: 6px;
+        padding: 4px 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
         box-sizing: border-box;
         min-width: 0;
     }
 
     .gen-team-header {
         background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 8px;
-        border-radius: 5px;
+        padding: 0 4px;
+        border-radius: 4px;
         border: 1px solid #581c87;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 6px;
-        height: 38px;
+        gap: 4px;
+        height: 28px;
         box-sizing: border-box;
     }
 
     .gen-header-left {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         overflow: hidden;
         flex-grow: 1;
     }
 
     .gen-team-logo {
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px;
+        font-size: 8.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -264,7 +265,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 11px;
+        font-size: 9px;
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -273,21 +274,21 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 9px;
+        font-size: 7.5px;
         font-weight: 900;
-        padding: 2px 6px;
+        padding: 1px 4px;
         color: #ffffff;
-        border-radius: 3px;
-        letter-spacing: 0.3px;
+        border-radius: 2px;
+        letter-spacing: 0.2px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 20px;
+        height: 15px;
         box-sizing: border-box;
-        margin-top: 2px;
-        margin-bottom: 2px;
+        margin-top: 1px;
+        margin-bottom: 1px;
     }
     .gen-role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
     .gen-role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
@@ -295,14 +296,14 @@ st.markdown(
     .gen-role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
     .gen-slot-row {
-        border-radius: 3px;
-        height: 26px;
-        padding: 0 6px;
+        border-radius: 2px;
+        height: 18px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        margin: 2px 0;
+        margin: 1px 0;
         border: 1px solid rgba(0, 0, 0, 0.5);
     }
     .gen-slot-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
@@ -313,37 +314,37 @@ st.markdown(
     .gen-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 3px;
-        height: 26px;
-        padding: 0 6px;
+        border-radius: 2px;
+        height: 18px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 10px;
+        font-size: 8px;
         box-sizing: border-box;
-        margin: 2px 0;
+        margin: 1px 0;
     }
 
     .gen-player-left {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         overflow: hidden;
-        max-width: calc(100% - 20px);
+        max-width: calc(100% - 16px);
     }
 
     .gen-seriea-logo {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10px;
+        font-size: 8.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -354,7 +355,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 10px;
+        font-size: 8.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -522,18 +523,13 @@ def get_logo_base64_cached(squadra):
         return ""
     sq_str = str(squadra).strip().upper()
     
-    # 1. Controlla se la squadra ha un codice esatto nella mappa (es. "PD - PERDENTI DEMOCRATICI" -> "PD" o "COMABBIO CAPITALE FC" -> "CO")
     codice = MAPPA_CODICI_LOGHI.get(sq_str)
-    
-    # 2. Se non è nella mappa, prova a prendere le prime 3 lettere come regola generale (es. MILAN -> MIL)
     if not codice:
         codice = sq_str[:3]
         
-    # 3. Cerca il file corrispondente al codice nella cache globale dei loghi
     if codice in ALL_LOGOS:
         return ALL_LOGOS[codice]
         
-    # 4. Fallback di sicurezza: prova a cercare direttamente il nome intero o il codice nei loghi caricati
     if sq_str in ALL_LOGOS:
         return ALL_LOGOS[sq_str]
         
@@ -1139,75 +1135,69 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE (8 SQUADRE DIVISE IN 2 RIGHE DA 4)
+    # VISUALE GENERALE (TUTTE LE 8 SQUADRE SULLA STESSA RIGA)
     # --------------------------------------------------------------------------
-    squadre_sopra = SQUADRE_INFO[:4]
-    squadre_sotto = SQUADRE_INFO[4:]
+    cards_html = []
+    for s_info in SQUADRE_INFO:
+        sq = f"{s_info['nome']} - {s_info['mister']}"
+        rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+        
+        logo_fanta_html = ""
+        fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+        if fanta_logo_b64:
+            logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
 
-    def render_gen_grid(subset_squadre):
-        cards_html = []
-        for s_info in subset_squadre:
-            sq = f"{s_info['nome']} - {s_info['mister']}"
-            rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+        card_slots_html = []
+        for ruolo, num_slots in SLOTS.items():
+            role_class_css = f"gen-role-{ruolo.lower()}"
+            slot_class_css = f"gen-slot-{ruolo.lower()}"
             
-            logo_fanta_html = ""
-            fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-            if fanta_logo_b64:
-                logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
+            giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
+            giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
-            card_slots_html = []
-            for ruolo, num_slots in SLOTS.items():
-                role_class_css = f"gen-role-{ruolo.lower()}"
-                slot_class_css = f"gen-slot-{ruolo.lower()}"
-                
-                giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
-                giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
+            speso_ruolo = sum(g["Costo"] for g in giocatori_r)
+            pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
+            pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
-                speso_ruolo = sum(g["Costo"] for g in giocatori_r)
-                pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+            card_slots_html.append(f'<div class="gen-role-title {role_class_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
 
-                card_slots_html.append(f'<div class="gen-role-title {role_class_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
+            for i in range(num_slots):
+                if i < len(giocatori_r):
+                    g = giocatori_r[i]
+                    nome_g = g["Giocatore"]
+                    costo = g["Costo"]
+                    sq_sa = g.get("Squadra_SerieA", "")
+                    logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                    logo_sa_html = f'<img src="{logo_sa_b64}" class="gen-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
-                for i in range(num_slots):
-                    if i < len(giocatori_r):
-                        g = giocatori_r[i]
-                        nome_g = g["Giocatore"]
-                        costo = g["Costo"]
-                        sq_sa = g.get("Squadra_SerieA", "")
-                        logo_sa_b64 = get_logo_base64_cached(sq_sa)
-                        logo_sa_html = f'<img src="{logo_sa_b64}" class="gen-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+                    card_slots_html.append(
+                        f'<div class="gen-slot-row {slot_class_css}">'
+                        f'<div class="gen-player-left">'
+                        f'{logo_sa_html}'
+                        f'<span class="gen-player-name">{nome_g}</span>'
+                        f'</div>'
+                        f'<div class="gen-player-cost">{costo}</div>'
+                        f'</div>'
+                    )
+                else:
+                    card_slots_html.append('<div class="gen-slot-empty">-</div>')
 
-                        card_slots_html.append(
-                            f'<div class="gen-slot-row {slot_class_css}">'
-                            f'<div class="gen-player-left">'
-                            f'{logo_sa_html}'
-                            f'<span class="gen-player-name">{nome_g}</span>'
-                            f'</div>'
-                            f'<div class="gen-player-cost">{costo}</div>'
-                            f'</div>'
-                        )
-                    else:
-                        card_slots_html.append('<div class="gen-slot-empty">-</div>')
-
-            cards_html.append(
-                f'<div class="gen-team-card">'
-                f'<div class="gen-team-header">'
-                f'<div class="gen-header-left">'
-                f'{logo_fanta_html}'
-                f'<div class="gen-team-name">{s_info["nome"]}</div>'
-                f'</div>'
-                f'<div class="gen-team-budget">🟡 {rim}</div>'
-                f'</div>'
-                f'{"".join(card_slots_html)}'
-                f'</div>'
-            )
-        return f'<div class="gen-grid-row">{"".join(cards_html)}</div>'
+        cards_html.append(
+            f'<div class="gen-team-card">'
+            f'<div class="gen-team-header">'
+            f'<div class="gen-header-left">'
+            f'{logo_fanta_html}'
+            f'<div class="gen-team-name">{s_info["nome"]}</div>'
+            f'</div>'
+            f'<div class="gen-team-budget">🟡 {rim}</div>'
+            f'</div>'
+            f'{"".join(card_slots_html)}'
+            f'</div>'
+        )
 
     st.markdown(
-        f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
-        f'{render_gen_grid(squadre_sopra)}'
-        f'{render_gen_grid(squadre_sotto)}'
+        f'<div style="width: 100%; overflow: hidden;">'
+        f'<div class="gen-grid-row">{"".join(cards_html)}</div>'
         f'</div>',
         unsafe_allow_html=True
     )
