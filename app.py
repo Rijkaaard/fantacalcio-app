@@ -8,14 +8,14 @@ import streamlit as st
 # ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI
 # ==============================================================================
 SQUADRE_INFO = [
-    {"nome": "SQUADRA 1", "mister": "MISTER 1", "codice": "SQ1"},
-    {"nome": "SQUADRA 2", "mister": "MISTER 2", "codice": "SQ2"},
-    {"nome": "SQUADRA 3", "mister": "MISTER 3", "codice": "SQ3"},
-    {"nome": "SQUADRA 4", "mister": "MISTER 4", "codice": "SQ4"},
-    {"nome": "SQUADRA 5", "mister": "MISTER 5", "codice": "SQ5"},
-    {"nome": "SQUADRA 6", "mister": "MISTER 6", "codice": "SQ6"},
-    {"nome": "SQUADRA 7", "mister": "MISTER 7", "codice": "SQ7"},
-    {"nome": "SQUADRA 8", "mister": "MISTER 8", "codice": "SQ8"},
+    {"nome": "INPSWICH DOWN", "mister": "LOLLO", "codice": "INP"},
+    {"nome": "AC HEWU", "mister": "DAVIDE", "codice": "ACH"},
+    {"nome": "ANNA FRANKFURT", "mister": "PAOLO", "codice": "ANN"},
+    {"nome": "FC ETTANERA", "mister": "ANDREA", "codice": "ETT"},
+    {"nome": "FC NUTELLOSI", "mister": "ALE", "codice": "NUT"},
+    {"nome": "KIM JONG UNITED", "mister": "FEDA", "codice": "KIM"},
+    {"nome": "PD - PERDENTI DEMOCRATICI", "mister": "LALLI", "codice": "PD"},
+    {"nome": "COMABBIO CAPITALE FC", "mister": "ANNU", "codice": "COM"},
 ]
 
 FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
