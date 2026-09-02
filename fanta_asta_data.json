@@ -1,18 +1,162 @@
 [
   {
-    "Giocatore": "Abankwah",
-    "Ruolo": "D",
-    "Costo": 1,
-    "Prezzo_Medio": 10,
-    "Squadra_SerieA": "UDI",
+    "Giocatore": "Martinez Jo.",
+    "Ruolo": "P",
+    "Costo": 24,
+    "Prezzo_Medio": 68,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Carnesecchi",
+    "Ruolo": "P",
+    "Costo": 30,
+    "Prezzo_Medio": 55,
+    "Squadra_SerieA": "ATA",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Svilar",
+    "Ruolo": "P",
+    "Costo": 59,
+    "Prezzo_Medio": 85,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Provedel",
+    "Ruolo": "P",
+    "Costo": 10,
+    "Prezzo_Medio": 5,
+    "Squadra_SerieA": "INT",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Vicario",
+    "Ruolo": "P",
+    "Costo": 61,
+    "Prezzo_Medio": 70,
+    "Squadra_SerieA": "JUV",
     "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
   },
   {
-    "Giocatore": "Aboukhlal",
-    "Ruolo": "C",
-    "Costo": 1,
-    "Prezzo_Medio": 5,
+    "Giocatore": "Butez",
+    "Ruolo": "P",
+    "Costo": 50,
+    "Prezzo_Medio": 50,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Meret",
+    "Ruolo": "P",
+    "Costo": 20,
+    "Prezzo_Medio": 48,
+    "Squadra_SerieA": "NAP",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Stankovic F.",
+    "Ruolo": "P",
+    "Costo": 21,
+    "Prezzo_Medio": 11,
+    "Squadra_SerieA": "VEN",
+    "Squadra_Fanta": "KIM JONG UNITED - FEDA"
+  },
+  {
+    "Giocatore": "Maignan",
+    "Ruolo": "P",
+    "Costo": 31,
+    "Prezzo_Medio": 52,
+    "Squadra_SerieA": "MIL",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "Perri",
+    "Ruolo": "P",
+    "Costo": 10,
+    "Prezzo_Medio": 26,
     "Squadra_SerieA": "TOR",
     "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Mandas",
+    "Ruolo": "P",
+    "Costo": 20,
+    "Prezzo_Medio": 36,
+    "Squadra_SerieA": "LAZ",
+    "Squadra_Fanta": "AC HEWU - DAVIDE"
+  },
+  {
+    "Giocatore": "Muric",
+    "Ruolo": "P",
+    "Costo": 3,
+    "Prezzo_Medio": 15,
+    "Squadra_SerieA": "SAS",
+    "Squadra_Fanta": "COMABBIO CAPITALE FC - ANNU"
+  },
+  {
+    "Giocatore": "De Gea",
+    "Ruolo": "P",
+    "Costo": 4,
+    "Prezzo_Medio": 30,
+    "Squadra_SerieA": "FIO",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Gollini",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 1,
+    "Squadra_SerieA": "ROM",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Sanchez Ro.",
+    "Ruolo": "P",
+    "Costo": 10,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "COM",
+    "Squadra_Fanta": "PD - PERDENTI DEMOCRATICI - LALLI"
+  },
+  {
+    "Giocatore": "Grabara",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 1,
+    "Squadra_SerieA": "JUV",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Caprile",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 25,
+    "Squadra_SerieA": "CAG",
+    "Squadra_Fanta": "INPSWICH DOWN - LOLLO"
+  },
+  {
+    "Giocatore": "Falcone",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 26,
+    "Squadra_SerieA": "LEC",
+    "Squadra_Fanta": "FC NUTELLOSI - ALE"
+  },
+  {
+    "Giocatore": "Okoye",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 28,
+    "Squadra_SerieA": "UDI",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
+  },
+  {
+    "Giocatore": "Milinkovic-Savic V.",
+    "Ruolo": "P",
+    "Costo": 1,
+    "Prezzo_Medio": 5,
+    "Squadra_SerieA": "NAP",
+    "Squadra_Fanta": "FC ETTANERA - ANDREA"
   }
 ]
