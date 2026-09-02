@@ -24,6 +24,10 @@ TOTALE_SLOTS = sum(SLOTS.values())
 BUDGET_INIZIALE = 1000
 
 MAPPA_CODICI_LOGHI = {
+    # Eccezioni specifiche richieste
+    "PD - PERDENTI DEMOCRATICI": "PD",
+    "COMABBIO CAPITALE FC": "CO",
+    # Squadre di Serie A standard
     "ATALANTA": "ATA", "BOLOGNA": "BOL", "CAGLIARI": "CAG", "COMO": "COM",
     "EMPOLI": "EMP", "FIORENTINA": "FIO", "GENOA": "GEN", "INTER": "INT",
     "JUVENTUS": "JUV", "LAZIO": "LAZ", "LECCE": "LEC", "MILAN": "MIL",
@@ -517,12 +521,22 @@ def get_logo_base64_cached(squadra):
     if not squadra or pd.isna(squadra):
         return ""
     sq_str = str(squadra).strip().upper()
-    codice = MAPPA_CODICI_LOGHI.get(sq_str, sq_str)
     
+    # 1. Controlla se la squadra ha un codice esatto nella mappa (es. "PD - PERDENTI DEMOCRATICI" -> "PD" o "COMABBIO CAPITALE FC" -> "CO")
+    codice = MAPPA_CODICI_LOGHI.get(sq_str)
+    
+    # 2. Se non è nella mappa, prova a prendere le prime 3 lettere come regola generale (es. MILAN -> MIL)
+    if not codice:
+        codice = sq_str[:3]
+        
+    # 3. Cerca il file corrispondente al codice nella cache globale dei loghi
     if codice in ALL_LOGOS:
         return ALL_LOGOS[codice]
+        
+    # 4. Fallback di sicurezza: prova a cercare direttamente il nome intero o il codice nei loghi caricati
     if sq_str in ALL_LOGOS:
         return ALL_LOGOS[sq_str]
+        
     return ""
 
 df_listone = load_data("fantalab_listone.csv")
