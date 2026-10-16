@@ -1,23 +1,22 @@
 import base64
 import json
 import os
-import time
 import pandas as pd
 import streamlit as st
 
 # ==============================================================================
-# ⚙️ CONFIGURAZIONE SQUADRE ED ELEMENTI (RIDOTTE A 6)
+# ⚙️ CONFIGURAZIONE SQUADRE (SOLO NOMI)
 # ==============================================================================
 SQUADRE_INFO = [
-    {"nome": "INPSWICH DOWN", "mister": "LOLLO", "codice": "INP"},
-    {"nome": "AC HEWU", "mister": "DAVIDE", "codice": "ACH"},
-    {"nome": "ANNA FRANKFURT", "mister": "PAOLO", "codice": "ANN"},
-    {"nome": "FC ETTANERA", "mister": "ANDREA", "codice": "ETT"},
-    {"nome": "FC NUTELLOSI", "mister": "ALE", "codice": "NUT"},
-    {"nome": "KIM JONG UNITED", "mister": "FEDA", "codice": "KIM"},
+    {"nome": "TAVERNA"},
+    {"nome": "PAONNI"},
+    {"nome": "D'AGOSTINO"},
+    {"nome": "NORDIO"},
+    {"nome": "HURLE"},
+    {"nome": "SILLI"},
 ]
 
-FANTASQUADRE = [f"{s['nome']} - {s['mister']}" for s in SQUADRE_INFO]
+FANTASQUADRE = [s['nome'] for s in SQUADRE_INFO]
 SLOTS = {"P": 3, "D": 8, "C": 8, "A": 6}
 TOTALE_SLOTS = sum(SLOTS.values())
 BUDGET_INIZIALE = 1000
@@ -31,8 +30,6 @@ MAPPA_CODICI_LOGHI = {
     "SPEZIA": "SPE", "TORINO": "TOR", "UDINESE": "UDI", "VENEZIA": "VEN",
     "VERONA": "VER",
 }
-
-MAPPA_NOME_CODICE_FANTA = {s['nome']: s['codice'] for s in SQUADRE_INFO}
 
 query_params = st.query_params
 is_tv_mode = query_params.get("vista") == "tv"
@@ -109,9 +106,6 @@ if "acquisti" not in st.session_state or "vista_corrente" not in st.session_stat
 
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
-
-if "temp_view_until" not in st.session_state:
-    st.session_state.temp_view_until = 0
 
 # ==============================================================================
 # 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 6 SQUADRE IN STESSA RIGA + NO SCROLL)
@@ -223,7 +217,7 @@ st.markdown(
 
     .gen-team-header {
         background: #1b1035;
-        padding: 0 6px;
+        padding: 0 8px;
         border-radius: 4px;
         border: 1px solid #581c87;
         display: flex;
@@ -234,24 +228,9 @@ st.markdown(
         box-sizing: border-box;
     }
 
-    .gen-header-left {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        overflow: hidden;
-        flex-grow: 1;
-    }
-
-    .gen-team-logo {
-        width: 20px;
-        height: 20px;
-        object-fit: contain;
-        flex-shrink: 0;
-    }
-
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10px;
+        font-size: 10.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -358,113 +337,12 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILI VISUALE SINGOLA SQUADRA (SCHERMATA INTERA)
-       ========================================================================== */
-    .single-team-full-container {
-        background: #110a24;
-        border: 2px solid #581c87;
-        border-radius: 12px;
-        padding: 20px 25px;
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .single-team-big-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        background: #1b1035;
-        border: 1px solid #7e22ce;
-        border-radius: 10px;
-        padding: 12px 18px;
-        margin-bottom: 15px;
-    }
-    .single-team-big-title-area {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-    .single-team-big-logo {
-        width: 50px;
-        height: 50px;
-        object-fit: contain;
-    }
-    .single-team-big-name {
-        font-size: 24px;
-        font-weight: 900;
-        color: #ffffff;
-        text-transform: uppercase;
-        margin: 0;
-    }
-    .single-team-big-mister {
-        font-size: 13px;
-        font-weight: 700;
-        color: #c084fc;
-        margin: 0;
-    }
-    .single-team-big-budget {
-        font-size: 24px;
-        font-weight: 900;
-        color: #facc15;
-    }
-    .single-roles-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 15px;
-    }
-    .single-role-col {
-        background: #0d061c;
-        border: 1px solid #28144d;
-        border-radius: 8px;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-    .single-role-header {
-        font-size: 12px;
-        font-weight: 900;
-        padding: 5px 8px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        display: flex;
-        justify-content: space-between;
-        color: #fff;
-    }
-    .single-player-row {
-        background: #170d30;
-        border: 1px solid #321a5c;
-        border-radius: 5px;
-        height: 30px;
-        padding: 0 8px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        font-size: 11px;
-        font-weight: 800;
-    }
-    .single-player-empty {
-        background: #130a24;
-        border: 1px dashed rgba(192, 132, 252, 0.2);
-        border-radius: 5px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #4a287a;
-        font-size: 10px;
-        font-weight: 700;
-    }
-
-    /* ==========================================================================
        STILI ALTRE VISUALI (3 COLONNE PER 6 SQUADRE)
        ========================================================================== */
     .gk-grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
     .gk-team-card { background: #110a24; border: 2px solid #3b1660; border-radius: 12px; padding: 18px 15px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 14px; height: 380px; box-sizing: border-box; }
-    .gk-team-header { background: #1b1035; padding: 12px 14px; border-radius: 8px; border: 1px solid #581c87; text-align: center; display: flex; align-items: center; gap: 12px; height: 85px; box-sizing: border-box; }
-    .gk-team-logo { width: 50px; height: 50px; object-fit: contain; flex-shrink: 0; }
-    .gk-header-texts { display: flex; flex-direction: column; align-items: flex-start; overflow: hidden; width: calc(100% - 62px); }
-    .gk-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; width: 100%; text-align: left; }
+    .gk-team-header { background: #1b1035; padding: 12px 14px; border-radius: 8px; border: 1px solid #581c87; text-align: center; display: flex; align-items: center; justify-content: space-between; height: 85px; box-sizing: border-box; }
+    .gk-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 15px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-align: left; }
     .gk-team-budget { font-size: 14px; font-weight: 800; color: #facc15; }
     .gk-role-title { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; font-size: 14px; font-weight: 900; padding: 0 14px; color: #ffffff; border-radius: 6px; letter-spacing: 1px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; height: 42px; box-sizing: border-box; }
     .gk-slot-row { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 6px; height: 56px; padding: 0 14px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
@@ -477,9 +355,7 @@ st.markdown(
     .def-grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
     .def-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
     .def-team-header { background: #1b1035; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
-    .def-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
-    .def-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
-    .def-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .def-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
     .def-team-budget { font-size: 12px; font-weight: 900; color: #facc15; flex-shrink: 0; line-height: 1; }
     .def-role-title { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; font-size: 10px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; height: 24px; box-sizing: border-box; }
     .def-slot-row { background: linear-gradient(90deg, #0a1811 0%, #0d381e 50%, #0c1f13 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 38px; padding: 0 8px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
@@ -492,9 +368,7 @@ st.markdown(
     .cent-grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
     .cent-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
     .cent-team-header { background: #1b1035; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
-    .cent-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
-    .cent-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
-    .cent-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .cent-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
     .cent-team-budget { font-size: 12px; font-weight: 900; color: #facc15; flex-shrink: 0; line-height: 1; }
     .cent-role-title { background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 35%, #1d4ed8 50%, #60a5fa 70%, #1e40af 100%); border-top: 1px solid #93c5fd; border-bottom: 1px solid #172554; font-size: 10px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; height: 24px; box-sizing: border-box; }
     .cent-slot-row { background: linear-gradient(90deg, #09131f 0%, #0f2c4a 50%, #0c1a2b 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 38px; padding: 0 8px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
@@ -507,9 +381,7 @@ st.markdown(
     .att-grid-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 10px; }
     .att-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
     .att-team-header { background: #1b1035; padding: 0 8px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 58px; box-sizing: border-box; }
-    .att-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
-    .att-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
-    .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
     .att-team-budget { font-size: 12px; font-weight: 900; color: #facc15; flex-shrink: 0; line-height: 1; }
     .att-role-title { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; font-size: 10px; font-weight: 900; padding: 2px 6px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; height: 37px; box-sizing: border-box; }
     .att-slot-row { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 57px; padding: 0 6px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
@@ -558,7 +430,6 @@ st.markdown(
         font-size: 11px;
     }
     .ranking-info { font-weight: 700; color: #ffffff; text-transform: uppercase; }
-    .ranking-sub { font-size: 9.5px; color: #a78bfa; margin-left: 4px; }
     .ranking-badge { background: #0d061c; color: #facc15; font-weight: 800; padding: 2px 7px; border-radius: 4px; border: 1px solid #2a1452; }
     </style>
 """,
@@ -761,12 +632,8 @@ if not is_tv_mode:
                         }
                         st.session_state.acquisti.append(nuovo_acquisto)
                         save_data(st.session_state.acquisti, st.session_state.vista_corrente)
-                        
-                        # Attiva schermata dedicata alla singola squadra per 40 secondi indipendentemente dalla vista TV
-                        st.session_state.temp_view_until = time.time() + 40
-                        st.session_state.temp_team_show = sq_dest
 
-                        st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
+                        st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest}** per {int(costo_asta)} FM!")
                         
                         st.session_state.search_version += 1
                         st.rerun()
@@ -853,11 +720,7 @@ if not is_tv_mode:
                 logo_sa_b64 = get_logo_base64_cached(sq_sa)
                 logo_sa_html = f'<img src="{logo_sa_b64}" class="deal-logo-img" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
-                sq_fanta_full = deal_data.get("Squadra_Fanta", "")
-                nome_fanta = sq_fanta_full.split(" - ")[0]
-                codice_fanta = MAPPA_NOME_CODICE_FANTA.get(nome_fanta, nome_fanta)
-                logo_fanta_b64 = get_logo_base64_cached(codice_fanta)
-                logo_fanta_html = f'<img src="{logo_fanta_b64}" class="deal-logo-img" alt="{codice_fanta}">' if logo_fanta_b64 else f'<strong style="font-size:9px; color:#f8fafc;">{codice_fanta}</strong>'
+                nome_fanta = deal_data.get("Squadra_Fanta", "")
 
                 ruolo_str = f" ({ruolo})" if ruolo else ""
 
@@ -865,7 +728,7 @@ if not is_tv_mode:
                 <div class="deal-box-single">
                     <div class="deal-rank-title" style="color:{price_color};">{label_rank}</div>
                     <div class="deal-player-name">{g_nome}<span style="color:#94a3b8; font-weight:700;">{ruolo_str}</span></div>
-                    <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> {logo_fanta_html}</div>
+                    <div class="deal-logos-row">{logo_sa_html} <span class="deal-arrow">➜</span> <strong style="font-size:10px; color:#f8fafc;">{nome_fanta}</strong></div>
                     <div class="deal-price-info" style="color:{price_color};">Pagato: {costo} FM <span style="color:#94a3b8; font-size:8px; font-weight:normal;">(Medio: {p_medio})</span></div>
                 </div>
                 '''
@@ -907,11 +770,10 @@ if not is_tv_mode:
 
                 dati_classifica = []
                 for s_info in SQUADRE_INFO:
-                    sq_full = f"{s_info['nome']} - {s_info['mister']}"
+                    sq_full = s_info['nome']
                     rimasti, tot_giocatori, max_off, acquisti_sq = get_squadra_stats(sq_full)
                     dati_classifica.append({
                         "Squadra": s_info['nome'],
-                        "Mister": s_info['mister'],
                         "Crediti": rimasti,
                         "Rosa": f"{tot_giocatori}/{TOTALE_SLOTS}"
                     })
@@ -924,7 +786,6 @@ if not is_tv_mode:
                         f'<div>'
                         f'<span style="font-weight: 800; color: #c084fc; margin-right: 6px;">{idx}.</span>'
                         f'<span class="ranking-info">{item["Squadra"]}</span>'
-                        f'<span class="ranking-sub">({item["Mister"]})</span>'
                         f'</div>'
                         f'<div style="display: flex; align-items: center; gap: 8px;">'
                         f'<span style="font-size: 9.5px; color: #94a3b8; font-weight: 700;">{item["Rosa"]}</span>'
@@ -947,73 +808,7 @@ def render_board_fragment():
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_corrente
     
-    # Gestione timer visualizzazione singola squadra (40 secondi)
-    is_temp_active = False
-    target_team_info = None
-    if time.time() < st.session_state.get("temp_view_until", 0):
-        is_temp_active = True
-        t_full = st.session_state.get("temp_team_show", "")
-        target_team_info = next((s for s in SQUADRE_INFO if f"{s['nome']} - {s['mister']}" == t_full), None)
-
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
-
-    # Se è attivo il timer dei 40 secondi, mostriamo la schermata completa della singola squadra acquirente (invariato per tutte le viste TV)
-    if is_temp_active and target_team_info and is_tv_mode:
-        sq_full = f"{target_team_info['nome']} - {target_team_info['mister']}"
-        rim, tot, max_off, acquisti_sq = get_squadra_stats(sq_full)
-        
-        logo_b64 = get_logo_base64_cached(target_team_info['codice'])
-        logo_html = f'<img src="{logo_b64}" class="single-team-big-logo">' if logo_b64 else '⚽'
-
-        role_colors = {"P": "#d97706", "D": "#16a34a", "C": "#2563eb", "A": "#e11d48"}
-        roles_html = []
-
-        for r_code, max_r_slots in SLOTS.items():
-            r_giocatori = sorted([a for a in acquisti_sq if a["Ruolo"] == r_code], key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
-            r_speso = sum(x["Costo"] for x in r_giocatori)
-            
-            slots_rows = []
-            for i in range(max_r_slots):
-                if i < len(r_giocatori):
-                    g = r_giocatori[i]
-                    sa_logo_b64 = get_logo_base64_cached(g.get("Squadra_SerieA", ""))
-                    sa_logo_html = f'<img src="{sa_logo_b64}" style="width:18px; height:18px; object-fit:contain; vertical-align:middle; margin-right:5px;">' if sa_logo_b64 else ''
-                    slots_rows.append(
-                        f'<div class="single-player-row">'
-                        f'<div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">{sa_logo_html}{g["Giocatore"]}</div>'
-                        f'<div style="color:#facc15; font-weight:900; flex-shrink:0;">{g["Costo"]}</div>'
-                        f'</div>'
-                    )
-                else:
-                    slots_rows.append('<div class="single-player-empty">-</div>')
-
-            roles_html.append(
-                f'<div class="single-role-col">'
-                f'<div class="single-role-header" style="background:{role_colors[r_code]};">'
-                f'<span>{r_code} ({len(r_giocatori)}/{max_r_slots})</span>'
-                f'<span>{r_speso} FM</span>'
-                f'</div>'
-                f'{"".join(slots_rows)}'
-                f'</div>'
-            )
-
-        st.markdown(
-            f'<div class="single-team-full-container">'
-            f'<div class="single-team-big-header">'
-            f'<div class="single-team-big-title-area">'
-            f'{logo_html}'
-            f'<div>'
-            f'<div class="single-team-big-name">{target_team_info["nome"]}</div>'
-            f'<div class="single-team-big-mister">Mister: {target_team_info["mister"]}</div>'
-            f'</div>'
-            f'</div>'
-            f'<div class="single-team-big-budget">BUDGET: 🟡 {rim} FM</div>'
-            f'</div>'
-            f'<div class="single-roles-grid">{"".join(roles_html)}</div>'
-            f'</div>',
-            unsafe_allow_html=True
-        )
-        return
     
     # --------------------------------------------------------------------------
     # VISUALE PORTIERI DEDICATA (3 SQUADRE SOPRA, 3 SOTTO)
@@ -1025,20 +820,16 @@ def render_board_fragment():
         def render_gk_row(subset_squadre):
             cards_html = []
             for s_info in subset_squadre:
-                sq = f"{s_info['nome']} - {s_info['mister']}"
+                sq = s_info['nome']
                 rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-                
-                logo_fanta_html = ""
-                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-                if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gk-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_p = [a for a in acquisti_sq if a["Ruolo"] == "P"]
                 giocatori_p = sorted(giocatori_p, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
                 speso_portieri = sum(g["Costo"] for g in giocatori_p)
                 pct_budget = round((speso_portieri / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer(
+                ) else f"{pct_budget}%"
 
                 slots_html = []
                 for i in range(3):
@@ -1065,11 +856,8 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="gk-team-card">'
                     f'<div class="gk-team-header">'
-                    f'{logo_fanta_html}'
-                    f'<div class="gk-header-texts">'
                     f'<div class="gk-team-name">{s_info["nome"]}</div>'
                     f'<div class="gk-team-budget">🟡 {rim}</div>'
-                    f'</div>'
                     f'</div>'
                     f'<div class="gk-role-title"><span>{pct_str}</span><span>PORTIERI</span><span>{speso_portieri}</span></div>'
                     f'{"".join(slots_html)}'
@@ -1096,20 +884,16 @@ def render_board_fragment():
         def render_def_row(subset_squadre):
             cards_html = []
             for s_info in subset_squadre:
-                sq = f"{s_info['nome']} - {s_info['mister']}"
+                sq = s_info['nome']
                 rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-                
-                logo_fanta_html = ""
-                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-                if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="def-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_d = [a for a in acquisti_sq if a["Ruolo"] == "D"]
                 giocatori_d = sorted(giocatori_d, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
                 speso_difensori = sum(g["Costo"] for g in giocatori_d)
                 pct_budget = round((speso_difensori / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer(
+                ) else f"{pct_budget}%"
 
                 slots_html = []
                 for i in range(8):
@@ -1136,10 +920,7 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="def-team-card">'
                     f'<div class="def-team-header">'
-                    f'<div class="def-header-left">'
-                    f'{logo_fanta_html}'
                     f'<div class="def-team-name">{s_info["nome"]}</div>'
-                    f'</div>'
                     f'<div class="def-team-budget">🟡 {rim}</div>'
                     f'</div>'
                     f'<div class="def-role-title"><span>{pct_str}</span><span>DIFENSORI</span><span>{speso_difensori}</span></div>'
@@ -1167,20 +948,16 @@ def render_board_fragment():
         def render_cent_row(subset_squadre):
             cards_html = []
             for s_info in subset_squadre:
-                sq = f"{s_info['nome']} - {s_info['mister']}"
+                sq = s_info['nome']
                 rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-                
-                logo_fanta_html = ""
-                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-                if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="cent-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_c = [a for a in acquisti_sq if a["Ruolo"] == "C"]
                 giocatori_c = sorted(giocatori_c, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
                 speso_centrocampisti = sum(g["Costo"] for g in giocatori_c)
                 pct_budget = round((speso_centrocampisti / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer(
+                ) else f"{pct_budget}%"
 
                 slots_html = []
                 for i in range(8):
@@ -1207,10 +984,7 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="cent-team-card">'
                     f'<div class="cent-team-header">'
-                    f'<div class="cent-header-left">'
-                    f'{logo_fanta_html}'
                     f'<div class="cent-team-name">{s_info["nome"]}</div>'
-                    f'</div>'
                     f'<div class="cent-team-budget">🟡 {rim}</div>'
                     f'</div>'
                     f'<div class="cent-role-title"><span>{pct_str}</span><span>CENTROCAMPISTI</span><span>{speso_centrocampisti}</span></div>'
@@ -1238,20 +1012,16 @@ def render_board_fragment():
         def render_att_row(subset_squadre):
             cards_html = []
             for s_info in subset_squadre:
-                sq = f"{s_info['nome']} - {s_info['mister']}"
+                sq = s_info['nome']
                 rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-                
-                logo_fanta_html = ""
-                fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-                if fanta_logo_b64:
-                    logo_fanta_html = f'<img src="{fanta_logo_b64}" class="att-team-logo" alt="{s_info["codice"]}">'
 
                 giocatori_a = [a for a in acquisti_sq if a["Ruolo"] == "A"]
                 giocatori_a = sorted(giocatori_a, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
                 speso_attaccanti = sum(g["Costo"] for g in giocatori_a)
                 pct_budget = round((speso_attaccanti / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer(
+                ) else f"{pct_budget}%"
 
                 slots_html = []
                 for i in range(6):
@@ -1278,10 +1048,7 @@ def render_board_fragment():
                 cards_html.append(
                     f'<div class="att-team-card">'
                     f'<div class="att-team-header">'
-                    f'<div class="att-header-left">'
-                    f'{logo_fanta_html}'
                     f'<div class="att-team-name">{s_info["nome"]}</div>'
-                    f'</div>'
                     f'<div class="att-team-budget">🟡 {rim}</div>'
                     f'</div>'
                     f'<div class="att-role-title"><span>{pct_str}</span><span>ATTACCANTI</span><span>{speso_attaccanti}</span></div>'
@@ -1304,13 +1071,8 @@ def render_board_fragment():
     # --------------------------------------------------------------------------
     cards_html = []
     for s_info in SQUADRE_INFO:
-        sq = f"{s_info['nome']} - {s_info['mister']}"
+        sq = s_info['nome']
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
-        
-        logo_fanta_html = ""
-        fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-        if fanta_logo_b64:
-            logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
 
         card_slots_html = []
         for ruolo, num_slots in SLOTS.items():
@@ -1350,10 +1112,7 @@ def render_board_fragment():
         cards_html.append(
             f'<div class="gen-team-card">'
             f'<div class="gen-team-header">'
-            f'<div class="gen-header-left">'
-            f'{logo_fanta_html}'
             f'<div class="gen-team-name">{s_info["nome"]}</div>'
-            f'</div>'
             f'<div class="gen-team-budget">🟡 {rim}</div>'
             f'</div>'
             f'{"".join(card_slots_html)}'
