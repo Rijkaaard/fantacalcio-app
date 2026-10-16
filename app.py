@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import time
 import pandas as pd
 import streamlit as st
 
@@ -24,10 +25,8 @@ TOTALE_SLOTS = sum(SLOTS.values())
 BUDGET_INIZIALE = 1000
 
 MAPPA_CODICI_LOGHI = {
-    # Eccezioni specifiche richieste
     "PD - PERDENTI DEMOCRATICI": "PD",
     "COMABBIO CAPITALE FC": "CO",
-    # Squadre di Serie A standard
     "ATALANTA": "ATA", "BOLOGNA": "BOL", "CAGLIARI": "CAG", "COMO": "COM",
     "EMPOLI": "EMP", "FIORENTINA": "FIO", "GENOA": "GEN", "INTER": "INT",
     "JUVENTUS": "JUV", "LAZIO": "LAZ", "LECCE": "LEC", "MILAN": "MIL",
@@ -115,8 +114,14 @@ if "acquisti" not in st.session_state or "vista_corrente" not in st.session_stat
 if "search_version" not in st.session_state:
     st.session_state.search_version = 0
 
+if "highlight_team" not in st.session_state:
+    st.session_state.highlight_team = None
+
+if "highlight_until" not in st.session_state:
+    st.session_state.highlight_until = 0
+
 # ==============================================================================
-# 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 8 SQUADRE)
+# 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 8 SQUADRE IN STESSA RIGA + NO SCROLL)
 # ==============================================================================
 st.markdown(
     """
@@ -127,13 +132,15 @@ st.markdown(
         background-color: #090514 !important;
         color: #f8fafc;
         font-family: 'Montserrat', sans-serif !important;
+        overflow: hidden !important;
+        height: 100vh !important;
     }
 
     .stMainBlockContainer {
-        padding-top: 1.5rem !important;
-        padding-bottom: 1rem !important;
-        padding-left: 2rem !important;
-        padding-right: 2rem !important;
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
         max-width: 100% !important;
     }
 
@@ -198,61 +205,68 @@ st.markdown(
     }
 
     /* ==========================================================================
-       STILE DEDICATO VISUALE GENERALE (8 COLONNE)
+       STILE DEDICATO VISUALE GENERALE (8 COLONNE SULLA STESSA RIGA)
        ========================================================================== */
     .gen-grid-row {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-        margin-bottom: 10px;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 6px;
         width: 100%;
         box-sizing: border-box;
     }
 
     .gen-team-card {
         background: #110a24;
-        border: 1.5px solid #3b1660;
-        border-radius: 8px;
-        padding: 8px 10px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8);
+        border: 1px solid #3b1660;
+        border-radius: 6px;
+        padding: 4px 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         display: flex;
         flex-direction: column;
-        gap: 4px;
+        gap: 2px;
         box-sizing: border-box;
         min-width: 0;
     }
 
+    .gen-team-card-highlight {
+        background: #1a0f3c !important;
+        border: 2px solid #facc15 !important;
+        box-shadow: 0 0 20px rgba(250, 204, 21, 0.6) !important;
+        transform: scale(1.02);
+        transition: all 0.3s ease;
+    }
+
     .gen-team-header {
-        background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important;
-        padding: 0 8px;
-        border-radius: 5px;
+        background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=740&auto=format&fit=crop') center/cover no-repeat !important;
+        padding: 0 4px;
+        border-radius: 4px;
         border: 1px solid #581c87;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 6px;
-        height: 38px;
+        gap: 4px;
+        height: 28px;
         box-sizing: border-box;
     }
 
     .gen-header-left {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         overflow: hidden;
         flex-grow: 1;
     }
 
     .gen-team-logo {
-        width: 24px;
-        height: 24px;
+        width: 16px;
+        height: 16px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-team-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 11px;
+        font-size: 8.5px;
         font-weight: 900;
         color: #ffffff;
         white-space: nowrap;
@@ -264,7 +278,7 @@ st.markdown(
     }
 
     .gen-team-budget {
-        font-size: 11px;
+        font-size: 9px;
         font-weight: 900;
         color: #facc15;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
@@ -273,21 +287,21 @@ st.markdown(
     }
 
     .gen-role-title {
-        font-size: 9px;
+        font-size: 7.5px;
         font-weight: 900;
-        padding: 2px 6px;
+        padding: 1px 4px;
         color: #ffffff;
-        border-radius: 3px;
-        letter-spacing: 0.3px;
+        border-radius: 2px;
+        letter-spacing: 0.2px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         text-transform: uppercase;
         text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-        height: 20px;
+        height: 15px;
         box-sizing: border-box;
-        margin-top: 2px;
-        margin-bottom: 2px;
+        margin-top: 1px;
+        margin-bottom: 1px;
     }
     .gen-role-p { background: linear-gradient(135deg, #78350f 0%, #d97706 35%, #b45309 50%, #f59e0b 70%, #92400e 100%); border-top: 1px solid #fcd34d; border-bottom: 1px solid #451a03; }
     .gen-role-d { background: linear-gradient(135deg, #14532d 0%, #22c55e 35%, #15803d 50%, #4ade80 70%, #166534 100%); border-top: 1px solid #86efac; border-bottom: 1px solid #052e16; }
@@ -295,14 +309,14 @@ st.markdown(
     .gen-role-a { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; }
 
     .gen-slot-row {
-        border-radius: 3px;
-        height: 26px;
-        padding: 0 6px;
+        border-radius: 2px;
+        height: 18px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         box-sizing: border-box;
-        margin: 2px 0;
+        margin: 1px 0;
         border: 1px solid rgba(0, 0, 0, 0.5);
     }
     .gen-slot-p { background: linear-gradient(90deg, #2a1205 0%, #ea580c 50%, #7c2d12 100%) !important; }
@@ -313,37 +327,37 @@ st.markdown(
     .gen-slot-empty {
         background: #170d30;
         border: 1px dashed rgba(192, 132, 252, 0.3);
-        border-radius: 3px;
-        height: 26px;
-        padding: 0 6px;
+        border-radius: 2px;
+        height: 18px;
+        padding: 0 4px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
         font-weight: 800;
-        font-size: 10px;
+        font-size: 8px;
         box-sizing: border-box;
-        margin: 2px 0;
+        margin: 1px 0;
     }
 
     .gen-player-left {
         display: flex;
         align-items: center;
-        gap: 6px;
+        gap: 4px;
         overflow: hidden;
-        max-width: calc(100% - 20px);
+        max-width: calc(100% - 16px);
     }
 
     .gen-seriea-logo {
-        width: 16px;
-        height: 16px;
+        width: 12px;
+        height: 12px;
         object-fit: contain;
         flex-shrink: 0;
     }
 
     .gen-player-name {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 10px;
+        font-size: 8.5px;
         font-weight: 800;
         color: #ffffff;
         white-space: nowrap;
@@ -354,7 +368,7 @@ st.markdown(
     }
 
     .gen-player-cost {
-        font-size: 10px;
+        font-size: 8.5px;
         font-weight: 900;
         color: #ffffff !important;
         flex-shrink: 0;
@@ -366,7 +380,7 @@ st.markdown(
        ========================================================================== */
     .gk-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 15px; }
     .gk-team-card { background: #110a24; border: 2px solid #3b1660; border-radius: 12px; padding: 18px 15px; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 14px; height: 380px; box-sizing: border-box; }
-    .gk-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 12px 14px; border-radius: 8px; border: 1px solid #581c87; text-align: center; display: flex; align-items: center; gap: 12px; height: 85px; box-sizing: border-box; }
+    .gk-team-header { background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=740&auto=format&fit=crop') center/cover no-repeat !important; padding: 12px 14px; border-radius: 8px; border: 1px solid #581c87; text-align: center; display: flex; align-items: center; gap: 12px; height: 85px; box-sizing: border-box; }
     .gk-team-logo { width: 50px; height: 50px; object-fit: contain; flex-shrink: 0; }
     .gk-header-texts { display: flex; flex-direction: column; align-items: flex-start; overflow: hidden; width: calc(100% - 62px); }
     .gk-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13.5px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9); width: 100%; text-align: left; }
@@ -381,7 +395,7 @@ st.markdown(
 
     .def-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
     .def-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
-    .def-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
+    .def-team-header { background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=740&auto=format&fit=crop') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
     .def-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
     .def-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
     .def-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
@@ -396,7 +410,7 @@ st.markdown(
 
     .cent-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
     .cent-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
-    .cent-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
+    .cent-team-header { background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=740&auto=format&fit=crop') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 42px; box-sizing: border-box; }
     .cent-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
     .cent-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
     .cent-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
@@ -410,19 +424,19 @@ st.markdown(
     .cent-player-cost { font-size: 12px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
 
     .att-grid-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 10px; }
-    .att-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 8px 10px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 6px; }
-    .att-team-header { background: url('https://img.freepik.com/premium-vector/abstract-violet-light-arrow-direction-geometric-hexagon-mesh-design-modern-futuristic-background_33869-2361.jpg?semt=ais_test_b&w=740&q=80') center/cover no-repeat !important; padding: 0 10px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 45px; box-sizing: border-box; }
+    .att-team-card { background: #110a24; border: 1.5px solid #3b1660; border-radius: 8px; padding: 6px 8px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.8); display: flex; flex-direction: column; gap: 5px; }
+    .att-team-header { background: url('https://images.unsplash.com/photo-1579952363873-27f3bade9f55?q=80&w=740&auto=format&fit=crop') center/cover no-repeat !important; padding: 0 8px; border-radius: 5px; border: 1px solid #581c87; display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 58px; box-sizing: border-box; }
     .att-header-left { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
-    .att-team-logo { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
-    .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 13px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
-    .att-team-budget { font-size: 13px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
-    .att-role-title { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; font-size: 11px; font-weight: 900; padding: 2px 8px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 26px; box-sizing: border-box; }
-    .att-slot-row { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 42px; padding: 0 8px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
-    .att-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 42px; padding: 0 8px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 11px; box-sizing: border-box; }
-    .att-player-left { display: flex; align-items: center; gap: 8px; overflow: hidden; }
-    .att-seriea-logo { width: 22px; height: 22px; object-fit: contain; flex-shrink: 0; }
-    .att-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 13px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
-    .att-player-cost { font-size: 13px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
+    .att-team-logo { width: 26px; height: 26px; object-fit: contain; flex-shrink: 0; }
+    .att-team-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 900; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); line-height: 1; }
+    .att-team-budget { font-size: 12px; font-weight: 900; color: #facc15; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9); flex-shrink: 0; line-height: 1; }
+    .att-role-title { background: linear-gradient(135deg, #881337 0%, #f43f5e 35%, #be123c 50%, #fda4af 70%, #9f1239 100%); border-top: 1px solid #fecdd3; border-bottom: 1px solid #4c0519; font-size: 10px; font-weight: 900; padding: 2px 6px; color: #ffffff; border-radius: 4px; letter-spacing: 0.6px; display: flex; justify-content: space-between; align-items: center; text-transform: uppercase; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6); height: 37px; box-sizing: border-box; }
+    .att-slot-row { background: linear-gradient(90deg, #1c0a10 0%, #441220 50%, #210a12 100%) !important; border: 1px solid rgba(0, 0, 0, 0.6); border-radius: 4px; height: 57px; padding: 0 6px; display: flex; align-items: center; justify-content: space-between; box-sizing: border-box; }
+    .att-slot-empty { background: #170d30; border: 1px dashed rgba(192, 132, 252, 0.3); border-radius: 4px; height: 57px; padding: 0 6px; display: flex; align-items: center; justify-content: center; color: #4a287a; font-weight: 800; font-size: 10px; box-sizing: border-box; }
+    .att-player-left { display: flex; align-items: center; gap: 6px; overflow: hidden; }
+    .att-seriea-logo { width: 20px; height: 20px; object-fit: contain; flex-shrink: 0; }
+    .att-player-name { font-family: 'Montserrat', sans-serif !important; font-size: 12px; font-weight: 800; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; text-transform: uppercase; line-height: 1; }
+    .att-player-cost { font-size: 12px; font-weight: 900; color: #ffffff !important; flex-shrink: 0; line-height: 1; }
 
     .badge-ruolo-p { background-color: #ea580c; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
     .badge-ruolo-d { background-color: #16a34a; color: #fff; padding: 2px 6px; border-radius: 4px; font-weight: 800; font-size: 11px; }
@@ -522,18 +536,13 @@ def get_logo_base64_cached(squadra):
         return ""
     sq_str = str(squadra).strip().upper()
     
-    # 1. Controlla se la squadra ha un codice esatto nella mappa (es. "PD - PERDENTI DEMOCRATICI" -> "PD" o "COMABBIO CAPITALE FC" -> "CO")
     codice = MAPPA_CODICI_LOGHI.get(sq_str)
-    
-    # 2. Se non è nella mappa, prova a prendere le prime 3 lettere come regola generale (es. MILAN -> MIL)
     if not codice:
         codice = sq_str[:3]
         
-    # 3. Cerca il file corrispondente al codice nella cache globale dei loghi
     if codice in ALL_LOGOS:
         return ALL_LOGOS[codice]
         
-    # 4. Fallback di sicurezza: prova a cercare direttamente il nome intero o il codice nei loghi caricati
     if sq_str in ALL_LOGOS:
         return ALL_LOGOS[sq_str]
         
@@ -671,6 +680,11 @@ if not is_tv_mode:
                         }
                         st.session_state.acquisti.append(nuovo_acquisto)
                         save_data(st.session_state.acquisti, st.session_state.vista_corrente)
+                        
+                        # Attiva evidenziazione squadra per 40 secondi
+                        st.session_state.highlight_team = sq_dest.split(" - ")[0]
+                        st.session_state.highlight_until = time.time() + 40
+
                         st.success(f"✅ **{info_g['Giocatore']}** assegnato a **{sq_dest.split(' - ')[0]}** per {int(costo_asta)} FM!")
                         
                         st.session_state.search_version += 1
@@ -846,12 +860,16 @@ if not is_tv_mode:
 # ==============================================================================
 # 2. TABELLONE (VISUALE TV O VISUALE FISSA ADMIN)
 # ==============================================================================
-@st.fragment(run_every=5)
+@st.fragment(run_every=1)
 def render_board_fragment():
     acq, vista_corrente = load_saved_data()
     st.session_state.acquisti = acq
     st.session_state.vista_corrente = vista_corrente
     
+    # Gestione scadenza evidenziazione (40 secondi)
+    if st.session_state.highlight_team and time.time() > st.session_state.highlight_until:
+        st.session_state.highlight_team = None
+
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
     
     # --------------------------------------------------------------------------
@@ -1130,7 +1148,7 @@ def render_board_fragment():
             return f'<div class="att-grid-row">{"".join(cards_html)}</div>'
 
         st.markdown(
-            f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
+            f'<div style="width: 100%; padding-top: 0px; margin-top: -11px;">'
             f'{render_att_row(squadre_sopra)}'
             f'{render_att_row(squadre_sotto)}'
             f'</div>',
@@ -1139,75 +1157,72 @@ def render_board_fragment():
         return
 
     # --------------------------------------------------------------------------
-    # VISUALE GENERALE (8 SQUADRE DIVISE IN 2 RIGHE DA 4)
+    # VISUALE GENERALE (TUTTE LE 8 SQUADRE SULLA STESSA RIGA CON EVIDENZIAZIONE)
     # --------------------------------------------------------------------------
-    squadre_sopra = SQUADRE_INFO[:4]
-    squadre_sotto = SQUADRE_INFO[4:]
+    cards_html = []
+    for s_info in SQUADRE_INFO:
+        sq = f"{s_info['nome']} - {s_info['mister']}"
+        rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+        
+        is_highlighted = (st.session_state.highlight_team == s_info['nome'])
+        card_class = "gen-team-card gen-team-card-highlight" if is_highlighted else "gen-team-card"
 
-    def render_gen_grid(subset_squadre):
-        cards_html = []
-        for s_info in subset_squadre:
-            sq = f"{s_info['nome']} - {s_info['mister']}"
-            rim, tot, max_off, acquisti_sq = get_squadra_stats(sq)
+        logo_fanta_html = ""
+        fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
+        if fanta_logo_b64:
+            logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
+
+        card_slots_html = []
+        for ruolo, num_slots in SLOTS.items():
+            role_class_css = f"gen-role-{ruolo.lower()}"
+            slot_class_css = f"gen-slot-{ruolo.lower()}"
             
-            logo_fanta_html = ""
-            fanta_logo_b64 = get_logo_base64_cached(s_info['codice'])
-            if fanta_logo_b64:
-                logo_fanta_html = f'<img src="{fanta_logo_b64}" class="gen-team-logo" alt="{s_info["codice"]}">'
+            giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
+            giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
 
-            card_slots_html = []
-            for ruolo, num_slots in SLOTS.items():
-                role_class_css = f"gen-role-{ruolo.lower()}"
-                slot_class_css = f"gen-slot-{ruolo.lower()}"
-                
-                giocatori_r = [a for a in acquisti_sq if a["Ruolo"] == ruolo]
-                giocatori_r = sorted(giocatori_r, key=lambda x: x.get("Prezzo_Medio", 0), reverse=True)
+            speso_ruolo = sum(g["Costo"] for g in giocatori_r)
+            pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
+            pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
 
-                speso_ruolo = sum(g["Costo"] for g in giocatori_r)
-                pct_budget = round((speso_ruolo / BUDGET_INIZIALE) * 100, 1)
-                pct_str = f"{int(pct_budget)}%" if pct_budget.is_integer() else f"{pct_budget}%"
+            card_slots_html.append(f'<div class="gen-role-title {role_class_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
 
-                card_slots_html.append(f'<div class="gen-role-title {role_class_css}"><span>{ruolo}</span><span>{pct_str}</span></div>')
+            for i in range(num_slots):
+                if i < len(giocatori_r):
+                    g = giocatori_r[i]
+                    nome_g = g["Giocatore"]
+                    costo = g["Costo"]
+                    sq_sa = g.get("Squadra_SerieA", "")
+                    logo_sa_b64 = get_logo_base64_cached(sq_sa)
+                    logo_sa_html = f'<img src="{logo_sa_b64}" class="gen-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
 
-                for i in range(num_slots):
-                    if i < len(giocatori_r):
-                        g = giocatori_r[i]
-                        nome_g = g["Giocatore"]
-                        costo = g["Costo"]
-                        sq_sa = g.get("Squadra_SerieA", "")
-                        logo_sa_b64 = get_logo_base64_cached(sq_sa)
-                        logo_sa_html = f'<img src="{logo_sa_b64}" class="gen-seriea-logo" alt="{sq_sa}">' if logo_sa_b64 else '⚽'
+                    card_slots_html.append(
+                        f'<div class="gen-slot-row {slot_class_css}">'
+                        f'<div class="gen-player-left">'
+                        f'{logo_sa_html}'
+                        f'<span class="gen-player-name">{nome_g}</span>'
+                        f'</div>'
+                        f'<div class="gen-player-cost">{costo}</div>'
+                        f'</div>'
+                    )
+                else:
+                    card_slots_html.append('<div class="gen-slot-empty">-</div>')
 
-                        card_slots_html.append(
-                            f'<div class="gen-slot-row {slot_class_css}">'
-                            f'<div class="gen-player-left">'
-                            f'{logo_sa_html}'
-                            f'<span class="gen-player-name">{nome_g}</span>'
-                            f'</div>'
-                            f'<div class="gen-player-cost">{costo}</div>'
-                            f'</div>'
-                        )
-                    else:
-                        card_slots_html.append('<div class="gen-slot-empty">-</div>')
-
-            cards_html.append(
-                f'<div class="gen-team-card">'
-                f'<div class="gen-team-header">'
-                f'<div class="gen-header-left">'
-                f'{logo_fanta_html}'
-                f'<div class="gen-team-name">{s_info["nome"]}</div>'
-                f'</div>'
-                f'<div class="gen-team-budget">🟡 {rim}</div>'
-                f'</div>'
-                f'{"".join(card_slots_html)}'
-                f'</div>'
-            )
-        return f'<div class="gen-grid-row">{"".join(cards_html)}</div>'
+        cards_html.append(
+            f'<div class="{card_class}">'
+            f'<div class="gen-team-header">'
+            f'<div class="gen-header-left">'
+            f'{logo_fanta_html}'
+            f'<div class="gen-team-name">{s_info["nome"]}</div>'
+            f'</div>'
+            f'<div class="gen-team-budget">🟡 {rim}</div>'
+            f'</div>'
+            f'{"".join(card_slots_html)}'
+            f'</div>'
+        )
 
     st.markdown(
-        f'<div style="width: 100%; padding-top: 0px; margin-top: -16px;">'
-        f'{render_gen_grid(squadre_sopra)}'
-        f'{render_gen_grid(squadre_sotto)}'
+        f'<div style="width: 100%; overflow: hidden;">'
+        f'<div class="gen-grid-row">{"".join(cards_html)}</div>'
         f'</div>',
         unsafe_allow_html=True
     )
