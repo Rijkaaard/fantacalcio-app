@@ -1,533 +1,540 @@
 Giocatore,Ruolo,Squadra,Prezzo Medio
-Bijlow,P,GEN,15
-Bleve,P,LEC,1
-Butez,P,COM,50
-Caprile,P,CAG,25
-Carnesecchi,P,ATA,55
-Christensen O.,P,FIO,1
-Contini,P,NAP,1
-Corvi,P,PAR,10
-Daffara,P,PAR,7
-De Gea,P,FIO,30
-De Marzi,P,ROM,1
-Desplanches,P,FRO,1
-Di Gennaro,P,INT,1
-Falcone,P,LEC,26
-Ghidotti,P,PAR,1
-Gollini,P,ROM,1
-Grabara,P,JUV,1
-Grandi,P,VEN,1
-Happonen,P,BOL,1
-Lezzerini,P,FIO,1
-Lolic,P,FRO,1
+Svilar,P,ROM,80
+Carnesecchi,P,ATA,50
+Vicario,P,JUV,65
 Maignan,P,MIL,52
-Mandas,P,LAZ,36
-Martinez Jo.,P,INT,68
-Mascardi,P,TOR,5
-Meret,P,NAP,48
-Milinkovic-Savic V.,P,NAP,5
-Montipò,P,VEN,1
-Motta,P,LAZ,1
-Mrozek,P,UDI,1
-Muric,P,SAS,15
-Okoye,P,UDI,28
-Padelli,P,UDI,1
-Paleari,P,TOR,1
-Palmisani,P,FRO,12
-Penev,P,LEC,1
-Perri,P,TOR,26
-Pessina Mas.,P,BOL,1
-Piana,P,UDI,1
-Pinsoglio,P,JUV,1
-Pisseri,P,FRO,1
-Pompei,P,ATA,1
-Pozzi,P,VEN,1
-Provedel,P,INT,5
-Radunovic,P,CAG,1
-Renzetti,P,LAZ,1
-Russo A.,P,SAS,1
-Sanchez Ro.,P,COM,25
-Satalino,P,SAS,1
-Sherri,P,CAG,1
-Siviero,P,TOR,1
-Skorupski,P,BOL,32
-Sommariva,P,GEN,1
+Caprile,P,CAG,37
+Martinez Jo.,P,INT,60
+Mandas,P,LAZ,41
+Butez,P,COM,43
+Meret,P,NAP,55
+De Gea,P,FIO,21
+Palmisani,P,FRO,20
+Perri,P,TOR,15
+Skorupski,P,BOL,15
+Milinkovic-Savic V.,P,NAP,11
+Okoye,P,UDI,19
+Sanchez Ro.,P,COM,10
+Bijlow,P,GEN,10
+Falcone,P,LEC,20
+Corvi,P,PAR,9
+Daffara,P,PAR,1
+Muric,P,SAS,9
+Stankovic F.,P,VEN,6
+Thiam,P,MON,1
+Gollini,P,ROM,13
+Pessina Mas.,P,BOL,5
+Tornqvist,P,MON,6
 Sportiello,P,ATA,1
-Stankovic F.,P,VEN,11
-Stolz,P,GEN,1
-Strajnar,P,MON,1
-Svilar,P,ROM,85
-Terracciano,P,MIL,1
-Thiam,P,MON,5
-Tornqvist,P,MON,10
-Torriani,P,MIL,1
-Turati,P,SAS,1
-Vicario,P,JUV,70
+Happonen,P,BOL,1
+Sherri,P,CAG,1
 Vigorito,P,COM,1
-Abankwah,D,UDI,10
-Akanji,D,INT,47
-Akpoguma,D,FRO,6
-Alhassane,D,BOL,6
-Amey,D,FRO,1
-Antov,D,MON,2
-Arizala,D,UDI,8
-Aurelio,D,CAG,5
-Badiashile,D,NAP,18
-Bakoune,D,MON,4
-Balerdi,D,ROM,11
-Bartesaghi,D,MIL,22
-Bastoni,D,INT,43
-Belghali,D,TOR,20
-Bella-Kotchap,D,VEN,13
-Bellanova,D,ATA,17
-Bernasconi,D,ATA,18
-Bertola,D,UDI,10
-Beukema,D,NAP,12
-Biraghi,D,TOR,5
-Birindelli,D,MON,12
+Christensen O.,P,FIO,1
+Lezzerini,P,FIO,1
+Desplanches,P,FRO,1
+Lolic,P,FRO,1
+Sommariva,P,GEN,1
+Stolz,P,GEN,1
+Di Gennaro,P,INT,1
+Provedel,P,INT,4
+Pinsoglio,P,JUV,1
+Motta,P,LAZ,1
+Renzetti,P,LAZ,1
+Terracciano,P,MIL,1
+Torriani,P,MIL,1
+Strajnar,P,MON,1
+Contini,P,NAP,1
+De Marzi,P,ROM,1
+Russo A.,P,SAS,1
+Turati,P,SAS,1
+Mascardi,P,TOR,1
+Siviero,P,TOR,1
+Padelli,P,UDI,1
+Grandi,P,VEN,1
+Pozzi,P,VEN,1
+Satalino,P,SAS,1
+Penev,P,LEC,1
+Pisseri,P,FRO,1
+Radunovic,P,CAG,1
+Montipò,P,VEN,1
+Bleve,P,LEC,1
+Grabara,P,JUV,1
+Mrozek,P,UDI,1
+Ghidotti,P,PAR,1
+Pompei,P,ATA,1
+Neto,P,JUV,1
+Vasquez D.,P,ROM,1
+Dimarco,D,INT,200
+Bremer,D,JUV,78
+Wesley,D,ROM,85
+Molina N.,D,ROM,56
+Mancini,D,ROM,55
+Rrahmani,D,NAP,54
 Bisseck,D,INT,36
-Bracaglia,D,FRO,15
-Bremer,D,JUV,60
-Britschgi,D,PAR,10
-Buongiorno,D,NAP,15
-Cabal,D,JUV,4
-Caleta-Car,D,SAS,15
-Calvani,D,FRO,13
-Cambiaso,D,JUV,18
-Candè,D,SAS,7
-Carboni A.,D,MON,9
-Carboni F.,D,PAR,3
-Carlos Augusto,D,INT,20
-Casale,D,BOL,5
-Celik,D,JUV,16
-Chalobah T.,D,COM,32
-Cinquegrano,D,SAS,4
-Cittadini,D,FRO,8
-Coco,D,TOR,14
-Comert,D,TOR,12
-Comuzzo,D,TOR,13
-Correia T.,D,VEN,12
-Couto,D,COM,25
-De Silvestri,D,BOL,4
-De Winter,D,MIL,20
-Delprato,D,PAR,21
-Dembelè A.,D,LEC,2
-Di Lorenzo,D,NAP,39
-Diawara S.,D,MIL,4
-Diego Carlos,D,PAR,26
-Dimarco,D,INT,240
-Dodò,D,FIO,20
-Doekhi,D,LAZ,16
-Doig,D,SAS,10
-Dragusin,D,FIO,20
-Drameh,D,GEN,10
-Drobnic,D,PAR,1
-Ebosse,D,UDI,5
-Estupinan,D,MIL,13
-Favasuli,D,NAP,11
-Floriani Mussolini,D,LAZ,10
-Fortini,D,TOR,12
-Franjic,D,VEN,7
-Gabbia,D,MIL,15
-Gallo,D,LEC,12
-Gaspar K.,D,LEC,12
-Gatti,D,JUV,10
-Ghilardi,D,ROM,10
-Gila,D,MIL,31
-Goglichidze,D,MON,5
-Goldaniga,D,COM,1
-Gomes,D,VEN,1
-Hainaut,D,VEN,12
-Halhal,D,VEN,10
-Haps,D,VEN,10
-Heggem,D,BOL,15
-Helland,D,BOL,12
-Hermoso,D,ROM,26
-Hien,D,ATA,11
-Holm,D,BOL,13
-Idrissi R.,D,CAG,3
-Idzes,D,SAS,19
-Ismajli,D,TOR,13
-Jean,D,LEC,4
-Jimenez A.,D,FIO,18
-Joao Mario,D,FIO,12
-Juan Jesus,D,VEN,10
-Kabasele,D,UDI,12
-Kaiki,D,COM,13
-Kalulu,D,JUV,47
-Kamara H.,D,UDI,12
-Kambwala,D,COM,8
-Kelly L.,D,JUV,12
-Kempf,D,COM,13
-Kofler,D,CAG,8
-Kolasinac,D,ATA,8
-Kossounou,D,ATA,12
-Kouadio,D,MON,14
-Koulierakis,D,ROM,15
-Kristensen T.,D,ATA,20
-Lazzari,D,LAZ,5
-Leysen F.,D,SAS,12
-Lucchesi,D,MON,11
-Lucumì,D,JUV,17
-Lulli,D,ROM,10
-Mancini,D,ROM,50
-Mangas,D,MON,15
-Marcandalli,D,GEN,14
-Marianucci,D,NAP,3
-Marin R.,D,NAP,8
-Marusic,D,LAZ,20
-Maye,D,MON,1
-Mazzocchi,D,VEN,10
-Mina,D,CAG,20
-Miranda J.,D,BOL,23
-Mitaj,D,GEN,10
-Molina N.,D,ROM,78
-Monterisi,D,FRO,13
-Moreno M.,D,VEN,6
-N'Dicka,D,ROM,42
-Ndaba,D,LEC,5
-Ndiaye,D,PAR,8
-Obert,D,CAG,15
-Obrador,D,SAS,13
-Odenthal,D,SAS,8
-Olivera,D,NAP,13
-Omar Fayed,D,FRO,1
-Ostigard,D,GEN,41
-Otoa,D,GEN,5
-Oyono A.,D,FRO,10
-Palma,D,UDI,11
-Parisi,D,FIO,10
-Patric,D,LAZ,1
-Patterson,D,TOR,12
-Pavard,D,INT,14
-Pavlovic,D,MIL,49
-Pedraza,D,LAZ,14
-Pellegrini Lu.,D,LAZ,7
-Pieragnolo,D,SAS,1
-Pongracic,D,FIO,8
-Provstgaard,D,LAZ,13
-Puczka,D,GEN,3
-Ramon,D,COM,31
-Ranieri L.,D,FIO,10
-Rensch,D,ROM,14
-Rodriguez Ju.,D,CAG,14
-Romagnoli,D,LAZ,20
-Rrahmani,D,NAP,51
-Rugani,D,JUV,3
-Sabelli,D,GEN,5
-Sagrado,D,VEN,4
-Scalvini,D,ATA,28
-Schingtienne,D,VEN,10
-Siebert,D,LEC,12
-Smolcic I.,D,COM,10
-Solet,D,UDI,46
-Spence,D,INT,37
-Spinazzola,D,NAP,25
-Stones,D,INT,25
-Sugawara,D,CAG,15
-Sutalo J.,D,LAZ,19
-Sverko,D,VEN,7
-Tavares N.,D,LAZ,25
-Tchato,D,FRO,8
-Terracciano F.,D,MIL,4
-Terzic,D,FRO,8
-Theate,D,BOL,20
+Ramon,D,COM,35
+Akanji,D,INT,34
+Gila,D,MIL,32
+Hermoso,D,ROM,40
+Bastoni,D,INT,37
+Carlos Augusto,D,INT,28
+Kalulu,D,JUV,39
+Pavlovic,D,MIL,50
+Di Lorenzo,D,NAP,34
+Solet,D,UDI,30
+Miranda J.,D,BOL,25
+Jimenez A.,D,FIO,34
+Tavares N.,D,LAZ,63
+Mangas,D,MON,25
+N'Dicka,D,ROM,30
+Kamara H.,D,UDI,17
+Mina,D,CAG,16
+Kaiki,D,COM,21
+Bracaglia,D,FRO,17
+Oyono A.,D,FRO,12
+Ostigard,D,GEN,24
+Stones,D,INT,11
 Tiago Gabriel,D,LEC,20
-Tomori,D,MIL,8
-Troilo,D,PAR,14
-Valdepenas,D,FIO,16
-Valenti,D,PAR,10
-Valeri,D,PAR,22
-Valle,D,COM,21
-Van Der Brempt,D,SAS,11
-Vasquez,D,GEN,30
+Hainaut,D,VEN,18
+Chalobah T.,D,COM,27
+Spence,D,INT,14
+Alaba,D,UDI,20
+Scalvini,D,ATA,21
+Zè Pedro,D,CAG,14
+Doekhi,D,LAZ,13
+Valeri,D,PAR,23
+Doig,D,SAS,12
+Couto,D,COM,26
+Leysen F.,D,SAS,11
+Balerdi,D,ROM,21
+Lucumì,D,JUV,18
+Obert,D,CAG,15
+Valle,D,COM,15
+Calvani,D,FRO,14
+Vasquez,D,GEN,20
+Celik,D,JUV,17
 Veiga D.,D,LEC,12
-Viery,D,FIO,12
-Vitik,D,BOL,10
-Vojvoda,D,UDI,19
-Walukiewicz,D,SAS,10
-Wesley,D,ROM,87
+Birindelli,D,MON,13
+Spinazzola,D,NAP,21
+Coco,D,TOR,14
+Comuzzo,D,TOR,10
+Theate,D,BOL,18
+Diego Carlos,D,PAR,13
+Zortea,D,BOL,17
+Dragusin,D,FIO,16
+Dodò,D,FIO,5
+Cambiaso,D,JUV,11
+Pedraza,D,LAZ,9
+De Winter,D,MIL,24
+Delprato,D,PAR,22
+Ismajli,D,TOR,9
+Abankwah,D,UDI,13
+Vojvoda,D,UDI,18
+Sutalo J.,D,LAZ,12
+Belghali,D,TOR,13
+Sugawara,D,CAG,8
+Hien,D,ATA,10
+Kolasinac,D,ATA,11
+Bellanova,D,ATA,17
+Zappacosta,D,ATA,12
+Helland,D,BOL,12
+Holm,D,BOL,5
+Rodriguez Ju.,D,CAG,14
+Monterisi,D,FRO,9
+Bartesaghi,D,MIL,12
+Koulierakis,D,ROM,9
+Idzes,D,SAS,11
+Comert,D,TOR,13
+Correia T.,D,VEN,7
+Sagrado,D,VEN,4
+Odenthal,D,SAS,6
+Favasuli,D,NAP,12
+Fortini,D,TOR,12
+Badiashile,D,NAP,10
+Caleta-Car,D,SAS,12
+Bernasconi,D,ATA,12
+Heggem,D,BOL,13
+Kofler,D,CAG,3
+Kempf,D,COM,12
+Valdepenas,D,FIO,11
+Viery,D,FIO,13
+Marcandalli,D,GEN,12
+Pavard,D,INT,10
+Gatti,D,JUV,12
+Marusic,D,LAZ,10
+Gallo,D,LEC,12
+Gabbia,D,MIL,10
+Tomori,D,MIL,5
+Buongiorno,D,NAP,10
+Rensch,D,ROM,12
+Kristensen T.,D,ATA,14
 Zanoli,D,UDI,10
-Zappacosta,D,ATA,19
-Zè Pedro,D,CAG,13
-Ziolkowski,D,MON,8
-Zortea,D,BOL,19
-Aboukhlal,C,TOR,5
-Addai,C,COM,10
+Obrador,D,SAS,5
+Cinquegrano,D,SAS,11
+Patterson,D,TOR,7
+Rodriguez R.,D,TOR,9
+Leite,D,LAZ,10
+Casale,D,BOL,7
+Cittadini,D,FRO,11
+Kelly L.,D,JUV,12
+Provstgaard,D,LAZ,13
+Floriani Mussolini,D,LAZ,13
+Gaspar K.,D,LEC,12
+Siebert,D,LEC,12
+Estupinan,D,MIL,13
+Lucchesi,D,MON,11
+Kouadio,D,MON,14
+Carboni A.,D,MON,10
+Bakoune,D,MON,3
+Beukema,D,NAP,7
+Olivera,D,NAP,10
+Troilo,D,PAR,14
+Britschgi,D,PAR,12
+Ghilardi,D,ROM,10
+Ebosse,D,UDI,5
+Bella-Kotchap,D,VEN,11
+Haps,D,VEN,9
+Terzic,D,FRO,5
+Goglichidze,D,MON,5
+Juan Jesus,D,VEN,10
+Ehizibue,D,GEN,10
+Darmian,D,BOL,10
+Kossounou,D,ATA,12
+Vitik,D,BOL,5
+Ranieri L.,D,FIO,13
+Parisi,D,FIO,8
+Otoa,D,GEN,7
+Marin R.,D,NAP,14
+Valenti,D,PAR,9
+Kabasele,D,UDI,10
+Bertola,D,UDI,9
+Moreno M.,D,VEN,6
+Lulli,D,ROM,13
+De Silvestri,D,BOL,2
+Alhassane,D,BOL,6
+Smolcic I.,D,COM,8
+Van Der Brempt,D,SAS,6
+Pongracic,D,FIO,8
+Joao Mario,D,FIO,10
+Mitaj,D,GEN,6
+Puczka,D,GEN,1
+Sabelli,D,GEN,5
+Walukiewicz,D,SAS,9
+Palma,D,UDI,6
+Arizala,D,UDI,7
+Halhal,D,VEN,7
+Schingtienne,D,VEN,10
+Franjic,D,VEN,1
+Maye,D,MON,1
+Tchato,D,FRO,6
+Kambwala,D,COM,4
+Drobnic,D,PAR,1
+Drameh,D,GEN,5
+Idrissi R.,D,CAG,2
+Goldaniga,D,COM,1
+Akpoguma,D,FRO,5
+Amey,D,FRO,1
+Rugani,D,JUV,2
+Cabal,D,JUV,3
+Lazzari,D,LAZ,4
+Pellegrini Lu.,D,LAZ,4
+Jean,D,LEC,2
+Ndaba,D,LEC,4
+Diawara S.,D,MIL,2
+Antov,D,MON,1
+Marianucci,D,NAP,2
+Mazzocchi,D,VEN,10
+Ndiaye,D,PAR,4
+Carboni F.,D,PAR,3
+Ziolkowski,D,MON,3
+Candè,D,SAS,1
+Pieragnolo,D,SAS,1
+Biraghi,D,TOR,5
+Sverko,D,VEN,1
+Gomes,D,VEN,1
+Aurelio,D,CAG,4
+Omar Fayed,D,FRO,1
+Terracciano F.,D,MIL,3
+Dembelè A.,D,LEC,1
+Obric,D,ATA,1
+Paz N.,C,COM,230
+Calhanoglu,C,INT,225
+Rabiot,C,MIL,160
+Pulisic,C,MIL,152
+Orsolini,C,BOL,140
+McTominay,C,NAP,115
+Baturina,C,COM,185
+De Bruyne,C,NAP,90
+Zaccagni,C,LAZ,118
+Mora,C,ROM,45
+Barella,C,INT,78
+Da Cunha,C,COM,60
+Moreira,C,MIL,58
+Conceicao,C,JUV,75
+Ekkelenkamp,C,UDI,82
+Mastantuono,C,FIO,76
+Samardzic,C,ATA,36
+Atta,C,FIO,55
+McKennie,C,JUV,57
+Konè M.,C,ROM,49
+Zaniolo,C,UDI,50
+Ederson D.S.,C,ATA,42
+Zielinski,C,INT,40
+Frattesi,C,LAZ,112
+Taylor K.,C,LAZ,42
+Gonzalez N.,C,JUV,46
+Bernardeschi,C,BOL,35
+Mandragora,C,TOR,40
+Gudmundsson A.,C,LAZ,25
+Calò,C,FRO,37
+Diouf,C,INT,63
+Modric,C,MIL,42
+Lobotka,C,NAP,25
+Adzic,C,SAS,41
+Schmid,C,FRO,40
+Jones C.,C,INT,28
+Kessiè,C,ATA,34
 Adopo,C,CAG,13
-Adzic,C,JUV,16
-Akinsanmiro,C,MON,11
-Alajbegovic,C,JUV,42
-Almqvist,C,PAR,11
-Amondarain,C,BOL,10
-Amorim,C,GEN,11
-Anjorin,C,TOR,4
-Atta,C,FIO,78
-Bakola,C,SAS,14
-Baldanzi,C,GEN,28
-Barella,C,INT,81
-Basic,C,VEN,19
-Baturina,C,COM,105
-Belahyane,C,LAZ,3
-Berisha M.,C,LEC,12
-Bernabè,C,PAR,34
-Bernardeschi,C,BOL,27
-Boloca,C,SAS,5
-Braganca,C,TOR,20
-Brescianini,C,FIO,11
-Busio,C,VEN,14
-Cacciamani,C,TOR,24
-Calhanoglu,C,INT,243
-Calò,C,FRO,27
-Cambiaghi,C,BOL,25
-Cancellieri,C,LAZ,25
-Caqueret,C,COM,17
-Casadei,C,TOR,27
-Cataldi,C,LAZ,12
-Chakvetadze,C,UDI,6
-Chukwueze,C,MIL,22
-Cichella,C,FRO,12
-Ciervo,C,CAG,1
-Cissè A.,C,MIL,24
-Ciurria,C,MON,6
-Colombo L.,C,MON,4
-Colpani,C,MON,15
-Comotto,C,MIL,1
-Conceicao,C,JUV,68
+Romano,C,CAG,25
+Perrone,C,COM,28
+Sucic P.,C,INT,22
+Zhegrova,C,JUV,24
+Alajbegovic,C,JUV,41
+Cancellieri,C,LAZ,18
 Coulibaly L.,C,LEC,17
-Cremaschi,C,PAR,3
-Cristante,C,ROM,29
-Da Cunha,C,COM,87
-Dagasso,C,VEN,1
-De Bruyne,C,NAP,108
-De Roon,C,ROM,10
-Deiola,C,CAG,8
-Dele-Bashiru,C,LAZ,13
-Diallo O.,C,PAR,12
-Diouf,C,INT,43
-Dominguez B.,C,SAS,12
-Douglas Luiz,C,JUV,15
-Duncan,C,VEN,4
-Ederson D.S.,C,ATA,46
-Ekkelenkamp,C,UDI,57
-El Azzouzi A.,C,FRO,1
-El Azzouzi O.,C,BOL,10
-Ellertsson,C,GEN,16
-Elmas,C,ATA,22
-Fabbian,C,PAR,8
-Fadera,C,CAG,12
-Fagioli,C,FIO,20
-Fazzini,C,CAG,23
-Felici,C,CAG,7
-Ferguson,C,BOL,23
-Fernandez T.,C,VEN,8
-Fini,C,FRO,13
-Fitz-Jim,C,TOR,18
-Foe Ondoa,C,MON,2
-Fofana Sa.,C,LEC,1
-Folorunsho,C,MON,17
-Forson O.,C,MON,1
-Frattesi,C,LAZ,75
-Frendrup,C,GEN,19
-Gaetano,C,ATA,30
-Gagliardini,C,CAG,8
-Gandelman,C,LEC,10
-Gelli F.,C,FRO,6
-Gilmour,C,NAP,10
-Gineitis,C,TOR,12
-Goncalves P.,C,FIO,50
-Gonzalez N.,C,JUV,45
-Gorter,C,LEC,12
-Grillitsch,C,FRO,10
-Gudmundsson A.,C,LAZ,40
-Hasa,C,FRO,5
-Helgason,C,VEN,3
-Hutchinson,C,MIL,25
-Ilic,C,LEC,10
-Ilkhan,C,TOR,8
-Isaksen,C,LAZ,22
-Jashari,C,MIL,13
-Jones C.,C,INT,47
-Jovanovic,C,UDI,5
-Kaba,C,LEC,2
-Karlstrom,C,UDI,20
-Keita M.,C,PAR,15
-Kessiè,C,ATA,47
-Kone B.,C,FRO,3
-Konè I.,C,SAS,20
-Konè M.,C,ROM,42
-Koopmeiners,C,JUV,15
-Koutsoupias,C,FRO,11
-Laerke,C,LEC,1
-Lahdo,C,COM,1
-Liberali,C,COM,21
-Lipani,C,SAS,5
-Liteta,C,CAG,1
-Lobotka,C,NAP,23
-Locatelli,C,JUV,33
-Loftus-Cheek,C,MIL,16
-Luis Henrique,C,INT,12
-Maleh,C,LEC,7
-Mandragora,C,TOR,23
-Masini,C,FRO,8
-Massolin,C,CAG,12
-Mastantuono,C,FIO,50
+Saelemaekers,C,MIL,20
+Politano,C,NAP,35
+Vlasic,C,TOR,55
+Goncalves P.,C,FIO,35
+Cambiaghi,C,BOL,30
+Rodriguez Je.,C,COM,21
+Isaksen,C,LAZ,21
+Chukwueze,C,MIL,24
+Cristante,C,ROM,31
 Matic,C,SAS,15
-Mbangula,C,BOL,28
-McKennie,C,JUV,70
-McTominay,C,NAP,220
-Meichtry,C,GEN,11
-Messias,C,GEN,8
-Milla,C,COM,30
-Miller L.,C,UDI,12
-Mkhitaryan,C,INT,9
-Modric,C,MIL,45
-Monteiro J.,C,LEC,23
-Mora,C,ROM,100
-Moreira,C,MIL,45
-Moro N.,C,BOL,14
-Mout,C,MON,12
-Musah,C,MIL,15
-Ndour,C,FIO,22
-Ngom,C,LEC,12
-Nicolussi Caviglia,C,PAR,16
-Njie,C,FIO,28
-Odgaard,C,BOL,17
-Ordonez C.,C,PAR,10
-Oristanio,C,TOR,12
-Orsolini,C,BOL,177
-Oulai,C,FIO,18
-Pasalic,C,ATA,22
-Paz N.,C,COM,245
-Pellegrini Lo.,C,ROM,20
-Perez K.,C,VEN,15
-Perrone,C,COM,34
-Pessina,C,MON,15
-Pierotti,C,LEC,19
-Piotrowski,C,UDI,15
-Pisilli,C,ROM,19
+Karlstrom,C,UDI,20
+Ferguson,C,BOL,20
 Pobega,C,BOL,12
-Politano,C,NAP,37
-Przyborek,C,LAZ,5
-Pulisic,C,MIL,150
-Rabiot,C,MIL,145
-Ricci S.,C,COM,12
-Rodriguez Je.,C,COM,31
-Romano,C,CAG,21
-Rovella,C,LAZ,16
-Rowe,C,ATA,40
-Saelemaekers,C,MIL,35
-Samardzic,C,ATA,44
-Sarr P.,C,JUV,25
-Schmid,C,FRO,25
-Sohm,C,VEN,11
+Rowe,C,ATA,34
+Winks,C,CAG,14
+Messias,C,GEN,10
+Baldanzi,C,GEN,20
+Vergara,C,NAP,21
+Pisilli,C,ROM,25
+Bakola,C,SAS,17
+Thorstvedt,C,SAS,22
+Cacciamani,C,TOR,25
+Fagioli,C,FIO,21
+Ndour,C,FIO,20
+Locatelli,C,JUV,15
+Koopmeiners,C,JUV,14
+Akinsanmiro,C,MON,13
+Colpani,C,MON,14
+Zambo Anguissa,C,NAP,23
+Almqvist,C,PAR,12
+Volpato,C,SAS,21
+Pellegrini Lo.,C,ROM,12
+Braganca,C,TOR,18
+Pasalic,C,ATA,16
+Fazzini,C,CAG,21
+Frendrup,C,GEN,18
+Masini,C,FRO,13
+Thuram K.,C,JUV,14
+Gilmour,C,NAP,10
+Casadei,C,TOR,13
+Njie,C,FIO,33
 Sow,C,GEN,15
+Hutchinson,C,MIL,14
+Sarr P.,C,JUV,20
+Mbangula,C,BOL,14
+El Shaarawy,C,GEN,11
+Gaetano,C,ATA,14
+Zalewski,C,ATA,11
+Odgaard,C,BOL,13
+Milla,C,COM,22
+Caqueret,C,COM,11
+Fini,C,FRO,11
+Mkhitaryan,C,INT,10
+Belahyane,C,LAZ,9
+Rovella,C,LAZ,12
+Bernabè,C,PAR,24
+Konè I.,C,SAS,20
+Fitz-Jim,C,TOR,18
+Piotrowski,C,UDI,12
+Unai Gomez,C,UDI,13
+Busio,C,VEN,13
+Cissè A.,C,MIL,33
+Elmas,C,ATA,17
+Monteiro J.,C,LEC,15
+De Roon,C,ROM,8
+Dominguez B.,C,SAS,12
+Deiola,C,CAG,10
+Fadera,C,CAG,11
+Liberali,C,COM,10
+Oulai,C,FIO,11
+Zerbin,C,FRO,9
+Ellertsson,C,GEN,13
+Luis Henrique,C,INT,12
+Douglas Luiz,C,JUV,17
+Pierotti,C,LEC,14
+Musah,C,MIL,16
+Pessina,C,MON,14
+Keita M.,C,PAR,15
+Gineitis,C,TOR,12
+Ilic,C,LEC,13
+Oristanio,C,TOR,12
+Basic,C,VEN,13
+Perez K.,C,VEN,14
+Moro N.,C,BOL,12
+Felici,C,CAG,5
+Amorim,C,GEN,8
+Traorè Hj.,C,GEN,8
+Dele-Bashiru,C,LAZ,5
+Maleh,C,LEC,7
+Ngom,C,LEC,11
+Jashari,C,MIL,11
+Loftus-Cheek,C,MIL,15
+Nicolussi Caviglia,C,PAR,13
+Ilkhan,C,TOR,8
+Miller L.,C,UDI,12
+Sohm,C,VEN,10
+Tourè I.,C,MON,10
+Massolin,C,CAG,7
+Sulemana I.,C,SAS,5
+Amondarain,C,BOL,11
+Addai,C,COM,8
+Brescianini,C,FIO,7
+Fabbian,C,PAR,13
+Cichella,C,FRO,8
+Meichtry,C,GEN,6
+Berisha M.,C,LEC,11
+Gandelman,C,LEC,9
+Folorunsho,C,MON,15
+Ordonez C.,C,PAR,10
+Diallo O.,C,PAR,4
+Lipani,C,SAS,3
+Chakvetadze,C,UDI,6
+Grillitsch,C,FRO,9
+Fernandez T.,C,VEN,5
+El Azzouzi O.,C,BOL,9
+Hasa,C,FRO,1
 Stankovic A.,C,INT,7
-Sucic P.,C,INT,21
-Sulemana I.,C,SAS,7
-Taylor K.,C,LAZ,53
-Thorstvedt,C,SAS,39
-Thuram K.,C,JUV,25
-Tourè I.,C,MON,14
-Traorè Hj.,C,GEN,11
-Unai Gomez,C,UDI,16
-Venturino,C,GEN,4
-Vergara,C,NAP,35
-Vlasic,C,TOR,73
-Volpato,C,SAS,25
-Winks,C,CAG,15
-Zaccagni,C,LAZ,87
-Zalewski,C,ATA,18
-Zambo Anguissa,C,NAP,41
-Zaniolo,C,UDI,80
+Cataldi,C,LAZ,7
+Gorter,C,LEC,10
+Kaba,C,LEC,2
+Ricci S.,C,COM,10
+Cremaschi,C,PAR,2
+Aboukhlal,C,TOR,1
 Zarraga,C,UDI,4
-Zerbin,C,FRO,12
-Zhegrova,C,JUV,17
-Zielinski,C,INT,45
-Adams A.,A,VEN,35
-Adams C.,A,TOR,33
-Adorante,A,VEN,8
-Bayo V.,A,UDI,3
-Berardi,A,SAS,106
-Beto,A,FIO,50
-Birligea,A,FRO,11
-Bobcek,A,FRO,31
-Boga,A,JUV,27
-Bonny,A,INT,15
-Borrelli,A,CAG,9
-Bowie,A,SAS,32
-Camarda,A,MIL,20
-Castro S.,A,ROM,70
-Colombo,A,GEN,52
-Cutrone,A,MON,23
-Davis K.,A,UDI,108
-De Ketelaere,A,ATA,95
-De Martis,A,PAR,1
-Diao,A,COM,50
-Douvikas,A,COM,185
-Dovbyk,A,BOL,51
-Dybala,A,ROM,100
-Ekhator,A,JUV,10
-Elphege,A,PAR,11
-Esposito F.P.,A,INT,105
-Esposito Se.,A,SAS,40
-Fatah,A,LEC,14
-Frigan,A,PAR,6
-Geubbels,A,LEC,23
-Ghedjemis,A,FRO,23
-Giovane,A,NAP,7
-Gnonto,A,FIO,25
-Gueye,A,UDI,7
-Havel,A,GEN,5
-Hojlund,A,NAP,260
-Kean,A,COM,183
-Kevin Carlos,A,CAG,36
-Kolo Muani,A,JUV,165
-Krstovic,A,ATA,98
-Kulenovic,A,TOR,9
-Kvernadze,A,FRO,24
-Lang,A,NAP,14
-Lauberbach,A,VEN,1
-Laurientè,A,SAS,83
-Lisman,A,VEN,1
-Lontani,A,PAR,11
-Lucca,A,NAP,12
-Maldini,A,CAG,21
-Malen,A,ROM,450
-Martinez L.,A,INT,361
-Mendy P.,A,CAG,12
-Milik,A,JUV,10
-Mota,A,MON,8
-Mutandwa,A,CAG,7
-N'Dri,A,LEC,12
-Neres,A,NAP,20
-Ngonge,A,MON,13
-Noslin,A,LAZ,8
-Nzola,A,CAG,10
-Osmajic,A,GEN,28
+Helgason,C,VEN,3
+Forson O.,C,MON,1
+Foe Ondoa,C,MON,5
+Gagliardini,C,CAG,7
+Jovanovic,C,UDI,3
+Sierro,C,PAR,10
+Wiafe,C,GEN,1
+Liteta,C,CAG,1
+Lahdo,C,COM,1
+El Azzouzi A.,C,FRO,1
+Kone B.,C,FRO,3
+Gelli F.,C,FRO,1
+Venturino,C,GEN,2
+Przyborek,C,LAZ,2
+Fofana Sa.,C,LEC,1
+Ciurria,C,MON,2
+Colombo L.,C,MON,1
+Boloca,C,SAS,1
+Dagasso,C,VEN,1
+Duncan,C,VEN,1
+Laerke,C,LEC,1
+Comotto,C,MIL,1
+Mout,C,MON,12
+Ciervo,C,CAG,1
+Libra,C,BOL,2
+Lovric,C,UDI,1
+Martinez L.,A,INT,410
+Malen,A,ROM,425
+Thuram,A,INT,272
+Hojlund,A,NAP,230
+Ramos G.,A,MIL,227
+Kolo Muani,A,JUV,125
+Douvikas,A,COM,112
+Kean,A,COM,110
+Woltemade,A,JUV,50
+Krstovic,A,ATA,95
+Scamacca,A,ATA,85
+Esposito F.P.,A,INT,118
+Yildiz,A,JUV,70
+Davis K.,A,UDI,111
+Dybala,A,ROM,120
+Berardi,A,SAS,96
 Pellegrino M.,A,FIO,40
-Piccoli,A,BOL,29
-Pinamonti,A,LAZ,53
-Raimondo,A,FRO,27
-Ramos G.,A,MIL,237
-Raspadori,A,ATA,73
-Robinho Junior,A,GEN,3
-Robinson J.,A,MON,5
-Romero D.,A,PAR,37
-Rrahmani Al.,A,VEN,13
-Santos A.,A,NAP,61
-Scamacca,A,ATA,110
-Simeone,A,TOR,80
-Soulè,A,ROM,48
+Soulè,A,ROM,64
+Laurientè,A,SAS,62
+De Ketelaere,A,ATA,63
+Esposito Se.,A,SAS,39
+Dovbyk,A,BOL,25
+Diao,A,COM,64
+Romero D.,A,PAR,42
+Maldini,A,CAG,65
+Raspadori,A,ATA,20
+Bowie,A,SAS,31
+Beto,A,FIO,40
+Kvernadze,A,FRO,53
+Raimondo,A,FRO,60
+Noslin,A,LAZ,50
+Santos A.,A,NAP,30
+Castro S.,A,ROM,30
+Pinamonti,A,LAZ,40
+Adams C.,A,TOR,24
+Simeone,A,TOR,52
+Osmajic,A,GEN,62
+Varela G.,A,MON,68
+Adams A.,A,VEN,29
+Mendy P.,A,CAG,22
+Piccoli,A,BOL,39
+Ghedjemis,A,FRO,28
+Colombo,A,GEN,40
+Tourè E.,A,PAR,28
+Kevin Carlos,A,CAG,12
+Bonny,A,INT,16
+Kulenovic,A,TOR,20
+Mota,A,MON,11
+Cutrone,A,MON,14
+Yeboah J.,A,VEN,23
+Bobcek,A,FRO,7
+Lang,A,NAP,20
+Gueye,A,UDI,6
+Robinson J.,A,MON,14
+Lontani,A,PAR,16
+Fatah,A,LEC,10
+Zeballos,A,MON,16
+Gnonto,A,FIO,14
+Vitinha O.,A,GEN,11
+Geubbels,A,LEC,15
+Rrahmani Al.,A,VEN,9
+Boga,A,JUV,16
 Stulic,A,LEC,11
-Sulemana K.,A,ATA,8
-Thuram,A,INT,249
-Tourè E.,A,PAR,37
-Trepy,A,CAG,2
-Varela G.,A,MON,40
-Vitinha O.,A,GEN,13
-Woltemade,A,JUV,160
-Yeboah J.,A,VEN,27
-Yildiz,A,JUV,100
-Zapata D.,A,TOR,12
-Zeballos,A,MON,18
+Neres,A,NAP,14
+Giovane,A,NAP,1
+Elphege,A,PAR,9
+Zapata D.,A,TOR,5
+Sulemana K.,A,ATA,3
+N'Dri,A,LEC,10
+Birligea,A,FRO,1
+Ngonge,A,MON,10
+Nzola,A,CAG,8
+Enem,A,BOL,10
+Camarda,A,MIL,6
+Lucca,A,NAP,15
+Frigan,A,PAR,3
+Adorante,A,VEN,1
+Milik,A,JUV,1
+Havel,A,GEN,1
+Bayo V.,A,UDI,3
+Lauberbach,A,VEN,1
+Esteban,A,LEC,7
+Trepy,A,CAG,1
+Ekhator,A,JUV,5
+Lisman,A,VEN,1
+De Martis,A,PAR,1
+Robinho Junior,A,GEN,1
