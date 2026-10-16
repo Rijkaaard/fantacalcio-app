@@ -113,9 +113,6 @@ if "search_version" not in st.session_state:
 if "temp_view_until" not in st.session_state:
     st.session_state.temp_view_until = 0
 
-if "pre_temp_view" not in st.session_state:
-    st.session_state.pre_temp_view = "Generale"
-
 # ==============================================================================
 # 🎨 STILE CSS PRINCIPALE (OTTIMIZZATO PER 6 SQUADRE IN STESSA RIGA + NO SCROLL)
 # ==============================================================================
@@ -367,7 +364,7 @@ st.markdown(
         background: #110a24;
         border: 2px solid #581c87;
         border-radius: 12px;
-        padding: 25px 30px;
+        padding: 20px 25px;
         box-shadow: 0 8px 30px rgba(0, 0, 0, 0.9);
         width: 100%;
         box-sizing: border-box;
@@ -379,8 +376,8 @@ st.markdown(
         background: #1b1035;
         border: 1px solid #7e22ce;
         border-radius: 10px;
-        padding: 15px 20px;
-        margin-bottom: 20px;
+        padding: 12px 18px;
+        margin-bottom: 15px;
     }
     .single-team-big-title-area {
         display: flex;
@@ -388,46 +385,46 @@ st.markdown(
         gap: 15px;
     }
     .single-team-big-logo {
-        width: 55px;
-        height: 55px;
+        width: 50px;
+        height: 50px;
         object-fit: contain;
     }
     .single-team-big-name {
-        font-size: 26px;
+        font-size: 24px;
         font-weight: 900;
         color: #ffffff;
         text-transform: uppercase;
         margin: 0;
     }
     .single-team-big-mister {
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 700;
         color: #c084fc;
         margin: 0;
     }
     .single-team-big-budget {
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 900;
         color: #facc15;
     }
     .single-roles-grid {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
+        gap: 15px;
     }
     .single-role-col {
         background: #0d061c;
         border: 1px solid #28144d;
         border-radius: 8px;
-        padding: 12px;
+        padding: 10px;
         display: flex;
         flex-direction: column;
-        gap: 8px;
+        gap: 6px;
     }
     .single-role-header {
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 900;
-        padding: 6px 10px;
+        padding: 5px 8px;
         border-radius: 4px;
         text-transform: uppercase;
         display: flex;
@@ -438,24 +435,24 @@ st.markdown(
         background: #170d30;
         border: 1px solid #321a5c;
         border-radius: 5px;
-        height: 34px;
-        padding: 0 10px;
+        height: 30px;
+        padding: 0 8px;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 800;
     }
     .single-player-empty {
         background: #130a24;
         border: 1px dashed rgba(192, 132, 252, 0.2);
         border-radius: 5px;
-        height: 34px;
+        height: 30px;
         display: flex;
         align-items: center;
         justify-content: center;
         color: #4a287a;
-        font-size: 11px;
+        font-size: 10px;
         font-weight: 700;
     }
 
@@ -765,8 +762,7 @@ if not is_tv_mode:
                         st.session_state.acquisti.append(nuovo_acquisto)
                         save_data(st.session_state.acquisti, st.session_state.vista_corrente)
                         
-                        # Attiva schermata dedicata alla singola squadra per 40 secondi
-                        st.session_state.pre_temp_view = st.session_state.vista_corrente
+                        # Attiva schermata dedicata alla singola squadra per 40 secondi indipendentemente dalla vista TV
                         st.session_state.temp_view_until = time.time() + 40
                         st.session_state.temp_team_show = sq_dest
 
@@ -961,7 +957,7 @@ def render_board_fragment():
 
     vista_effettiva = st.session_state.vista_corrente if is_tv_mode else "Generale"
 
-    # Se è attivo il timer dei 40 secondi, mostriamo la schermata completa della singola squadra acquirente
+    # Se è attivo il timer dei 40 secondi, mostriamo la schermata completa della singola squadra acquirente (invariato per tutte le viste TV)
     if is_temp_active and target_team_info and is_tv_mode:
         sq_full = f"{target_team_info['nome']} - {target_team_info['mister']}"
         rim, tot, max_off, acquisti_sq = get_squadra_stats(sq_full)
@@ -981,7 +977,7 @@ def render_board_fragment():
                 if i < len(r_giocatori):
                     g = r_giocatori[i]
                     sa_logo_b64 = get_logo_base64_cached(g.get("Squadra_SerieA", ""))
-                    sa_logo_html = f'<img src="{sa_logo_b64}" style="width:20px; height:20px; object-fit:contain; vertical-align:middle; margin-right:6px;">' if sa_logo_b64 else ''
+                    sa_logo_html = f'<img src="{sa_logo_b64}" style="width:18px; height:18px; object-fit:contain; vertical-align:middle; margin-right:5px;">' if sa_logo_b64 else ''
                     slots_rows.append(
                         f'<div class="single-player-row">'
                         f'<div style="overflow:hidden; white-space:nowrap; text-overflow:ellipsis;">{sa_logo_html}{g["Giocatore"]}</div>'
